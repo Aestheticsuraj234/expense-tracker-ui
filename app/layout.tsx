@@ -4,6 +4,7 @@ import { Poppins } from "next/font/google";
 import "./globals.css";
 
 import { ThemeProvider } from "@/components/providers/theme-provider";
+import { cn } from "@/lib/utils";
 
 
 const font = Poppins({
@@ -24,7 +25,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={font.className}>
+      <body className={cn(font.className,"dark:bg-[#191A19]")}>
       <ThemeProvider
             attribute="class"
             defaultTheme="system"
