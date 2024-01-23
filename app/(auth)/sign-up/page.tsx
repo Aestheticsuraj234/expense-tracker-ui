@@ -1,7 +1,7 @@
 "use client";
 // global
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 
 // locals
 // @ts-ignore
@@ -20,9 +20,13 @@ import { Button } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { SignUpSchema } from "@/schema/schema";
+import toast from "react-hot-toast";
 import { CardWrapper } from "../components/card-wrapper";
+import axios from "axios";
 
 const SignUp = () => {
+  const [isPending, setIsPending] = useState(false);
+
   const form = useForm<z.infer<typeof SignUpSchema>>({
     resolver: zodResolver(SignUpSchema),
     defaultValues: {
@@ -34,10 +38,46 @@ const SignUp = () => {
   });
 
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof SignUpSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
+  const onSubmit = async (values: z.infer<typeof SignUpSchema>)=>{
     console.log(values);
+    try {
+      setIsPending(true);
+  
+      const { email,  first_name, last_name ,password} = values;
+
+      const response = await axios.post("http://localhost:8080/register",{
+        email,
+        first_name,
+        last_name,
+        password,
+      },
+      {
+        headers: {
+          "X-XSRF-TOKEN":"4fa2f8a8-9a9d-4d4f-b5dc-284052b63c18",
+          "Content-Type": "application/json",
+        },
+      }
+      
+      )
+    
+      console.log(response.data)
+
+      if(response.status === 200){
+        toast.success("Successfully Registered")
+      }
+      else{
+        toast.error("Something went wrong");
+      }   
+      setIsPending(false);   
+    } catch (error) {
+      console.log(error);
+      toast.error("Something went wrong");
+
+    }
+    finally {
+      setIsPending(false);
+    }
+
   }
 
   return (
@@ -64,6 +104,7 @@ const SignUp = () => {
                       <FormLabel>Email</FormLabel>
                       <FormControl>
                         <Input
+                        disabled={isPending}
                           placeholder="jhon.doe@emaple.com"
                           type="email"
                           {...field}
@@ -81,7 +122,7 @@ const SignUp = () => {
                     <FormItem>
                       <FormLabel>First Name</FormLabel>
                       <FormControl>
-                        <Input placeholder="jhon" type="text" {...field} />
+                        <Input disabled={isPending} placeholder="jhon" type="text" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -95,7 +136,7 @@ const SignUp = () => {
                     <FormItem>
                       <FormLabel>Last Name</FormLabel>
                       <FormControl>
-                        <Input placeholder="doe" type="text" {...field} />
+                        <Input disabled={isPending} placeholder="doe" type="text" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -109,6 +150,7 @@ const SignUp = () => {
                       <FormLabel>Password</FormLabel>
                       <FormControl>
                         <Input
+                        disabled={isPending}
                           placeholder="12345678"
                           type="password"
                           {...field}
@@ -119,9 +161,8 @@ const SignUp = () => {
                   )}
                 />
               </div>
-              {/* <FormError message={error} />
-          <FormSuccess message={success} /> */}
-              <Button type="submit" className="w-full">
+            
+              <Button disabled={isPending} type="submit" className="w-full">
                 Register
               </Button>
             </form>

@@ -3,10 +3,10 @@
 import {
   Card,
   CardContent,
-  CardDescription,
+  // CardDescription,
   CardFooter,
   CardHeader,
-  CardTitle,
+  // CardTitle,
 } from "@/components/ui/card";
 import {BackButton} from "./back-button";
 import {Header} from "./header";
