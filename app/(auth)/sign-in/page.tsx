@@ -38,11 +38,11 @@ const SignIn = () => {
 
   return (
     <div className="flex flex-col justify-center items-center mb-10">
-      <h1 className="text-3xl font-extrabold mb-7 bg-clip-text text-transparent bg-gradient-to-r  from-gray-900 to-gray-600  dark:from-indigo-300 dark:to-purple-400 text-center">
+      <h1 className="md:text-3xl text-xl  font-extrabold mb-7 bg-clip-text text-transparent bg-gradient-to-r  from-gray-900 to-gray-600  dark:from-indigo-300 dark:to-purple-400 text-center">
         Login to the Expense Tracker
       </h1>
-      <div className="flex justify-between flex-1 flex-row items-center my-1  w-full ">
-      <Image src={"/login_2.svg"} alt={"signup"} width={520} height={520} />
+      <div className="flex md:justify-between justify-center flex-1 md:flex-row flex-col items-center my-1  w-full ">
+      <Image src={"/login_2.svg"} alt={"signup"} width={520} height={520}  className="md:mb-0 mb-2"/>
         <CardWrapper
           headerLabel="Welcome Back!"
           backButtonLabel="Dont have an Account!"
