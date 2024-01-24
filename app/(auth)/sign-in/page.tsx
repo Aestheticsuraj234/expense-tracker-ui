@@ -61,7 +61,8 @@ const SignIn = () => {
           if(response.status===200)
           {
               toast.success("Login Successfull");
-              router.push("/");
+              sessionStorage.setItem("user_id",response.data.id);
+              router.push("/");  
           }
           else{
             toast.error("Login Failed");
