@@ -1,5 +1,6 @@
 import * as z from "zod";
 
+
 export const SignUpSchema = z.object({
   email: z.string().email(),
   first_name: z.string().min(2, {
@@ -13,6 +14,7 @@ export const SignUpSchema = z.object({
   }),
 });
 
+
 export const SignInSchema = z.object({
   email: z.string().email({
     message: "Invalid email address",
@@ -21,3 +23,19 @@ export const SignInSchema = z.object({
     message: "Password must be at least 5 characters long",
   }),
 });
+
+
+export const ExpenseForm = z.object({
+  description: z.string().min(2, {
+    message: "Description must be at least 2 characters long",
+  }),
+  amount: z.number().positive({
+    message: "Amount must be a positive number",
+  }),
+  category: z.string().min(2, {
+    message: "Category must be at least 2 characters long",
+  }),
+  date: z.string().min(2, {
+    message: "Date must be at least 2 characters long",
+  }),
+})

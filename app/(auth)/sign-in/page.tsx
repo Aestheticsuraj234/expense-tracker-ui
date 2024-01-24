@@ -1,8 +1,8 @@
 "use client";
 // global
 import Image from "next/image";
-import React from "react";
-
+import React, { use } from "react";
+import { useRouter } from "next/navigation";
 // locals
 // @ts-ignore
 import { useForm } from "react-hook-form";
@@ -21,8 +21,16 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { SignInSchema } from "@/schema/schema";
 import { CardWrapper } from "../components/card-wrapper";
+import toast from 'react-hot-toast';
+import axios from "axios";
+
+
 
 const SignIn = () => {
+  const [isPending, setIsPending] = React.useState(false);
+
+  const router = useRouter();
+
   const form = useForm<z.infer<typeof SignInSchema>>({
     resolver: zodResolver(SignInSchema),
     defaultValues: {
@@ -31,10 +39,46 @@ const SignIn = () => {
     },
   });
 
-  // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof SignInSchema>) {
-   
+  const onSubmit = async (values: z.infer<typeof SignInSchema>) => {
+    console.log(values);
+      try {
+        setIsPending(true);
+         const base64Data = btoa(`${values.email}:${values.password}`);
+         console.log("BASE_64:",base64Data);
+
+          const response = await axios.get(
+            "http://localhost:8080/login/user_info",
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Basic ${base64Data}`,
+              },
+            }
+          );
+
+          console.log(response.data);
+
+          if(response.status===200)
+          {
+              toast.success("Login Successfull");
+              router.push("/");
+          }
+          else{
+            toast.error("Login Failed");
+          }
+
+      } catch (error) {
+        console.log(error);
+        
+        toast.error("Unable to Login, Something went wrong");
+
+      }
+      finally{
+        setIsPending(false);
+      }
+
   }
+  
 
   return (
     <div className="flex flex-col justify-center items-center mb-10">
@@ -60,6 +104,7 @@ const SignIn = () => {
                       <FormLabel>Email</FormLabel>
                       <FormControl>
                         <Input
+                          disabled={isPending}
                           placeholder="jhon.doe@emaple.com"
                           type="email"
                           {...field}
@@ -78,6 +123,7 @@ const SignIn = () => {
                       <FormLabel>Password</FormLabel>
                       <FormControl>
                         <Input
+                          disabled={isPending}
                           placeholder="1234567"
                           type="password"
                           {...field}
@@ -88,9 +134,12 @@ const SignIn = () => {
                   )}
                 />
               </div>
-              {/* <FormError message={error} />
-          <FormSuccess message={success} /> */}
-              <Button type="submit" className="w-full">
+          
+              <Button 
+              disabled={isPending}
+              type="submit" 
+              className="w-full"
+              >
                 Login
               </Button>
             </form>

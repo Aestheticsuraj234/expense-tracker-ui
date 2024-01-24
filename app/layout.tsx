@@ -5,13 +5,13 @@ import "./globals.css";
 
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { cn } from "@/lib/utils";
+import ToastProvider from "@/components/providers/toast-provider";
 
-
+// import NextAuthSessionProvider from "@/components/providers/session-provider";
 const font = Poppins({
-  subsets:["latin"],
-  weight:["100","200","300","400","500","600","700","800","900"]
-})
-
+  subsets: ["latin"],
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -20,22 +20,26 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
+ 
 }: Readonly<{
   children: React.ReactNode;
+
 }>) {
   return (
     <html lang="en">
-      <body className={cn(font.className,"dark:bg-[#191A19]")}>
-      <ThemeProvider
+      <body className={cn(font.className, "dark:bg-[#191A19]")}>
+      
+          <ThemeProvider
             attribute="class"
             defaultTheme="system"
             enableSystem
             disableTransitionOnChange
           >
-
-        {children}
-        </ThemeProvider>
-        </body>
+            <ToastProvider />
+            {children}
+          </ThemeProvider>
+      
+      </body>
     </html>
   );
 }

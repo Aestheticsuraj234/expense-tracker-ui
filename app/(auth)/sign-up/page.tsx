@@ -2,6 +2,7 @@
 // global
 import Image from "next/image";
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 
 // locals
 // @ts-ignore
@@ -9,7 +10,6 @@ import { useForm } from "react-hook-form";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -27,6 +27,8 @@ import axios from "axios";
 const SignUp = () => {
   const [isPending, setIsPending] = useState(false);
 
+  const router = useRouter();
+
   const form = useForm<z.infer<typeof SignUpSchema>>({
     resolver: zodResolver(SignUpSchema),
     defaultValues: {
@@ -38,47 +40,45 @@ const SignUp = () => {
   });
 
   // 2. Define a submit handler.
-  const onSubmit = async (values: z.infer<typeof SignUpSchema>)=>{
+  const onSubmit = async (values: z.infer<typeof SignUpSchema>) => {
     console.log(values);
+
     try {
       setIsPending(true);
-  
-      const { email,  first_name, last_name ,password} = values;
 
-      const response = await axios.post("http://localhost:8080/register",{
-        email,
-        first_name,
-        last_name,
-        password,
-      },
-      {
-        headers: {
-          "X-XSRF-TOKEN":"4fa2f8a8-9a9d-4d4f-b5dc-284052b63c18",
-          "Content-Type": "application/json",
+      const { email, first_name, last_name, password } = values;
+
+      const response = await axios.post(
+        "http://localhost:8080/register",
+        {
+          email,
+          first_name,
+          last_name,
+          password,
         },
-      }
-      
-      )
-    
-      console.log(response.data)
+        {
+          headers: {
+            "X-XSRF-TOKEN": "4fa2f8a8-9a9d-4d4f-b5dc-284052b63c18",
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
-      if(response.status === 200){
-        toast.success("Successfully Registered")
+      console.log(response.data);
+      if (response.status === 200) {
+        toast.success("Account created successfully");
+        form.reset();
+        router.push("/sign-in");
+      } else {
+        toast.error("Something went wrong. Please try again later.");
       }
-      else{
-        toast.error("Something went wrong");
-      }   
-      setIsPending(false);   
     } catch (error) {
-      console.log(error);
-      toast.error("Something went wrong");
-
-    }
-    finally {
+      console.error("Error during form submission:", error);
+      toast.error("Something went wrong. Please try again later.");
+    } finally {
       setIsPending(false);
     }
-
-  }
+  };
 
   return (
     <div className="flex flex-col justify-center items-center mb-10">
@@ -86,7 +86,13 @@ const SignUp = () => {
         Register to the Expense Tracker
       </h1> */}
       <div className="flex md:justify-between justify-center flex-1 md:flex-row flex-col items-center my-1  w-full ">
-        <Image src={"/sign-up.svg"} alt={"signup"} width={600} height={600} className="md:mb-0 mb-2"/>
+        <Image
+          src={"/sign-up.svg"}
+          alt={"signup"}
+          width={600}
+          height={600}
+          className="md:mb-0 mb-2"
+        />
         <CardWrapper
           headerLabel="Create an Account!"
           backButtonLabel="Already have an account? login"
@@ -104,7 +110,7 @@ const SignUp = () => {
                       <FormLabel>Email</FormLabel>
                       <FormControl>
                         <Input
-                        disabled={isPending}
+                          disabled={isPending}
                           placeholder="jhon.doe@emaple.com"
                           type="email"
                           {...field}
@@ -122,7 +128,12 @@ const SignUp = () => {
                     <FormItem>
                       <FormLabel>First Name</FormLabel>
                       <FormControl>
-                        <Input disabled={isPending} placeholder="jhon" type="text" {...field} />
+                        <Input
+                          disabled={isPending}
+                          placeholder="jhon"
+                          type="text"
+                          {...field}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -136,7 +147,12 @@ const SignUp = () => {
                     <FormItem>
                       <FormLabel>Last Name</FormLabel>
                       <FormControl>
-                        <Input disabled={isPending} placeholder="doe" type="text" {...field} />
+                        <Input
+                          disabled={isPending}
+                          placeholder="doe"
+                          type="text"
+                          {...field}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -150,7 +166,7 @@ const SignUp = () => {
                       <FormLabel>Password</FormLabel>
                       <FormControl>
                         <Input
-                        disabled={isPending}
+                          disabled={isPending}
                           placeholder="12345678"
                           type="password"
                           {...field}
@@ -161,7 +177,7 @@ const SignUp = () => {
                   )}
                 />
               </div>
-            
+
               <Button disabled={isPending} type="submit" className="w-full">
                 Register
               </Button>
