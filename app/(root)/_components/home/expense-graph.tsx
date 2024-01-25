@@ -55,6 +55,7 @@ const data = [
 
 export function ExpenseGraph() {
   return (
+   
     <ResponsiveContainer width="100%" height={350}>
       <BarChart data={data}>
         <XAxis
@@ -79,5 +80,6 @@ export function ExpenseGraph() {
         />
       </BarChart>
     </ResponsiveContainer>
+   
   )
 }
