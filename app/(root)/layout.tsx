@@ -3,24 +3,26 @@ import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Navbar } from "./_components/navbar";
 import { Sidebar } from "./_components/sidebar";
+import { useSession } from '@/hooks/useSession';
 
 
 const DashboardLayout = ({ children }:{
   children: React.ReactNode;
 }) => {
   const router = useRouter();
-  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
- 
+  const {userId , isLoggedIn} = useSession();
 
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const user_id = sessionStorage.getItem('user_id');
-      setIsLoggedIn(!!user_id);
-      if (!user_id) {
-        router.push('/sign-in');
-      }     
-    }
-  }, [isLoggedIn]);
+
+
+  if(!userId)
+  {
+    router.push("/sign-in");
+  }
+  else
+  {
+    router.push("/");
+  }
+
 
   return (
     isLoggedIn ? ( // Render UI only if logged in

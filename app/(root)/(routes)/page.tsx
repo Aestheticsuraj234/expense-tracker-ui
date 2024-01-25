@@ -1,9 +1,8 @@
 "use client";
 import React, { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 import { ExpenseGraph } from '../_components/home/expense-graph';
 import ExpenseForm from '../_components/home/expense-form';
-import { useAuth } from '@/hooks/use-auth'; // Import the useAuth hook
+
 
 const Home = () => {
   
