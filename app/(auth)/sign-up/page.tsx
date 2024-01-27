@@ -36,6 +36,7 @@ const SignUp = () => {
       first_name: "",
       last_name: "",
       password: "",
+      confirm_password: "",
     },
   });
 
@@ -46,8 +47,13 @@ const SignUp = () => {
     try {
       setIsPending(true);
 
-      const { email, first_name, last_name, password } = values;
+      const { email, first_name, last_name, password ,confirm_password} = values;
 
+      if (password !== confirm_password) {
+        toast.error("Password and confirm password does not match");
+        return;
+      }
+      
       const response = await axios.post(
         "http://localhost:8080/register",
         {
@@ -66,9 +72,8 @@ const SignUp = () => {
 
       console.log(response.data);
       if (response.status === 200) {
-        toast.success("Account created successfully");
+        toast.success("Email sent. Please check your inbox.");
         form.reset();
-        router.push("/sign-in");
       } else {
         toast.error("Something went wrong. Please try again later.");
       }
@@ -164,6 +169,24 @@ const SignUp = () => {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Password</FormLabel>
+                      <FormControl>
+                        <Input
+                          disabled={isPending}
+                          placeholder="12345678"
+                          type="password"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                                <FormField
+                  control={form.control}
+                  name="confirm_password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Confirm Password</FormLabel>
                       <FormControl>
                         <Input
                           disabled={isPending}

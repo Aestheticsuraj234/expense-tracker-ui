@@ -18,6 +18,7 @@ interface CardWrapperProps {
   backButtonLabel: string;
   backButtonHref: string;
   showSocial?: boolean;
+  showForgotPassword?: boolean;
 }
 
 export const CardWrapper = ({
@@ -26,6 +27,7 @@ export const CardWrapper = ({
   backButtonLabel,
   backButtonHref,
   showSocial,
+  showForgotPassword,
 }: CardWrapperProps) => {
   return (
     <Card className="md:w-[25rem] w-[21rem] shadow-md mx-5">
@@ -41,6 +43,9 @@ export const CardWrapper = ({
       )}
       <CardFooter className="flex justify-center items-center">
         <BackButton label={backButtonLabel} href={backButtonHref} />
+        {showForgotPassword && (
+          <BackButton label="Forgot Password?" href="/forgot-password" />
+        )}
       </CardFooter>
     </Card>
   );
