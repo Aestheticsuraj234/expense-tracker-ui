@@ -2,44 +2,45 @@
 import React, { useEffect, useState } from "react";
 import { useSession } from "@/hooks/useSession";
 import { DataTable } from "@/app/(root)/_components/table/data-table";
-import { columns } from "@/app/(root)/_components/table/column";
-import { fetchEventSource } from '@microsoft/fetch-event-source';
+import { ExpenseData, columns } from "@/app/(root)/_components/table/column";
 import { getAllExpenseOfCurrentUser } from "@/actions";
+import { Skeleton } from "@/components/ui/skeleton"
 
-interface ExpenseData {
-  id: string;
-  amount: number;
-  description: string;
-  date: string; // Adjust type if needed
-  category_id: number;
-  user_id: string;
-}
-
-interface ExpenseDataResponse {
-  data: ExpenseData[];
-}
 
 const ExpenseTable = () => {
   const { userId, authorizationHeader } = useSession();
-  const [data, setData] = useState<ExpenseData[]>([]); // Corrected line
+  const [data, setData] = useState<ExpenseData[] | null>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [listening, setListening] = useState(false);
 
-  const fetchData = async ()=>{
-    setIsLoading(true)
- const res =  await  getAllExpenseOfCurrentUser(userId , authorizationHeader)
- setData(res);
- setIsLoading(false);
-  }
- 
-  useEffect(()=>{
-     fetchData();
-  })
+  const fetchData = async () => {
+    setIsLoading(true);
+    try {
+      const res = await getAllExpenseOfCurrentUser(userId, authorizationHeader);
+      setData(res);
+      setIsLoading(false);
+    } catch (error) {
+      setError("Error fetching expenses. Please try again.");
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []); // Pass an empty dependency array to run the effect only once when the component mounts
+
+  console.log(data);
 
   return (
     <div>
-        <DataTable columns={columns} data={data} />
+      {isLoading && 
+        <Skeleton
+          className="w-full h-4"
+          style={{ height: "1rem" }}
+          
+         />
+      }
+      {data && <DataTable columns={columns} data={data} />}
     </div>
   );
 };

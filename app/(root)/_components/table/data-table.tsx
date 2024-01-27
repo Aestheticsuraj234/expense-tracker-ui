@@ -2,13 +2,15 @@
 
 import {
   ColumnDef,
+  ColumnFiltersState,
   flexRender,
   getCoreRowModel,
+  getFilteredRowModel,
   getPaginationRowModel,
   useReactTable,
+  getSortedRowModel,
 } from "@tanstack/react-table"
 
-import { useInfiniteQuery } from "@tanstack/react-query"; 
 import {
   Table,
   TableBody,
@@ -18,6 +20,9 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input"
+
+import { useState } from "react";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -28,14 +33,39 @@ export function DataTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
+  const [sorting, setSorting] = useState<SortingState>([])
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
+    []
+  )
+
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    onSortingChange: setSorting,
+    getSortedRowModel: getSortedRowModel(),
+    onColumnFiltersChange: setColumnFilters,
+    getFilteredRowModel: getFilteredRowModel(),
+    state: {
+      sorting,
+      columnFilters,
+    },
+
   })
 
   return (
+    <div>
+       <div className="flex items-center py-4">
+        <Input
+          placeholder="Search for Category..."
+          value={(table.getColumn("categoryName")?.getFilterValue() as string) ?? ""}
+          onChange={(event) =>
+            table.getColumn("categoryName")?.setFilterValue(event.target.value)
+          }
+          className="max-w-sm"
+        />
+      </div>
     <div className="rounded-md border">
       <Table>
         <TableHeader>
@@ -79,7 +109,7 @@ export function DataTable<TData, TValue>({
           )}
         </TableBody>
       </Table>
-      <div className="flex items-center justify-end space-x-2 py-4 px-4">
+      <div className="flex items-center justify-end space-x-2 py-4 mx-4">
         <Button
           variant="outline"
           size="sm"
@@ -97,6 +127,7 @@ export function DataTable<TData, TValue>({
           Next
         </Button>
       </div>
+    </div>
     </div>
   )
 }

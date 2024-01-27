@@ -1,45 +1,70 @@
-"use client"
+"use client";
 
-import { ColumnDef } from "@tanstack/react-table"
+import { Button } from "@/components/ui/button";
+import { ColumnDef } from "@tanstack/react-table";
+import { ArrowUpDown, Calendar, Layers3, Paperclip } from "lucide-react";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 export type ExpenseData = {
-    id: string;
-    amount: number;
-    description: string;
-    date: string;
-    category_id: number;
-    user_id: string;
-   
-  };
-
-  
+  amount: number;
+  description: string;
+  date: string;
+  categoryName: string;
+};
 
 export const columns: ColumnDef<ExpenseData>[] = [
   {
-    accessorKey: "id",
-    header: "Id",
-  },
-  {
     accessorKey: "amount",
-    header: "Amount",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          <ArrowUpDown className="ml-2 h-4 w-4 inline-flex space-x-2" />
+          Amount
+        </Button>
+      )
+    },
   },
   {
-    accessorKey: "description",
-    header: "Description",
+    accessorKey: "categoryName",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+        >
+          <Layers3 className="ml-2 h-4 w-4 inline-flex space-x-2" />
+          Category
+        </Button>
+      )
+    }
   },
   {
     accessorKey: "date",
-    header: "Date",
+    header:({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+        >
+          <Calendar className="ml-2 h-4 w-4 inline-flex space-x-2" />
+          Date
+        </Button>
+      )
+    },
   },
   {
-    accessorKey: "category_id",
-    header: "Category",
+    accessorKey: "description",
+    header:({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+        >
+          <Paperclip className="ml-2 h-4 w-4 inline-flex space-x-2" />
+          Description
+        </Button>
+      )
+    },
   },
-  {
-    accessorKey: "user_id",
-    header: "User",
-  }
-
-]
+];
