@@ -7,6 +7,8 @@ const LogOutButton = () => {
 
   const onLogout = () => {
     sessionStorage.removeItem('user_id');
+    sessionStorage.removeItem('full_name');
+    sessionStorage.removeItem('authorization_header');
     toast.success("Logout Successfully👋");
     window.location.href = '/sign-in';
   }

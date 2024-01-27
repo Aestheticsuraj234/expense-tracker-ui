@@ -26,7 +26,7 @@ const DashboardLayout = ({ children }:{
         router.push('/sign-in');
       }
     }
-  }, [isLoggedIn, setIsLoggedIn, setIsUserId, userId]);
+  }, [isLoggedIn, userId]);
 
   return (
     isLoggedIn ? ( // Render UI only if logged in
@@ -35,7 +35,7 @@ const DashboardLayout = ({ children }:{
           <Navbar />
         </div>
 
-        <main className="md:pl-56 pt-[80px] h-full relative">
+        <main className="px-10 pt-[80px] h-full relative">
           {children}
         </main>
       </div>
