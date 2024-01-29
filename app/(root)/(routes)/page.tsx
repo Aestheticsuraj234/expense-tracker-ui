@@ -1,14 +1,15 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Plus, PlusCircleIcon } from "lucide-react";
-import axios from "axios";
-import { useSession } from "@/hooks/useSession";
-import { ExpenseData, columns } from "../_components/table/column";
-import { DataTable } from "../_components/table/data-table";
 import ExpenseTable from "@/components/global/expense-table";
+import { useStoreModal } from "@/hooks/use-store-modal";
+import { OverviewGraph } from "@/components/home/overview/overview";
+const Home =  () => {
 
-const Home = async () => {
+  const onOpen = useStoreModal((state) => state.onOpen);
+
   return (
     <main className="px-4 py-4 w-full flex">
       <Tabs defaultValue="overview" className="w-full">
@@ -18,13 +19,16 @@ const Home = async () => {
             <TabsTrigger value="categories">Categories</TabsTrigger>
             <TabsTrigger value="history">History</TabsTrigger>
           </TabsList>
-          <Button variant={"default"} size={"default"} className="space-x-2" >
+          <Button onClick={onOpen} variant={"default"} size={"default"} className="space-x-2" >
             <PlusCircleIcon size={24} />
             Add Expense
           </Button>
         </div>
         <TabsContent value="overview">
-          Overview of your expense here.
+          <div className="mt-16">
+
+         <OverviewGraph/>
+          </div>
         </TabsContent>
         <TabsContent value="categories">
           Categories of your expense here.

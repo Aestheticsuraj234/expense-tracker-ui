@@ -40,15 +40,16 @@ export const ForgotPasswordSchema = z.object({
 
 })
 
-export const ExpenseForm = z.object({
+export const AddExpenseForm = z.object({
+
   description: z.string().min(2, {
     message: "Description must be at least 2 characters long",
   }),
   amount: z.number().positive({
     message: "Amount must be a positive number",
   }),
-  category: z.string().min(2, {
-    message: "Category must be at least 2 characters long",
+  category_id: z.number().positive({
+    message: "Category must be a positive number",
   }),
   date: z.string().min(2, {
     message: "Date must be at least 2 characters long",
