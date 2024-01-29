@@ -12,7 +12,7 @@ const ConfirmRegistration = ({ params }: { params: { token: string } }) => {
 
   const handleConfirmation = async () => {
     try {
-      const confirmed = await axios.post(`http://localhost:8080/confirm_registration/${token}`)
+      const confirmed = await axios.post(`http://140.238.227.78:8080/confirm_registration/${token}`)
       setIsConfirmed(!!confirmed.data);
       if (confirmed.status === 200) {
         toast.success("Registration Confirmed!");

@@ -47,19 +47,18 @@ export const AddExpense = () => {
   const [categories, setCategories] = useState<CategoryProps[]>();
   const [date, setDate] = useState<Date | undefined>(new Date());
 
-  const fetchCategory = async () => {
-    const res = await axios.get("http://localhost:8080/categories", {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Basic ${authorizationHeader}`,
-      },
-    });
-    setCategories(res.data);
-  };
+  // const fetchCategory = async () => {
+  //   const res = await axios.get("http://localhost:8080/categories", {
+  //     headers: {
+  //       Authorization: `Basic ${authorizationHeader}`,
+  //     },
+  //   });
+  //   setCategories(res.data);
+  // };
 
-  useEffect(() => {
-    fetchCategory();
-  }, []);
+  // useEffect(() => {
+  //   fetchCategory();
+  // }, []);
 
   const form = useForm<Z.infer<typeof AddExpenseForm>>({
     resolver: zodResolver(AddExpenseForm),
@@ -71,42 +70,42 @@ export const AddExpense = () => {
     },
   });
 
-  const onSubmit = async (values: Z.infer<typeof AddExpenseForm>) => {
-    try {
-      setLoading(true);
+  const onSubmit = async (values: Z.infer<typeof AddExpenseForm>) => {}
+  //   try {
+  //     setLoading(true);
 
-      // Create a lookup map for categories
-      const categoryLookup: Record<string, number> = categories?.reduce(
-        (acc, category) => {
-          acc[category.name] = category.id;
-          return acc;
-        },
-        {}
-      );
+  //     // Create a lookup map for categories
+  //     const categoryLookup: Record<string, number> = categories?.reduce(
+  //       (acc, category) => {
+  //         acc[category.name] = category.id;
+  //         return acc;
+  //       },
+  //       {}
+  //     );
 
-      // Map the selected category name to its ID
-      const categoryId = categoryLookup[values.category_id];
+  //     // Map the selected category name to its ID
+  //     const categoryId = categoryLookup[values.category_id];
 
-      // Assign the category ID to the form data
-      values.category_id = categoryId;
+  //     // Assign the category ID to the form data
+  //     values.category_id = categoryId;
 
-      const response = await axios.post("http://localhost:8080/expenses", {
-        values,
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Basic ${authorizationHeader}`,
-        },
-      });
-      console.log(response.data);
-      window.location.assign(`/${response.data.id}`);
-    } catch (error) {
-      console.log(error);
-      toast.error("Something went wrong❌");
-    } finally {
-      setLoading(false);
-      storeModal.onClose();
-    }
-  };
+  //     const response = await axios.post("http://localhost:8080/expenses", {
+  //       values,
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: `Basic ${authorizationHeader}`,
+  //       },
+  //     });
+  //     console.log(response.data);
+  //     window.location.assign(`/${response.data.id}`);
+  //   } catch (error) {
+  //     console.log(error);
+  //     toast.error("Something went wrong❌");
+  //   } finally {
+  //     setLoading(false);
+  //     storeModal.onClose();
+  //   }
+  // };
 
   return (
     <Modal

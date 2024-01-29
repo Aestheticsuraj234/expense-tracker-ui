@@ -55,7 +55,7 @@ const SignUp = () => {
       }
       
       const response = await axios.post(
-        "http://localhost:8080/register",
+        "http://140.238.227.78:8080/register",
         {
           email,
           first_name,

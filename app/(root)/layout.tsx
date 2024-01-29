@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import Navbar from './_components/navbar';
 import { Sidebar } from "./_components/sidebar";
 import { useSession } from '@/hooks/useSession';
+import { Loader2 } from 'lucide-react';
 
 
 const DashboardLayout = ({ children }:{
@@ -26,7 +27,7 @@ const DashboardLayout = ({ children }:{
         router.push('/sign-in');
       }
     }
-  }, [isLoggedIn, userId]);
+  }, []);
 
   return (
     isLoggedIn ? ( // Render UI only if logged in
@@ -40,7 +41,10 @@ const DashboardLayout = ({ children }:{
         </main>
       </div>
     ) : (
-      null // Render nothing if not logged in
+      <div className="h-screen w-screen flex justify-center items-center">
+        <Loader2 className='animate-spin' size={64} color='#000' />
+        <h1 className="text-3xl font-bold">Loading...</h1>
+      </div>
     )
   );
 };

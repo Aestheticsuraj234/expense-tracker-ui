@@ -47,7 +47,7 @@ const ForgotPassword = () => {
         return;
       }
       const response = await axios.post(
-        "http://localhost:8080/forget_password",
+        "http://140.238.227.78:8080/forget_password",
         {
           email: values.email,
           password: values.password,
@@ -63,7 +63,6 @@ const ForgotPassword = () => {
       }
     } catch (error) {
       console.error("Error during form submission:", error);
-      toast.error("Something went wrong. Please try again later.");
     } finally {
       setIsPending(false);
     }

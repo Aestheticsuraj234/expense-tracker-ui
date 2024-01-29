@@ -47,7 +47,7 @@ const SignIn = () => {
          console.log("BASE_64:",base64Data);
 
           const response = await axios.get(
-            "http://localhost:8080/login/user_info",
+            "http://140.238.227.78:8080/login/user_info",
             {
               headers: {
                 "Content-Type": "application/json",

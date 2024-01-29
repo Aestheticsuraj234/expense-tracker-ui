@@ -55,3 +55,14 @@ export const AddExpenseForm = z.object({
     message: "Date must be at least 2 characters long",
   }),
 })
+
+
+export const overviewSchema = z.object({
+  StartDate: z.date({
+    required_error: "A start date is required.",
+}),
+EndDate: z.date({
+    required_error: "An end date is required.",
+}),
+
+})

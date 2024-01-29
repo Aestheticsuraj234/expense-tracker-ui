@@ -27,7 +27,10 @@ const ExpenseTable = () => {
 
   useEffect(() => {
     fetchData();
-  }, []); // Pass an empty dependency array to run the effect only once when the component mounts
+  }, [
+    userId,
+    authorizationHeader,
+  ]); // Pass an empty dependency array to run the effect only once when the component mounts
 
   console.log(data);
 
@@ -40,7 +43,7 @@ const ExpenseTable = () => {
           
          />
       }
-      {data && <DataTable columns={columns} data={data} />}
+      { <DataTable columns={columns} data={data} />}
     </div>
   );
 };
