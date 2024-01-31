@@ -52,10 +52,12 @@ interface CategoryProps {
 
 export const AddExpense = () => {
   const { authorizationHeader,userId } = useSession();
-  const storeModal = useStoreModal();
+  const {type , isOpen , onClose } = useStoreModal();
   const [loading, setLoading] = useState(false);
   const [categories, setCategories] = useState<CategoryProps[]>();
   const [date, setDate] = useState<Date | undefined>(new Date());
+
+  const isModalOpen = isOpen && type === "EXPENSE_ADD" ;
 
   const fetchCategory = async () => {
     const res = await axios.get("http://140.238.227.78:8080/categories", {
@@ -137,7 +139,7 @@ export const AddExpense = () => {
       toast.error("Something went wrong ❌");
     } finally {
       setLoading(false);
-      storeModal.onClose();
+      onClose();
     };
   };
   
@@ -146,8 +148,9 @@ export const AddExpense = () => {
     <Modal
       title="Add Expense"
       description="Add your expense details"
-      isOpen={storeModal.isOpen}
-      onClose={storeModal.onClose}
+      isOpen={isModalOpen}
+      onClose={onClose}
+      type="EXPENSE_ADD"
     >
       <div>
         <div className="space-y-4 py-2 pb-4">
@@ -298,7 +301,7 @@ export const AddExpense = () => {
                 <Button
                   disabled={loading}
                   variant={"outline"}
-                  onClick={storeModal.onClose}
+                  onClick={onClose}
                 >
                   Cancel
                 </Button>

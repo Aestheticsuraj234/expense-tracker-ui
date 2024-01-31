@@ -4,6 +4,8 @@ import { useEffect , useState } from "react";
 
 // local
 import { AddExpense } from "@/components/modals/add-expense";
+import { AddCurrencyModal } from "../modals/add-currency";
+
 
 export const ModalProvider = ()=>{
     const [isMounted , setIsMounted] = useState(false);
@@ -19,6 +21,7 @@ export const ModalProvider = ()=>{
 return (
     <>
     <AddExpense />
+    <AddCurrencyModal />
     </>
 )
 }

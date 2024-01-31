@@ -1,13 +1,21 @@
-import {create} from 'zustand';
+import { create } from "zustand";
 
+export type modalType =
+  | "EXPENSE_ADD"
+  | "CURRENCY_ADD"
+  | "EXPENSE_UPDATE"
+  | "CURRENCY_UPDATE";
 interface useStoreModalInterface {
-    isOpen:boolean;
-    onOpen:()=>void;
-    onClose:()=>void;
+  type: modalType | null;
+  isOpen: boolean;
+  onOpen: (type: modalType) => void;
+  onClose: () => void;
 }
 
-export const useStoreModal = create<useStoreModalInterface>((set)=>({
-    isOpen:false,
-    onOpen:()=>set({isOpen:true}),
-    onClose:()=>set({isOpen:false}),
+export const useStoreModal = create<useStoreModalInterface>((set) => ({
+  type: null,
+  isOpen: false,
+  onOpen: (type) => set({ isOpen: true, type }),
+
+  onClose: () => set({ isOpen: false }),
 }));
