@@ -7,7 +7,6 @@ import { overviewSchema } from "@/schema/schema";
 import { useSession } from "@/hooks/useSession";
 import axios from "axios";
 
-import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import {
@@ -129,11 +128,16 @@ export function OverviewGraph() {
       const { StartDate, EndDate } = values;
       const from = format(StartDate, "yyyy-MM-dd");
       const to = format(EndDate, "yyyy-MM-dd");
-      const response = await axios.get(
-        "http://140.238.227.78:8080/expenses/by_category?from=1959-01-24&to=2005-12-02&user_id=45ea72f9-162c-460d-b154-2f9fc37c8dab"
+      const response = await fetch(
+        `http://140.238.227.78:8080/expenses/by_category?from=${from}&to=${to}&user_id=${userId}&category_ids=1`,{
+          headers:{
+            Authorization:`Basic ${authorizationHeader}`
+          }
+        }
       );
 
       console.log(response.data);
+      toast.success("Fetched Successfully")
     } catch (error) {
       console.log(error);
       setIsPending(false);

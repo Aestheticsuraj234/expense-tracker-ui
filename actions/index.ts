@@ -11,7 +11,7 @@ interface CategoryData {
 export const getAllExpenseOfCurrentUser = async (
   userId: string | null,
   authorizationHeader: string | null
-): Promise<ExpenseData[] | null> => {
+): Promise<ExpenseData[]> => {
   try {
     // Fetch expenses
     const expensesResponse = await axios.get<ExpenseData[]>(`http://localhost:8080/expenses/${userId}`, {
@@ -58,6 +58,5 @@ export const getAllExpenseOfCurrentUser = async (
     return expensesWithCategoryName;
   } catch (error) {
     console.error("Error fetching data:", error);
-    return null;
   }
 };

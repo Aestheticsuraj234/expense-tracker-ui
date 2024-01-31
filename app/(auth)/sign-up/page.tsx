@@ -27,8 +27,6 @@ import axios from "axios";
 const SignUp = () => {
   const [isPending, setIsPending] = useState(false);
 
-  const router = useRouter();
-
   const form = useForm<z.infer<typeof SignUpSchema>>({
     resolver: zodResolver(SignUpSchema),
     defaultValues: {
@@ -47,13 +45,14 @@ const SignUp = () => {
     try {
       setIsPending(true);
 
-      const { email, first_name, last_name, password ,confirm_password} = values;
+      const { email, first_name, last_name, password, confirm_password } =
+        values;
 
       if (password !== confirm_password) {
         toast.error("Password and confirm password does not match");
         return;
       }
-      
+
       const response = await axios.post(
         "http://140.238.227.78:8080/register",
         {
@@ -87,9 +86,6 @@ const SignUp = () => {
 
   return (
     <div className="flex flex-col justify-center items-center mb-10">
-      {/* <h1 className="text-3xl font-extrabold mb-7 bg-clip-text text-transparent bg-gradient-to-r  from-gray-900 to-gray-600  dark:from-indigo-300 dark:to-purple-400 text-center">
-        Register to the Expense Tracker
-      </h1> */}
       <div className="flex md:justify-between justify-center flex-1 md:flex-row flex-col items-center my-1  w-full ">
         <Image
           src={"/sign-up.svg"}
@@ -163,6 +159,7 @@ const SignUp = () => {
                     </FormItem>
                   )}
                 />
+
                 <FormField
                   control={form.control}
                   name="password"
@@ -181,7 +178,8 @@ const SignUp = () => {
                     </FormItem>
                   )}
                 />
-                                <FormField
+                
+                <FormField
                   control={form.control}
                   name="confirm_password"
                   render={({ field }) => (

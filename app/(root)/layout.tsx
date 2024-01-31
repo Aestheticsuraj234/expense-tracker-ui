@@ -2,8 +2,6 @@
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Navbar from './_components/navbar';
-import { Sidebar } from "./_components/sidebar";
-import { useSession } from '@/hooks/useSession';
 import { Loader2 } from 'lucide-react';
 
 

@@ -4,8 +4,7 @@ import { useSession } from "@/hooks/useSession";
 import { DataTable } from "@/app/(root)/_components/table/data-table";
 import { ExpenseData, columns } from "@/app/(root)/_components/table/column";
 import { getAllExpenseOfCurrentUser } from "@/actions";
-import { Skeleton } from "@/components/ui/skeleton"
-
+import { Skeleton } from "@/components/ui/skeleton";
 
 const ExpenseTable = () => {
   const { userId, authorizationHeader } = useSession();
@@ -27,25 +26,30 @@ const ExpenseTable = () => {
 
   useEffect(() => {
     fetchData();
-  }, [
-    userId,
-    authorizationHeader,
-  ]); // Pass an empty dependency array to run the effect only once when the component mounts
+  }, [userId, authorizationHeader]);
 
   console.log(data);
 
   return (
     <div>
-      {isLoading && 
-        <Skeleton
-          className="w-full h-4"
-          style={{ height: "1rem" }}
-          
-         />
-      }
-      { <DataTable columns={columns} data={data} />}
+      {isLoading ? (
+        <TableSkeleton />
+      ) : (
+        // @ts-ignore
+        <DataTable columns={columns} data={data} />
+      )}
     </div>
   );
 };
 
 export default ExpenseTable;
+
+const TableSkeleton = () => {
+  return (
+    <div className="w-full rounded-md border relative  overflow-auto">
+      <Skeleton className="[&_tr]:border-b bg-zinc-600 dark:bg-gray-200 mb-2" />
+      <Skeleton className="[&_tr:last-child]:border-0 bg-zinc-600 dark:bg-gray-200 mb-2" />
+      <Skeleton className="border-t bg-muted w-[50%] font-medium [&>tr]:last:border-b-0 mb-2" />
+    </div>
+  );
+};

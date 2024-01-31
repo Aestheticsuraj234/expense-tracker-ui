@@ -7,6 +7,7 @@ import { ArrowUpDown, Calendar, Layers3, Paperclip } from "lucide-react";
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 export type ExpenseData = {
+  id:string
   amount: number;
   description: string;
   date: string;

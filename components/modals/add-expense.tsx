@@ -33,6 +33,10 @@ import { toast } from "react-hot-toast";
 import { AddExpenseForm } from "@/schema/schema";
 import { useSession } from "@/hooks/useSession";
 import { Calendar } from "@/components/ui/calendar";
+import { CalendarIcon } from "lucide-react";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import { cn } from "@/lib/utils";
+import { format } from "date-fns";
 
 interface CategoryProps {
   id: number;
@@ -47,18 +51,18 @@ export const AddExpense = () => {
   const [categories, setCategories] = useState<CategoryProps[]>();
   const [date, setDate] = useState<Date | undefined>(new Date());
 
-  // const fetchCategory = async () => {
-  //   const res = await axios.get("http://localhost:8080/categories", {
-  //     headers: {
-  //       Authorization: `Basic ${authorizationHeader}`,
-  //     },
-  //   });
-  //   setCategories(res.data);
-  // };
+  const fetchCategory = async () => {
+    const res = await axios.get("http://140.238.227.78:8080/categories", {
+      headers: {
+        Authorization: `Basic ${authorizationHeader}`,
+      },
+    });
+    setCategories(res.data);
+  };
 
-  // useEffect(() => {
-  //   fetchCategory();
-  // }, []);
+  useEffect(() => {
+    fetchCategory();
+  }, []);
 
   const form = useForm<Z.infer<typeof AddExpenseForm>>({
     resolver: zodResolver(AddExpenseForm),
@@ -201,14 +205,34 @@ export const AddExpense = () => {
                     <FormItem>
                       <div className="grid grid-cols-3 items-center justify-center gap-4">
                         <FormLabel className="text-right">Date</FormLabel>
-                        <FormControl>
-                          <Calendar
-                            mode="single"
-                            selected={date}
-                            onSelect={setDate}
-                            className="rounded-md border"
-                          />
-                        </FormControl>
+                        <Popover>
+                  <PopoverTrigger asChild>
+                    <FormControl>
+                      <Button
+                        variant={"outline"}
+                        className={cn(
+                          "w-[142px] pl-3 text-left font-normal",
+                          !field.value && "text-muted-foreground"
+                        )}
+                      >
+                        {field.value ? (
+                          format(field.value, "yyyy-MM-dd")
+                        ) : (
+                          <span>Pick a date</span>
+                        )}
+                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                      </Button>
+                    </FormControl>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <Calendar
+                      mode="single"
+                      selected={field.value}
+                      onSelect={field.onChange}
+                      initialFocus
+                    />
+                  </PopoverContent>
+                </Popover>
 
                         <FormMessage />
                       </div>
