@@ -53,6 +53,22 @@ const SignUp = () => {
         return;
       }
 
+      // const res = await fetch("http://140.238.227.78:8080/register",{
+      //   Method: "POST",
+      //   body: JSON.stringify({
+      //     email,
+      //     first_name,
+      //     last_name,
+      //     password,
+      //   }),
+      //   headers:{
+      //     "X-XSRF-TOKEN": "4fa2f8a8-9a9d-4d4f-b5dc-284052b63c18",
+      //     "Content-Type": "application/json",
+      //     'Content-Type': 'application/json',
+      //     'Access-Control-Allow-Origin': 'http://localhost:3000',
+      //     'Access-Control-Allow-Headers': '*'
+      //   }
+      // })
       const response = await axios.post(
         "http://140.238.227.78:8080/register",
         {
@@ -64,7 +80,9 @@ const SignUp = () => {
         {
           headers: {
             "X-XSRF-TOKEN": "4fa2f8a8-9a9d-4d4f-b5dc-284052b63c18",
-            "Content-Type": "application/json",
+          "Content-Type": "application/json",
+          'Access-Control-Allow-Origin': 'http://localhost:3000',
+          'Access-Control-Allow-Headers': '*'
           },
         }
       );

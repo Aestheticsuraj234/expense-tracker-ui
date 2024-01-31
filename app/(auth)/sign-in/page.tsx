@@ -21,10 +21,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { SignInSchema } from "@/schema/schema";
 import { CardWrapper } from "../components/card-wrapper";
-import toast from 'react-hot-toast';
+import toast from "react-hot-toast";
 import axios from "axios";
-
-
 
 const SignIn = () => {
   const [isPending, setIsPending] = React.useState(false);
@@ -41,47 +39,45 @@ const SignIn = () => {
 
   const onSubmit = async (values: z.infer<typeof SignInSchema>) => {
     console.log(values);
-      try {
-        setIsPending(true);
-         const base64Data = btoa(`${values.email}:${values.password}`);
-         console.log("BASE_64:",base64Data);
+    try {
+      setIsPending(true);
+      const base64Data = btoa(`${values.email}:${values.password}`);
+      console.log("BASE_64:", base64Data);
 
-          const response = await axios.get(
-            "http://140.238.227.78:8080/login/user_info",
-            {
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Basic ${base64Data}`,
-              },
-            }
-          );
+      const response = await axios.get(
+        "http://140.238.227.78:8080/login/user_info",
+        {
+          headers: {
+            Authorization: `Basic ${base64Data}`,
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "http://localhost:3000",
+            "Access-Control-Allow-Headers": "*",
+          },
+        }
+      );
 
-          console.log(response.data);
+      console.log(response.data);
 
-          if(response.status===200)
-          {
-              toast.success("Login Successfull");
-              sessionStorage.setItem("user_id",response.data.id);
-              sessionStorage.setItem("authorization_header",base64Data);
-              sessionStorage.setItem("full_name",response.data.first_name + " " + response.data.last_name);
-              router.push("/");  
-          }
-          else{
-            toast.error("Login Failed");
-          }
-
-      } catch (error) {
-        console.log(error);
-        
-        toast.error("Unable to Login, Something went wrong");
-
+      if (response.status === 200) {
+        toast.success("Login Successfull");
+        sessionStorage.setItem("user_id", response.data.id);
+        sessionStorage.setItem("authorization_header", base64Data);
+        sessionStorage.setItem(
+          "full_name",
+          response.data.first_name + " " + response.data.last_name
+        );
+        router.push("/");
+      } else {
+        toast.error("Login Failed");
       }
-      finally{
-        setIsPending(false);
-      }
+    } catch (error) {
+      console.log(error);
 
-  }
-  
+      toast.error("Unable to Login, Something went wrong");
+    } finally {
+      setIsPending(false);
+    }
+  };
 
   return (
     <div className="flex flex-col justify-center items-center mb-10">
@@ -89,7 +85,13 @@ const SignIn = () => {
         Login to the Expense Tracker
       </h1>
       <div className="flex md:justify-between justify-center flex-1 md:flex-row flex-col items-center my-1  w-full ">
-      <Image src={"/login_2.svg"} alt={"signup"} width={520} height={520}  className="md:mb-0 mb-2"/>
+        <Image
+          src={"/login_2.svg"}
+          alt={"signup"}
+          width={520}
+          height={520}
+          className="md:mb-0 mb-2"
+        />
         <CardWrapper
           headerLabel="Welcome Back!"
           backButtonLabel="Dont have an Account!"
@@ -138,12 +140,8 @@ const SignIn = () => {
                   )}
                 />
               </div>
-          
-              <Button 
-              disabled={isPending}
-              type="submit" 
-              className="w-full"
-              >
+
+              <Button disabled={isPending} type="submit" className="w-full">
                 Login
               </Button>
             </form>

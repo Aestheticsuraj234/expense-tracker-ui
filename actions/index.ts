@@ -14,7 +14,7 @@ export const getAllExpenseOfCurrentUser = async (
 ): Promise<ExpenseData[]> => {
   try {
     // Fetch expenses
-    const expensesResponse = await axios.get<ExpenseData[]>(`http://localhost:8080/expenses/${userId}`, {
+    const expensesResponse = await axios.get<ExpenseData[]>(`http://140.238.227.78:8080/expenses/${userId}`, {
       headers: {
         Authorization: `Basic ${authorizationHeader}`
       }
@@ -22,7 +22,7 @@ export const getAllExpenseOfCurrentUser = async (
 
     if (expensesResponse.status !== 200) {
       console.error(`Failed to fetch expenses. Status: ${expensesResponse.status}`);
-      return null;
+      return []; // Return an empty array in case of an error
     }
 
     const expensesData: ExpenseData[] = expensesResponse.data;
@@ -36,7 +36,7 @@ export const getAllExpenseOfCurrentUser = async (
 
     if (categoriesResponse.status !== 200) {
       console.error(`Failed to fetch categories. Status: ${categoriesResponse.status}`);
-      return null;
+      return []; // Return an empty array in case of an error
     }
 
     const categoriesData: CategoryData[] = categoriesResponse.data;
@@ -55,8 +55,10 @@ export const getAllExpenseOfCurrentUser = async (
       categoryName: categoryLookup[expense.category_id] || 'Unknown Category', // Provide a default if category not found
     }));
 
+    console.log('expensesWithCategoryName', expensesWithCategoryName);
     return expensesWithCategoryName;
   } catch (error) {
     console.error("Error fetching data:", error);
+    return []; // Return an empty array in case of an error
   }
 };

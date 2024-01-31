@@ -41,15 +41,16 @@ export const AddExpenseForm = z.object({
   description: z.string().min(2, {
     message: "Description must be at least 2 characters long",
   }),
-  amount: z.number().positive({
-    message: "Amount must be a positive number",
+  amount: z.string().min(2,{
+    message: "Amount must be a least of 2 characters long",
   }),
-  category_id: z.number().positive({
-    message: "Category must be a positive number",
+  categoryName: z.string().min(2,{
+    message: "Category must be at least 2 characters",
   }),
-  date: z.string().min(2, {
-    message: "Date must be at least 2 characters long",
+  date:z.date({
+    required_error: "date is required.",
   }),
+
 });
 
 export const overviewSchema = z.object({

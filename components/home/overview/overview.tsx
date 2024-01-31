@@ -128,15 +128,14 @@ export function OverviewGraph() {
       const { StartDate, EndDate } = values;
       const from = format(StartDate, "yyyy-MM-dd");
       const to = format(EndDate, "yyyy-MM-dd");
-      const response = await fetch(
-        `http://140.238.227.78:8080/expenses/by_category?from=${from}&to=${to}&user_id=${userId}&category_ids=1`,{
-          headers:{
-            Authorization:`Basic ${authorizationHeader}`
-          }
-        }
-      );
+      const response = await axios.get(`http://140.238.227.78:8080/expenses/by_category?from=${from}&to=${to}&user_id=${userId}`,{
+        headers: {
+          Authorization: `Basic ${authorizationHeader}`,
+        },
+      })
 
       console.log(response.data);
+      setData(response.data);
       toast.success("Fetched Successfully")
     } catch (error) {
       console.log(error);
@@ -253,7 +252,7 @@ export function OverviewGraph() {
         <BarChart
           width={500}
           height={300}
-          data={expenseData}
+          data={data}
           margin={{
             top: 5,
             right: 30,

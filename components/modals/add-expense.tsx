@@ -13,11 +13,17 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import {
   Form,
   FormControl,
@@ -45,7 +51,7 @@ interface CategoryProps {
 }
 
 export const AddExpense = () => {
-  const { authorizationHeader } = useSession();
+  const { authorizationHeader,userId } = useSession();
   const storeModal = useStoreModal();
   const [loading, setLoading] = useState(false);
   const [categories, setCategories] = useState<CategoryProps[]>();
@@ -57,6 +63,7 @@ export const AddExpense = () => {
         Authorization: `Basic ${authorizationHeader}`,
       },
     });
+    console.log("Console_categories", res.data);
     setCategories(res.data);
   };
 
@@ -67,50 +74,74 @@ export const AddExpense = () => {
   const form = useForm<Z.infer<typeof AddExpenseForm>>({
     resolver: zodResolver(AddExpenseForm),
     defaultValues: {
+      amount: "",
       description: "",
-      amount: 0,
-      category_id: 0,
-      date: "",
+      categoryName: "",
+      date: new Date(),
     },
   });
 
-  const onSubmit = async (values: Z.infer<typeof AddExpenseForm>) => {}
-  //   try {
-  //     setLoading(true);
+  const onSubmit = async (values: Z.infer<typeof AddExpenseForm>) => {
+    try {
+      setLoading(true);
+  
+      const { amount, description, categoryName, date } = values;
+  
+      // Find the category by name
+      const category = categories?.find((category) => category.name === categoryName);
 
-  //     // Create a lookup map for categories
-  //     const categoryLookup: Record<string, number> = categories?.reduce(
-  //       (acc, category) => {
-  //         acc[category.name] = category.id;
-  //         return acc;
-  //       },
-  //       {}
-  //     );
+  
+      if (!category) {
+        throw new Error("Selected category not found.");
+      }
+  
+      // Extract the categoryId and format the date
+      const categoryId = category.id;
+      console.log("Console_categoryId", categoryId);
+      const formattedDate = format(date, "dd-MM-yyyy");
+  
+      // Construct the data payload
+      const data = {
+        amount: Number(amount),
+        description,
+        category_id: categoryId,
+        date: formattedDate,
+        user_id: userId,
+      };
+  
+      console.log("Console_data", data);
+      // Send the POST request
+      const response = await axios.post(
+        "http://140.238.227.78:8080/expenses",
+        data,
+        {
+          headers: {
+            Authorization: `Basic ${authorizationHeader}`,
+            contentType: "application/json",
+          },
+        }
+      );
+  
+      if (response.status === 200) {
+        toast.success("Expense added successfully", {
+          icon: "👏",
+        });
+        console.log("Console_response", response.data);
+        form.reset();
 
-  //     // Map the selected category name to its ID
-  //     const categoryId = categoryLookup[values.category_id];
-
-  //     // Assign the category ID to the form data
-  //     values.category_id = categoryId;
-
-  //     const response = await axios.post("http://localhost:8080/expenses", {
-  //       values,
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Authorization: `Basic ${authorizationHeader}`,
-  //       },
-  //     });
-  //     console.log(response.data);
-  //     window.location.assign(`/${response.data.id}`);
-  //   } catch (error) {
-  //     console.log(error);
-  //     toast.error("Something went wrong❌");
-  //   } finally {
-  //     setLoading(false);
-  //     storeModal.onClose();
-  //   }
-  // };
-
+      } else {
+        throw new Error("Failed to add expense. Please try again.");
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Something went wrong ❌");
+    } finally {
+      setLoading(false);
+      storeModal.onClose();
+    };
+  };
+  
+  
   return (
     <Modal
       title="Add Expense"
@@ -169,30 +200,53 @@ export const AddExpense = () => {
                 />
                 <FormField
                   control={form.control}
-                  name="category_id"
+                  name="categoryName"
                   render={({ field }) => (
                     <FormItem>
                       <div className="grid grid-cols-3 items-center justify-center gap-4">
-                        <FormLabel className="text-right">Category</FormLabel>
+                        <FormLabel className="text-right">
+                          Category Name
+                        </FormLabel>
                         <FormControl>
-                          <Select>
-                            <SelectTrigger className="w-[144px]">
-                              <SelectValue placeholder="Category" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              {categories &&
-                                categories?.map((category) => (
-                                  <SelectItem
-                                    key={category?.id}
-                                    value={category?.id}
-                                  >
-                                    {category?.id}
-                                  </SelectItem>
-                                ))}
+                          <Select
+                            onValueChange={field.onChange}
+                            defaultValue={field.value}
+                          >
+                            <FormControl>
+                              <SelectTrigger>
+                                <SelectValue placeholder="Select Category" />
+                              </SelectTrigger>
+                            </FormControl>
+
+                            <SelectContent side="right" className="w-full">
+                              {categories?.map((category) => (
+                                <SelectItem
+                                  key={category.id}
+                                  value={category.name}
+                                  className="w-full"
+                                >
+                                  <div>
+                                    <TooltipProvider>
+                                      <Tooltip>
+                                        <TooltipTrigger>
+                                          <span>{category.name}</span>
+                                        </TooltipTrigger>
+                                        <TooltipContent
+                                          side="top"
+                                          className="absolute"
+                                        >
+                                          <span className="text-muted-foreground ">
+                                            {category.description}
+                                          </span>
+                                        </TooltipContent>
+                                      </Tooltip>
+                                    </TooltipProvider>
+                                  </div>
+                                </SelectItem>
+                              ))}
                             </SelectContent>
                           </Select>
                         </FormControl>
-
                         <FormMessage />
                       </div>
                     </FormItem>
@@ -206,33 +260,33 @@ export const AddExpense = () => {
                       <div className="grid grid-cols-3 items-center justify-center gap-4">
                         <FormLabel className="text-right">Date</FormLabel>
                         <Popover>
-                  <PopoverTrigger asChild>
-                    <FormControl>
-                      <Button
-                        variant={"outline"}
-                        className={cn(
-                          "w-[142px] pl-3 text-left font-normal",
-                          !field.value && "text-muted-foreground"
-                        )}
-                      >
-                        {field.value ? (
-                          format(field.value, "yyyy-MM-dd")
-                        ) : (
-                          <span>Pick a date</span>
-                        )}
-                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                      </Button>
-                    </FormControl>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" align="start">
-                    <Calendar
-                      mode="single"
-                      selected={field.value}
-                      onSelect={field.onChange}
-                      initialFocus
-                    />
-                  </PopoverContent>
-                </Popover>
+                          <PopoverTrigger asChild>
+                            <FormControl>
+                              <Button
+                                variant={"outline"}
+                                className={cn(
+                                  "w-[142px] pl-3 text-left font-normal",
+                                  !field.value && "text-muted-foreground"
+                                )}
+                              >
+                                {field.value ? (
+                                  format(field.value, "yyyy-MM-dd")
+                                ) : (
+                                  <span>Pick a date</span>
+                                )}
+                                <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                              </Button>
+                            </FormControl>
+                          </PopoverTrigger>
+                          <PopoverContent className="w-auto p-0" align="start">
+                            <Calendar
+                              mode="single"
+                              selected={field.value}
+                              onSelect={field.onChange}
+                              initialFocus
+                            />
+                          </PopoverContent>
+                        </Popover>
 
                         <FormMessage />
                       </div>
