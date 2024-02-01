@@ -24,11 +24,8 @@ export const useCurrency = () => {
         },
       }
     );
-    if (currency.status === 404) {
-      setCurrency("");
-    } else {
-      setCurrency(currency.data.symbol);
-    }
+    console.log(currency.data);
+    setCurrency(currency.data.symbol);
   };
 
   useEffect(() => {

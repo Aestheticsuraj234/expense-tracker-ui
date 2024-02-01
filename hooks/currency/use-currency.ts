@@ -1,12 +1,13 @@
+import axios from "axios";
 import { create } from "zustand";
 
 interface CurrencyStore {
-  currency: string;
+  currency: string | null;
   setCurrency: (currency: string) => void;
 }
 
 const currencyStore = create<CurrencyStore>((set) => ({
-  currency: "$",
+  currency: "",
   setCurrency: (currency) => set({ currency }),
 }));
 

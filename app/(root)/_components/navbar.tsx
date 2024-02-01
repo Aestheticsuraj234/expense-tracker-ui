@@ -6,6 +6,8 @@ import React, { useState, useEffect } from "react";
 import AuthNavbarClock from "@/app/(auth)/components/auth-navbar-clock";
 import { useSession } from "@/hooks/useSession";
 import LogOutButton from "@/components/global/logout-btn";
+import { Currency } from "lucide-react";
+import CurencyBadge from "@/components/global/currency-badge";
 
 const Navbar = () => {
   const [isMounted, setIsMounted] = useState(false);
@@ -50,6 +52,7 @@ const Navbar = () => {
         </div>
         <div className="ml-auto flex items-center space-x-4">
           <AuthNavbarClock />
+          <CurencyBadge />
           <ModeToggle />
           <LogOutButton />
         </div>
