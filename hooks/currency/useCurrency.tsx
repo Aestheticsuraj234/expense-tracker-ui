@@ -1,8 +1,8 @@
 "use client";
 import { useEffect } from "react";
 import { useSession } from "../useSession";
-import { useCurrencyStore } from "./use-currency";
 import axios from "axios";
+import { useCurrencyStore } from "./use-currency";
 
 interface CurrencyProps {
   id: string;

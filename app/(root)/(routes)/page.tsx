@@ -53,7 +53,7 @@ const Home = () => {
         <TabsContent value="history">
           <Card className="shadow-md w-[72rem]">
             <CardHeader>
-              <CardTitle>Your All Expenses💰</CardTitle>
+              <CardTitle>Your All Expenses</CardTitle>
             </CardHeader>
             <CardContent className="pl-2">
               <ExpenseTable />

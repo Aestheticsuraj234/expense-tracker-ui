@@ -43,6 +43,7 @@ import { CalendarIcon } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
+import { useCategory } from "@/hooks/category/useCategory";
 
 interface CategoryProps {
   id: number;
@@ -51,27 +52,15 @@ interface CategoryProps {
 }
 
 export const AddExpense = () => {
-  const { authorizationHeader,userId } = useSession();
-  const {type , isOpen , onClose } = useStoreModal();
+  const { authorizationHeader, userId } = useSession();
+  const { category } = useCategory();
+  const { type, isOpen, onClose } = useStoreModal();
   const [loading, setLoading] = useState(false);
-  const [categories, setCategories] = useState<CategoryProps[]>();
+
   const [date, setDate] = useState<Date | undefined>(new Date());
 
-  const isModalOpen = isOpen && type === "EXPENSE_ADD" ;
-
-  const fetchCategory = async () => {
-    const res = await axios.get("http://140.238.227.78:8080/categories", {
-      headers: {
-        Authorization: `Basic ${authorizationHeader}`,
-      },
-    });
-    console.log("Console_categories", res.data);
-    setCategories(res.data);
-  };
-
-  useEffect(() => {
-    fetchCategory();
-  }, []);
+  const isModalOpen = isOpen && type === "EXPENSE_ADD";
+  console.log(category);
 
   const form = useForm<Z.infer<typeof AddExpenseForm>>({
     resolver: zodResolver(AddExpenseForm),
@@ -86,22 +75,22 @@ export const AddExpense = () => {
   const onSubmit = async (values: Z.infer<typeof AddExpenseForm>) => {
     try {
       setLoading(true);
-  
-      const { amount, description, categoryName, date } = values;
-  
-      // Find the category by name
-      const category = categories?.find((category) => category.name === categoryName);
 
-  
-      if (!category) {
+      const { amount, description, categoryName, date } = values;
+
+      // Find the category by name
+      const selectedCategory = category?.find(
+        (category) => category.name === categoryName
+      );
+
+      if (!selectedCategory) {
         throw new Error("Selected category not found.");
       }
-  
+
       // Extract the categoryId and format the date
-      const categoryId = category.id;
-      console.log("Console_categoryId", categoryId);
+      const categoryId = selectedCategory.id;
       const formattedDate = format(date, "dd-MM-yyyy");
-  
+
       // Construct the data payload
       const data = {
         amount: Number(amount),
@@ -110,8 +99,7 @@ export const AddExpense = () => {
         date: formattedDate,
         user_id: userId,
       };
-  
-      console.log("Console_data", data);
+
       // Send the POST request
       const response = await axios.post(
         "http://140.238.227.78:8080/expenses",
@@ -123,14 +111,12 @@ export const AddExpense = () => {
           },
         }
       );
-  
+
       if (response.status === 200) {
         toast.success("Expense added successfully", {
           icon: "👏",
         });
-        console.log("Console_response", response.data);
         form.reset();
-
       } else {
         throw new Error("Failed to add expense. Please try again.");
       }
@@ -140,10 +126,9 @@ export const AddExpense = () => {
     } finally {
       setLoading(false);
       onClose();
-    };
+    }
   };
-  
-  
+
   return (
     <Modal
       title="Add Expense"
@@ -222,7 +207,7 @@ export const AddExpense = () => {
                             </FormControl>
 
                             <SelectContent side="right" className="w-full">
-                              {categories?.map((category) => (
+                              {category?.map((category) => (
                                 <SelectItem
                                   key={category.id}
                                   value={category.name}
@@ -238,7 +223,7 @@ export const AddExpense = () => {
                                           side="top"
                                           className="absolute"
                                         >
-                                          <span className="text-muted-foreground ">
+                                          <span className="text-muted-foreground">
                                             {category.description}
                                           </span>
                                         </TooltipContent>
