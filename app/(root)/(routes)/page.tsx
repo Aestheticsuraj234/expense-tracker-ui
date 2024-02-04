@@ -10,7 +10,7 @@ import { CategoryGraph } from "@/components/home/categories/category-graph";
 import { useRouter } from "next/navigation";
 
 import { useCurrency } from "@/hooks/currency/useCurrency";
-
+s
 const Home = () => {
   const { onOpen } = useStoreModal();
 

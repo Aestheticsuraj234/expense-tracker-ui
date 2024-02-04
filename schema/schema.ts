@@ -70,9 +70,8 @@ export const categorySchema = z.object({
     required_error: "An end date is required.",
   }),
   //  array of category ids
-  category_ids: z.array(
-    z.number({
-      required_error: "A category is required.",
-    })
-  ),
+  category_ids:  z.array(z.string()).refine((value) => value.some((item) => item), {
+      message: "You have to select at least one item.",
+    }),
+  
 });

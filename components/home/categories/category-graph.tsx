@@ -1,10 +1,11 @@
 "use client";
 import React, { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { useForm, useFieldArray } from "react-hook-form";
 import { z } from "zod";
 import { categorySchema } from "@/schema/schema";
 import { useSession } from "@/hooks/useSession";
+import { useCurrency } from "@/hooks/currency/useCurrency";
 import axios from "axios";
 
 import { Separator } from "@/components/ui/separator";
@@ -18,7 +19,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-
+import { Checkbox } from "@/components/ui/checkbox";
 import { CalendarIcon, MoreHorizontal } from "lucide-react";
 import {
   DropdownMenu,
@@ -45,10 +46,25 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
+  Bar,
+  BarChart,
 } from "recharts";
-
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Tooltip as ToolTipText,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import toast from "react-hot-toast";
-
 import CategoryTooltip from "./category-tooltip";
 
 const expenseData = [
@@ -104,10 +120,70 @@ const expenseData = [
   },
 ];
 
+const categoryData = [
+  {
+    id: 1,
+    name: "Healthcare",
+    description: "Medical expenses, insurance premiums, etc.",
+  },
+  {
+    id: 2,
+    name: "Education",
+    description: "Tuition, books, supplies, etc.",
+  },
+  {
+    id: 3,
+    name: "Debt Payments",
+    description: "Credit cards, loans, etc.",
+  },
+  {
+    id: 4,
+    name: "Savings",
+    description: "Emergency fund, retirement savings, etc.",
+  },
+  {
+    id: 5,
+    name: "Clothing and Personal Items",
+    description: "Apparel, toiletries, etc.",
+  },
+  {
+    id: 6,
+    name: "Home Maintenance",
+    description: "Repairs, cleaning supplies, etc.",
+  },
+  {
+    id: 7,
+    name: "Communication",
+    description: "Phone bills, internet, etc.",
+  },
+  {
+    id: 8,
+    name: "Transportation",
+    description: "Fuel, maintenance, public transit, etc.",
+  },
+  {
+    id: 9,
+    name: "Recreation",
+    description: "Hobbies, subscription, etc.",
+  },
+  {
+    id: 10,
+    name: "Gifts/Donations",
+    description: "Presents, charitable contributions, etc.",
+  },
+  {
+    id: 11,
+    name: "Other",
+    description: "",
+  },
+];
+
 export function CategoryGraph() {
   const { authorizationHeader, userId } = useSession();
   const [isPending, setIsPending] = useState(false);
+  const { currency } = useCurrency();
   const [data, setData] = useState([]);
+  const [isCreating, setIsCreating] = useState(false);
   const form = useForm<z.infer<typeof categorySchema>>({
     resolver: zodResolver(categorySchema),
     defaultValues: {
@@ -117,6 +193,10 @@ export function CategoryGraph() {
     },
   });
 
+  const control = form.control;
+
+
+ 
   // bargraph == overview
   const onSubmit = async (values: z.infer<typeof categorySchema>) => {
     console.log(values);
@@ -247,11 +327,53 @@ export function CategoryGraph() {
               <FormField
                 control={form.control}
                 name="category_ids"
-                render={({ field }) => (
-                  <FormItem className="flex flex-col">
-                    <FormLabel>Categories</FormLabel>
+                render={({field}) => (
+                  <FormItem className="flex flex-col w-[240px]">
+                   
+                      <FormLabel>Categories</FormLabel>
+                      <FormControl>
+                        <Select
+                          onValueChange={field.onChange}
+                          // @ts-ignore
+                          defaultValue={field.value}
+                        >
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select" />
+                            </SelectTrigger>
+                          </FormControl>
 
-                    <FormMessage />
+                          <SelectContent side="right" className="w-full">
+                            {categoryData?.map((category) => (
+                              <SelectItem
+                                key={category.id}
+                                value={category.name}
+                                className="w-full"
+                              >
+                                <div>
+                                  <TooltipProvider>
+                                    <ToolTipText>
+                                      <TooltipTrigger>
+                                        <span>{category.name}</span>
+                                      </TooltipTrigger>
+                                      <TooltipContent
+                                        side="top"
+                                        className="absolute"
+                                      >
+                                        <span className="text-muted-foreground">
+                                          {category.description}
+                                        </span>
+                                      </TooltipContent>
+                                    </ToolTipText>
+                                  </TooltipProvider>
+                                </div>
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </FormControl>
+                      <FormMessage />
+                    
                   </FormItem>
                 )}
               />
@@ -268,33 +390,70 @@ export function CategoryGraph() {
         </DropdownMenuContent>
       </DropdownMenu>
 
-      <ResponsiveContainer  width="100%" height={400}>
-        <LineChart
-          width={500}
-          height={600}
-          data={expenseData}
-          margin={{
-            top: 5,
-            right: 30,
-            left: 20,
-            bottom: 5,
-          }}
-        >
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis   dataKey="date" />
-          <YAxis />
-          {/* @ts-ignore */}
-          <Tooltip content={CategoryTooltip} />
-          <Legend />
-          <Line
-            type="monotone"
-            dataKey="amount"
-            stroke="#000"
-            activeDot={{ r: 8 }}
-          />
-          <Line type="monotone" dataKey="category" stroke="#000" />
-        </LineChart>
-      </ResponsiveContainer>
+      <Tabs defaultValue="bar-graph" className="w-[100%] mx-4 ">
+        <TabsList>
+          <TabsTrigger value="bar-graph">Bar Graph</TabsTrigger>
+          <TabsTrigger value="line-graph">Line Graph</TabsTrigger>
+        </TabsList>
+        <TabsContent value="bar-graph">
+          <ResponsiveContainer width="100%" height={400}>
+            <BarChart
+              width={500}
+              height={300}
+              data={expenseData}
+              margin={{
+                top: 5,
+                right: 30,
+                left: 20,
+                bottom: 5,
+              }}
+            >
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="date" />
+              <YAxis tickFormatter={(value) => `${currency}${value}`} />
+              {/* @ts-ignore */}
+              <Tooltip content={CategoryTooltip} />
+              <Legend />
+              <Bar
+                dataKey="amount"
+                fill="currentColor"
+                radius={[4, 4, 0, 0]}
+                className="fill-primary"
+              />
+            </BarChart>
+          </ResponsiveContainer>
+        </TabsContent>
+        <TabsContent value="line-graph">
+          <ResponsiveContainer width="100%" height={400}>
+            <LineChart
+              width={500}
+              height={600}
+              data={expenseData}
+              margin={{
+                top: 5,
+                right: 30,
+                left: 20,
+                bottom: 5,
+              }}
+            >
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="date" />
+              <YAxis />
+              {/* @ts-ignore */}
+              <Tooltip content={CategoryTooltip} />
+              <Legend />
+              <Line
+                type="monotone"
+                dataKey="amount"
+                stroke="#000"
+                activeDot={{ r: 8 }}
+              />
+              <Line type="monotone" dataKey="category" stroke="#000" />
+            </LineChart>
+          </ResponsiveContainer>
+        </TabsContent>
+      </Tabs>
+
       <Separator className="h-1 mt-6 mb-6" />
     </div>
   );

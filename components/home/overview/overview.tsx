@@ -28,6 +28,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
 import {
   Popover,
   PopoverContent,
@@ -41,7 +43,9 @@ import {
   BarChart,
   CartesianGrid,
   Legend,
+  Line,
   ResponsiveContainer,
+  LineChart,
   Tooltip,
   XAxis,
   YAxis,
@@ -49,69 +53,20 @@ import {
 
 import toast from "react-hot-toast";
 import CustomTooltip from "./custom-tooltip";
+import EmptyOverView from "./empty_overview";
+import { useCurrency } from "@/hooks/currency/useCurrency";
 
-const expenseData = [
-  {
-    amount: 3870.79,
-    category: "Recreation",
-    category_description: "Hobbies, subscription, etc.",
-  },
-  {
-    amount: 4105.08,
-    category: "Transportation",
-    category_description: "Fuel, maintenance, public transit, etc.",
-  },
-  {
-    amount: 4168.43,
-    category: "Home Maintenance",
-    category_description: "Repairs, cleaning supplies, etc.",
-  },
-  {
-    amount: 4174.35,
-    category: "Savings",
-    category_description: "Emergency fund, retirement savings, etc.",
-  },
-  {
-    amount: 4233.66,
-    category: "Healthcare",
-    category_description: "Medical expenses, insurance premiums, etc.",
-  },
-  {
-    amount: 4287.06,
-    category: "Debt Payments",
-    category_description: "Credit cards, loans, etc.",
-  },
-  {
-    amount: 4500.41,
-    category: "Gifts/Donations",
-    category_description: "Presents, charitable contributions, etc.",
-  },
-  {
-    amount: 4611.63,
-    category: "Clothing and Personal Items",
-    category_description: "Apparel, toiletries, etc.",
-  },
-  {
-    amount: 4774.46,
-    category: "Education",
-    category_description: "Tuition, books, supplies, etc.",
-  },
-  {
-    amount: 5443.41,
-    category: "Other",
-    category_description: "",
-  },
-  {
-    amount: 5963.58,
-    category: "Communication",
-    category_description: "Phone bills, internet, etc.",
-  },
-];
+type expenseData = {
+  amount: number;
+  category: string;
+  category_description: string;
+};
 
 export function OverviewGraph() {
   const { authorizationHeader, userId } = useSession();
+  const { currency } = useCurrency();
   const [isPending, setIsPending] = useState(false);
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<expenseData[]>([]);
   const form = useForm<z.infer<typeof overviewSchema>>({
     resolver: zodResolver(overviewSchema),
     defaultValues: {
@@ -128,25 +83,31 @@ export function OverviewGraph() {
       const { StartDate, EndDate } = values;
       const from = format(StartDate, "yyyy-MM-dd");
       const to = format(EndDate, "yyyy-MM-dd");
-      const response = await axios.get(`http://140.238.227.78:8080/expenses/by_category?from=${from}&to=${to}&user_id=${userId}`,{
-        headers: {
-          Authorization: `Basic ${authorizationHeader}`,
-        },
-      })
+      const response = await axios.get(
+        `http://140.238.227.78:8080/expenses/by_category?from=${from}&to=${to}&user_id=${userId}`,
+        {
+          headers: {
+            Authorization: `Basic ${authorizationHeader}`,
+          },
+        }
+      );
 
       console.log(response.data);
       setData(response.data);
-      toast.success("Fetched Successfully")
+      toast.success("Fetched Successfully");
+      setIsPending(false);
+      form.reset();
     } catch (error) {
       console.log(error);
       setIsPending(false);
       toast.error("Something went wrong!");
+      form.reset();
     }
   };
 
   return (
-    <div className="flex flex-col justify-center items-center space-y-2 mx-4 ">
-      <DropdownMenu >
+    <div className="flex flex-col justify-center items-center space-y-1 mx-4 ">
+      <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
             variant={"ghost"}
@@ -157,138 +118,191 @@ export function OverviewGraph() {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-auto px-4 py-4 mx-10">
-        <Form {...form} >
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="flex flex-col justify-center gap-4 items-center flex-1"
-        >
-          <FormField
-            control={form.control}
-            name="StartDate"
-            render={({ field }) => (
-              <FormItem className="flex flex-col">
-                <FormLabel>From</FormLabel>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <FormControl>
-                      <Button
-                        variant={"outline"}
-                        className={cn(
-                          "w-[240px] pl-3 text-left font-normal",
-                          !field.value && "text-muted-foreground"
-                        )}
-                      >
-                        {field.value ? (
-                          format(field.value, "yyyy-MM-dd")
-                        ) : (
-                          <span>Pick a date</span>
-                        )}
-                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                      </Button>
-                    </FormControl>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" align="start">
-                    <Calendar
-                      mode="single"
-                      selected={field.value}
-                      onSelect={field.onChange}
-                      initialFocus
-                    />
-                  </PopoverContent>
-                </Popover>
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="flex flex-col justify-center gap-4 items-center flex-1"
+            >
+              <FormField
+                control={form.control}
+                name="StartDate"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col">
+                    <FormLabel>From</FormLabel>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <FormControl>
+                          <Button
+                            variant={"outline"}
+                            className={cn(
+                              "w-[240px] pl-3 text-left font-normal",
+                              !field.value && "text-muted-foreground"
+                            )}
+                          >
+                            {field.value ? (
+                              format(field.value, "yyyy-MM-dd")
+                            ) : (
+                              <span>Pick a date</span>
+                            )}
+                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                          </Button>
+                        </FormControl>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0" align="start">
+                        <Calendar
+                          mode="single"
+                          selected={field.value}
+                          onSelect={field.onChange}
+                          initialFocus
+                        />
+                      </PopoverContent>
+                    </Popover>
 
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="EndDate"
-            render={({ field }) => (
-              <FormItem className="flex flex-col">
-                <FormLabel>To</FormLabel>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <FormControl>
-                      <Button
-                        variant={"outline"}
-                        className={cn(
-                          "w-[240px] pl-3 text-left font-normal",
-                          !field.value && "text-muted-foreground"
-                        )}
-                      >
-                        {field.value ? (
-                          format(field.value, "yyyy-MM-dd")
-                        ) : (
-                          <span>Pick a date</span>
-                        )}
-                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                      </Button>
-                    </FormControl>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" align="start">
-                    <Calendar
-                      mode="single"
-                      selected={field.value}
-                      onSelect={field.onChange}
-                      initialFocus
-                    />
-                  </PopoverContent>
-                </Popover>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="EndDate"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col">
+                    <FormLabel>To</FormLabel>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <FormControl>
+                          <Button
+                            variant={"outline"}
+                            className={cn(
+                              "w-[240px] pl-3 text-left font-normal",
+                              !field.value && "text-muted-foreground"
+                            )}
+                          >
+                            {field.value ? (
+                              format(field.value, "yyyy-MM-dd")
+                            ) : (
+                              <span>Pick a date</span>
+                            )}
+                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                          </Button>
+                        </FormControl>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0" align="start">
+                        <Calendar
+                          mode="single"
+                          selected={field.value}
+                          onSelect={field.onChange}
+                          initialFocus
+                        />
+                      </PopoverContent>
+                    </Popover>
 
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <Button disabled={isPending} type="submit" variant="default" className="w-full">
-            Apply
-          </Button>
-        </form>
-      </Form>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <Button
+                disabled={isPending}
+                type="submit"
+                variant="default"
+                className="w-full"
+              >
+                Apply
+              </Button>
+            </form>
+          </Form>
         </DropdownMenuContent>
       </DropdownMenu>
+      {data.length === 0 ? (
+        <EmptyOverView />
+      ) : (
+        <>
+          <Tabs defaultValue="bar-graph" className="w-[100%] mx-4 ">
+            <TabsList>
+              <TabsTrigger value="bar-graph">Bar Graph</TabsTrigger>
+              <TabsTrigger value="line-graph">Line Graph</TabsTrigger>
+            </TabsList>
+            <TabsContent value="bar-graph">
+              <ResponsiveContainer width="100%" height={400}>
+                <BarChart
+                  width={500}
+                  height={300}
+                  data={data}
+                  margin={{
+                    top: 5,
+                    right: 30,
+                    left: 20,
+                    bottom: 5,
+                  }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis
+                    dataKey="category"
+                    stroke="#888888"
+                    fontSize={12}
+                    tickLine={false}
+                  />
+                  <YAxis
+                    stroke="#888888"
+                    fontSize={12}
+                    tickLine={false}
+                    tickFormatter={(value) => `${currency}${value}`}
+                  />
+                  {/* @ts-ignore */}
+                  <Tooltip content={CustomTooltip} />
+                  <Legend />
+                  <Bar
+                    dataKey="amount"
+                    fill="currentColor"
+                    radius={[4, 4, 0, 0]}
+                    className="fill-primary"
+                  />
+                </BarChart>
+              </ResponsiveContainer>
+            </TabsContent>
+            <TabsContent value="line-graph">
+              <ResponsiveContainer width="100%" height={400}>
+                <LineChart
+                  width={500}
+                  height={600}
+                  data={data}
+                  margin={{
+                    top: 5,
+                    right: 30,
+                    left: 20,
+                    bottom: 5,
+                  }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis
+                    dataKey="category"
+                    stroke="#888888"
+                    fontSize={12}
+                    tickLine={false}
+                  />
+                  <YAxis
+                    stroke="#888888"
+                    fontSize={12}
+                    tickLine={false}
+                    tickFormatter={(value) => `${currency}${value}`}
+                  />
+                  {/* @ts-ignore */}
+                  <Tooltip content={CustomTooltip} />
+                  <Legend />
+                  <Line
+                    type="monotone"
+                    dataKey="amount"
+                    stroke="#000"
+                    activeDot={{ r: 8 }}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            </TabsContent>
+          </Tabs>
 
-      <ResponsiveContainer width="100%" height={400}>
-        <BarChart
-          width={500}
-          height={300}
-          data={data}
-          margin={{
-            top: 5,
-            right: 30,
-            left: 20,
-            bottom: 5,
-          }}
-        >
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis
-            dataKey="category"
-            stroke="#888888"
-            fontSize={12}
-            tickLine={false}
-          />
-          <YAxis
-            stroke="#888888"
-            fontSize={12}
-            tickLine={false}
-            tickFormatter={(value) => `$${value}`}
-          />
-          {/* @ts-ignore */}
-          <Tooltip content={CustomTooltip} />
-          <Legend />
-          <Bar
-            dataKey="amount"
-            fill="currentColor"
-            radius={[4, 4, 0, 0]}
-            className="fill-primary"
-          />
-        </BarChart>
-      </ResponsiveContainer>
-      <Separator className="h-1 mt-6 mb-6" />
-
-     
+          <Separator className="h-1 mt-6 mb-6" />
+        </>
+      )}
     </div>
   );
 }
-
-

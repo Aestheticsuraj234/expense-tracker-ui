@@ -26,7 +26,7 @@ export const useCategory = () => {
             },
           }
         );
-        console.log(category.data);
+       
         setCategory(category.data);
       };
 
@@ -34,7 +34,7 @@ export const useCategory = () => {
         if (typeof window !== "undefined") {
             fetchCategory();
         }
-      }, []);
+      }, [category]);
     
       return {
         category,
