@@ -34,7 +34,7 @@ export const useCategory = () => {
         if (typeof window !== "undefined") {
             fetchCategory();
         }
-      }, [category]);
+      }, []);
     
       return {
         category,

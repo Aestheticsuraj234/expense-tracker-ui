@@ -66,6 +66,8 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import toast from "react-hot-toast";
 import CategoryTooltip from "./category-tooltip";
+import { Input } from "@/components/ui/input";
+
 
 const expenseData = [
   {
@@ -193,39 +195,39 @@ export function CategoryGraph() {
     },
   });
 
-  const control = form.control;
+  const handleCheckboxListSubmit = (selectedIds: number[]) => {
+    form.setValue("category_ids", selectedIds);
+  };
 
-
- 
   // bargraph == overview
   const onSubmit = async (values: z.infer<typeof categorySchema>) => {
     console.log(values);
-    try {
-      setIsPending(true);
-      const { from, to, category_ids } = values;
-      const FormatedForm = format(from, "yyyy-MM-dd");
-      const FormatedTo = format(to, "yyyy-MM-dd");
-      const response = await axios.get(
-        `http://140.238.227.78:8080/expenses/by_category`,
-        {
-          params: {
-            from: FormatedForm,
-            to: FormatedTo,
-            user_id: userId,
-            category_ids: category_ids,
-          },
-          headers: {
-            Authorization: `Basic ${authorizationHeader}`,
-          },
-        }
-      );
+    // try {
+    //   setIsPending(true);
+    //   const { from, to, category_ids } = values;
+    //   const FormatedForm = format(from, "yyyy-MM-dd");
+    //   const FormatedTo = format(to, "yyyy-MM-dd");
+    //   const response = await axios.get(
+    //     `http://140.238.227.78:8080/expenses/by_category`,
+    //     {
+    //       params: {
+    //         from: FormatedForm,
+    //         to: FormatedTo,
+    //         user_id: userId,
+    //         category_ids: category_ids,
+    //       },
+    //       headers: {
+    //         Authorization: `Basic ${authorizationHeader}`,
+    //       },
+    //     }
+    //   );
 
-      console.log(response.data);
-    } catch (error) {
-      console.log(error);
-      setIsPending(false);
-      toast.error("Something went wrong!");
-    }
+    //   console.log(response.data);
+    // } catch (error) {
+    //   console.log(error);
+    //   setIsPending(false);
+    //   toast.error("Something went wrong!");
+    // }
   };
 
   return (
@@ -327,53 +329,24 @@ export function CategoryGraph() {
               <FormField
                 control={form.control}
                 name="category_ids"
-                render={({field}) => (
+                render={({ field }) => (
                   <FormItem className="flex flex-col w-[240px]">
-                   
-                      <FormLabel>Categories</FormLabel>
-                      <FormControl>
-                        <Select
-                          onValueChange={field.onChange}
-                          // @ts-ignore
-                          defaultValue={field.value}
-                        >
-                          <FormControl>
-                            <SelectTrigger>
-                              <SelectValue placeholder="Select" />
-                            </SelectTrigger>
-                          </FormControl>
-
-                          <SelectContent side="right" className="w-full">
-                            {categoryData?.map((category) => (
-                              <SelectItem
-                                key={category.id}
-                                value={category.name}
-                                className="w-full"
-                              >
-                                <div>
-                                  <TooltipProvider>
-                                    <ToolTipText>
-                                      <TooltipTrigger>
-                                        <span>{category.name}</span>
-                                      </TooltipTrigger>
-                                      <TooltipContent
-                                        side="top"
-                                        className="absolute"
-                                      >
-                                        <span className="text-muted-foreground">
-                                          {category.description}
-                                        </span>
-                                      </TooltipContent>
-                                    </ToolTipText>
-                                  </TooltipProvider>
-                                </div>
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </FormControl>
-                      <FormMessage />
-                    
+                    <FormLabel>Categories</FormLabel>
+                    <FormControl>
+                      {categoryData.map((category) => (
+                        <div key={category.id} className="mb-2">
+                          <label className="flex items-center text-muted-foreground text-base">
+                            <input
+                              type="checkbox"
+                              className="mr-2 text-black"
+                              // value={category.id}
+                            />
+                            {category.name}
+                          </label>
+                        </div>
+                      ))}
+                    </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />

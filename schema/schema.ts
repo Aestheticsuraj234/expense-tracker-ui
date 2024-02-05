@@ -53,6 +53,24 @@ export const AddExpenseForm = z.object({
 
 });
 
+export const UpdateExpenseForm = z.object({
+  description: z.string().min(2, {
+    message: "Description must be at least 2 characters long",
+  }),
+  // amount is must be positive   
+  amount: z.string().min(2,{
+    message: "Amount must be a least of 2 characters long",
+  }),
+
+  category: z.string().min(2,{
+    message: "Category must be at least 2 characters",
+  }),
+  date:z.date({
+    required_error: "date is required.",
+  }),
+
+});
+
 export const overviewSchema = z.object({
   StartDate: z.date({
     required_error: "A start date is required.",
@@ -70,8 +88,7 @@ export const categorySchema = z.object({
     required_error: "An end date is required.",
   }),
   //  array of category ids
-  category_ids:  z.array(z.string()).refine((value) => value.some((item) => item), {
-      message: "You have to select at least one item.",
-    }),
+  category_ids:  z.array(z.number()),
   
 });
+

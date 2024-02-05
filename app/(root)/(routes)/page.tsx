@@ -10,7 +10,8 @@ import { CategoryGraph } from "@/components/home/categories/category-graph";
 import { useRouter } from "next/navigation";
 
 import { useCurrency } from "@/hooks/currency/useCurrency";
-s
+import CheckboxList from "@/components/test";
+
 const Home = () => {
   const { onOpen } = useStoreModal();
 
@@ -20,6 +21,7 @@ const Home = () => {
   if (currency === null) {
     router.push("/add-currency");
   }
+ 
 
   return (
     <main className="px-4 py-4 w-full flex">
@@ -48,6 +50,7 @@ const Home = () => {
         <TabsContent value="categories">
           <div className="mt-16">
             <CategoryGraph />
+            {/* <CheckboxList /> */}
           </div>
         </TabsContent>
         <TabsContent value="history">

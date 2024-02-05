@@ -5,6 +5,7 @@ import { DataTable } from "@/app/(root)/_components/table/data-table";
 import { ExpenseData, columns } from "@/app/(root)/_components/table/column";
 import { getAllExpenseOfCurrentUser } from "@/actions";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Loader2 } from "lucide-react";
 
 const ExpenseTable = () => {
   const { userId, authorizationHeader } = useSession();
@@ -26,14 +27,18 @@ const ExpenseTable = () => {
 
   useEffect(() => {
     fetchData();
-  }, [userId, authorizationHeader]);
+  }, []);
 
   console.log(data);
 
   return (
     <div>
       {isLoading ? (
-        <TableSkeleton />
+        <div className="justify-center items-center flex ">
+
+          <Loader2 className="w-10 h-10 animate-spin text-gray-700" />
+          <h2>Loading...</h2>
+        </div>
       ) : (
         // @ts-ignore
         <DataTable columns={columns} data={data} />
