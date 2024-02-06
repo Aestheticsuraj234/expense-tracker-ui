@@ -34,7 +34,7 @@ export const useCategory = () => {
         if (typeof window !== "undefined"  && authorizationHeader!==null) {
             fetchCategory();
         }
-      }, [categorydata,authorizationHeader]);
+      }, [authorizationHeader]);
     
       return {
         categorydata,

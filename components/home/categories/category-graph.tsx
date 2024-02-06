@@ -69,6 +69,7 @@ import toast from "react-hot-toast";
 import CategoryTooltip from "./category-tooltip";
 import { Input } from "@/components/ui/input";
 import MultiselectDropdown from "@/components/ui/multiselect-dropdown";
+import EmptyOverView from "../overview/empty_overview";
 
 const expenseData = [
   {
@@ -196,37 +197,67 @@ export function CategoryGraph() {
     },
   });
 
- 
+  const { control } = form;
+
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "category_ids",
+  });
+
+  const handleCheckboxChange = (categoryId: number) => {
+    // @ts-ignore
+    const existingIndex = fields.findIndex(
+      (field) => field.value === categoryId
+    );
+
+    if (existingIndex !== -1) {
+      remove(existingIndex);
+    } else {
+      append({ value: categoryId });
+    }
+  };
 
   // bargraph == overview
   const onSubmit = async (values: z.infer<typeof categorySchema>) => {
-    console.log(values);
-    // try {
-    //   setIsPending(true);
-    //   const { from, to, category_ids } = values;
-    //   const FormatedForm = format(from, "yyyy-MM-dd");
-    //   const FormatedTo = format(to, "yyyy-MM-dd");
-    //   const response = await axios.get(
-    //     `http://140.238.227.78:8080/expenses/by_category`,
-    //     {
-    //       params: {
-    //         from: FormatedForm,
-    //         to: FormatedTo,
-    //         user_id: userId,
-    //         category_ids: category_ids,
-    //       },
-    //       headers: {
-    //         Authorization: `Basic ${authorizationHeader}`,
-    //       },
-    //     }
-    //   );
+    try {
+      setIsPending(true);
+      const { from, to, category_ids } = values;
+      // format categoryIds into the comma separated string
+      const formattedId = category_ids
+        .map((category: any) => category.value)
+        .join(",");
+      const FormatedForm = format(from, "yyyy-MM-dd");
+      const FormatedTo = format(to, "yyyy-MM-dd");
+      const response = await axios.get(
+        `http://140.238.227.78:8080/expenses/by_category`,
+        {
+          params: {
+            from: FormatedForm,
+            to: FormatedTo,
+            user_id: userId,
+            category_ids: formattedId,
+          },
+          headers: {
+            Authorization: `Basic ${authorizationHeader}`,
+          },
+        }
+      );
+      if (response.status === 200) {
+        setIsPending(false);
+        setData(response.data);
+        console.log(response.data);
+        toast.success("Data fetched successfully");
+        form.reset();
+      }
 
-    //   console.log(response.data);
-    // } catch (error) {
-    //   console.log(error);
-    //   setIsPending(false);
-    //   toast.error("Something went wrong!");
-    // }
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+      setIsPending(false);
+      toast.error("Something went wrong!");
+    } finally {
+      setIsPending(false);
+    }
   };
 
   return (
@@ -325,18 +356,21 @@ export function CategoryGraph() {
                   </FormItem>
                 )}
               />
-              <MultiselectDropdown
-                options={categoryData}
-                selectedValues={form.watch("category_ids") || []}
-                onSelect={(selectedList) =>
-                  form.setValue("category_ids", selectedList)
-                }
-                onRemove={(selectedList) =>
-                  form.setValue("category_ids", selectedList)
-                }
-                placeholder="Select Categories"
+              <FormField
+                control={form.control}
+                name="category_ids"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col">
+                    <FormLabel>Categories</FormLabel>
+                    <MultiselectDropdown
+                      options={categoryData}
+                      name="category_ids"
+                      placeholder="Select Your Categories"
+                    />
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
-
               <Button
                 disabled={isPending}
                 type="submit"
@@ -350,6 +384,10 @@ export function CategoryGraph() {
         </DropdownMenuContent>
       </DropdownMenu>
 
+      {data.length === 0 ? (
+        <EmptyOverView />
+      ) : (
+        <>
       <Tabs defaultValue="bar-graph" className="w-[100%] mx-4 ">
         <TabsList>
           <TabsTrigger value="bar-graph">Bar Graph</TabsTrigger>
@@ -360,7 +398,7 @@ export function CategoryGraph() {
             <BarChart
               width={500}
               height={300}
-              data={expenseData}
+              data={data}
               margin={{
                 top: 5,
                 right: 30,
@@ -388,7 +426,7 @@ export function CategoryGraph() {
             <LineChart
               width={500}
               height={600}
-              data={expenseData}
+              data={data}
               margin={{
                 top: 5,
                 right: 30,
@@ -414,7 +452,9 @@ export function CategoryGraph() {
         </TabsContent>
       </Tabs>
 
-      <Separator className="h-1 mt-6 mb-6" />
+    <Separator className="h-1 mt-6 mb-6" />
+      </>
+      )}
     </div>
   );
 }

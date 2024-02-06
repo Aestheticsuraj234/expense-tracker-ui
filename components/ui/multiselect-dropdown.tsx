@@ -1,59 +1,80 @@
 import * as React from "react";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuCheckboxItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuCheckboxItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Checkbox } from "@/components/ui/checkbox";
-import { z } from "zod";
-
-
+import { useFieldArray, useFormContext } from "react-hook-form";
+import { Button } from "./button";
+import { ChevronDownIcon } from "lucide-react";
 
 type CategoryProps = {
-    id: number;
-    name: string;
-    description: string;
+  id: number;
+  name: string;
+  description: string;
 }[];
 
 interface MultiselectDropdownProps {
   options: CategoryProps;
-  selectedValues: string[];
-  onSelect: (selectedList: string[]) => void;
-  onRemove: (selectedList: string[]) => void;
+  name: string;
   placeholder?: string;
 }
 
 const MultiselectDropdown: React.FC<MultiselectDropdownProps> = ({
   options,
-  selectedValues,
-  onSelect,
-  onRemove,
+  name,
   placeholder,
 }) => {
-  const [open, setOpen] = React.useState(false);
+  const { control } = useFormContext();
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name,
+  });
 
-  const handleCheckboxChange = (value:any) => {
-    const updatedValues = Array.isArray(value)
-      ? value
-      : [value]; // Ensure value is an array
-  
-    if (selectedValues.includes(updatedValues[0])) {
-      onRemove(updatedValues);
+  const handleCheckboxChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    categoryId: number
+  ) => {
+    e.stopPropagation();
+    const existingIndex = fields.findIndex(
+      (field) => field.value === categoryId
+    );
+
+    if (existingIndex !== -1) {
+      remove(existingIndex);
     } else {
-      onSelect([...selectedValues, ...updatedValues]);
+      append({ value: categoryId });
     }
   };
-  
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger>
-        <button onClick={() => setOpen(!open)}>{placeholder || "Select"}</button>
+     <DropdownMenuTrigger
+  className="flex justify-between items-center gap-4 w-full"
+  onClick={(e) => e.stopPropagation()}
+>
+
+        <Button
+          variant="outline"
+          className="w-[240px] pl-3 text-left font-normal flex justify-between items-center"
+        >
+          {placeholder || "Select"}
+          <ChevronDownIcon className="w-5 h-5" />
+        </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent sideOffset={4}>
+      <DropdownMenuContent sideOffset={4} side="right" className="mb-2">
         {options.map((option) => (
-          <DropdownMenuCheckboxItem key={option.id}>
-            <Checkbox
-              checked={selectedValues.includes(option.id)}
-              onChange={() => handleCheckboxChange(option.id)}
+          <DropdownMenuCheckboxItem key={option.id} className="space-x-5">
+            <input
+              type="checkbox"
+              id={option.id.toString()}
+              checked={fields.some((field) => field.value === option.id)}
+              onChange={(e) => handleCheckboxChange(e, option.id)}
+              className="mr-4"
             />
-            {option.name}
+            <p className="ml-4">{option.name}</p>
           </DropdownMenuCheckboxItem>
         ))}
       </DropdownMenuContent>
