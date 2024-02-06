@@ -6,6 +6,7 @@ import { useEffect , useState } from "react";
 import { AddExpense } from "@/components/modals/add-expense";
 import { AddCurrencyModal } from "../modals/add-currency";
 import {UpdateExpense} from "../modals/update-expense";
+import { UpdateCurrencyModal } from "../modals/update-currency";
 
 
 export const ModalProvider = ()=>{
@@ -23,6 +24,7 @@ return (
     <>
     <UpdateExpense/>
     <AddExpense />
+    <UpdateCurrencyModal/>
     <AddCurrencyModal />
     </>
 )

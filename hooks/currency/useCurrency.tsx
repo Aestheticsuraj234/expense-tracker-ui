@@ -12,7 +12,7 @@ interface CurrencyProps {
 
 export const useCurrency = () => {
   const { authorizationHeader, userId } = useSession();
-  const { currency, setCurrency } = useCurrencyStore();
+  const { currency, setCurrency,id,setCurrencyId } = useCurrencyStore();
   // wanted to fetch the currency for the current user from the backend if the currency is not set then wanted to show modal to set the currency!
 
   const fetchCurrency = async () => {
@@ -26,15 +26,17 @@ export const useCurrency = () => {
     );
     console.log(currency.data);
     setCurrency(currency.data.symbol);
+    setCurrencyId(currency.data.id);
   };
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       fetchCurrency();
     }
-  }, [currency]);
+  }, [currency, id]);
 
   return {
     currency,
+    id,
   };
 };

@@ -14,11 +14,11 @@ interface CategoryProps {
 
 export const useCategory = () => {
     const { authorizationHeader, userId } = useSession();
-    const {category,setCategory} = useCategoryStore();
+    const {categorydata,setCategory} = useCategoryStore();
 
 
     const fetchCategory = async () => {
-        const category = await axios.get<CategoryProps[]>(
+        const res = await axios.get<CategoryProps[]>(
           `http://140.238.227.78:8080/categories`,
           {
             headers: {
@@ -27,17 +27,17 @@ export const useCategory = () => {
           }
         );
        
-        setCategory(category.data);
+        setCategory(res.data);
       };
 
       useEffect(() => {
-        if (typeof window !== "undefined") {
+        if (typeof window !== "undefined"  && authorizationHeader!==null) {
             fetchCategory();
         }
-      }, []);
+      }, [categorydata,authorizationHeader]);
     
       return {
-        category,
+        categorydata,
       };
 }
 

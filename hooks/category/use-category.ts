@@ -8,13 +8,13 @@ interface CategoryProps {
 }
 
 interface CategoryStore {
-  category: CategoryProps[] | null;
-  setCategory: (category: CategoryProps[] | null) => void;
+  categorydata: CategoryProps[] | null;
+  setCategory: (categorydata: CategoryProps[] | null) => void;
 }
 
 const CategoryStore = create<CategoryStore>((set) => ({
-  category: null,
-  setCategory: (category) => set({ category }),
+  categorydata: null,
+  setCategory: (categorydata) => set({ categorydata }),
 }));
 
 export const useCategoryStore = CategoryStore;

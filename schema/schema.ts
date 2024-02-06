@@ -88,7 +88,11 @@ export const categorySchema = z.object({
     required_error: "An end date is required.",
   }),
   //  array of category ids
-  category_ids:  z.array(z.number()),
+  category_ids:  z.array(
+    z.string().min(2,{
+      message: "Category must be at least 2 characters",
+    })
+  ),
   
 });
 

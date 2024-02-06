@@ -1,6 +1,6 @@
 "use client";
-import React, { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import React, { use, useEffect } from 'react';
+import { useParams, useRouter } from 'next/navigation';
 import Navbar from './_components/navbar';
 import { Loader2 } from 'lucide-react';
 import { useCurrency } from '@/hooks/currency/useCurrency';
@@ -12,26 +12,35 @@ const DashboardLayout = ({ children }:{
   children: React.ReactNode;
 }) => {
   const router = useRouter();
+  const pathname = useParams();
     const [isLoggedIn , setIsLoggedIn] = React.useState(false);
     const [userId , setIsUserId] = React.useState<string|null>(null);
  
+
     
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const user_id = sessionStorage.getItem("user_id");
-      if (user_id) {
-        setIsLoggedIn(true);
-        setIsUserId(user_id);
-        router.push('/');
-      } else {
-        setIsLoggedIn(false);
-        setIsUserId(null);
-        router.push('/sign-in');
+    useEffect(() => {
+      if (typeof window !== "undefined") {
+        const user_id = sessionStorage.getItem("user_id");
+      
+
+        
+        // @ts-ignore
+        if (user_id && pathname !== '/sign-in') {
+          setIsLoggedIn(true);
+          setIsUserId(user_id);
+        } else {
+          setIsLoggedIn(false);
+          setIsUserId(null);
+    
+          // Avoid redirecting if the current route is the sign-in page
+          // @ts-ignore
+          if (pathname !== '/sign-in') {
+            router.push('/sign-in');
+          }
+        }
       }
-    }
-  }, []);
-
-
+    }, [userId, isLoggedIn, pathname]);
+    
 
     return (
       isLoggedIn ? ( // Render UI only if logged in

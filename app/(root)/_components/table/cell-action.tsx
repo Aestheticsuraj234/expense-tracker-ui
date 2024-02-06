@@ -17,6 +17,7 @@ import toast from "react-hot-toast";
 import { useState } from "react";
 import axios from "axios";
 import { useSession } from "@/hooks/useSession";
+import { useRouter } from "next/navigation";
 
 interface CellActionProps {
   data: ExpenseData;
@@ -26,6 +27,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
   const [isLoading, setIsLoading] = useState(false);
   const {authorizationHeader} = useSession()
   const {onOpen} = useStoreModal();
+   const router = useRouter();
 
   const onDelete = async(id:string)=>{
     try {
@@ -58,7 +60,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
       <DropdownMenuContent align="end">
         <DropdownMenuLabel>Actions</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={() => onOpen("EXPENSE_UPDATE",data)}>
+        <DropdownMenuItem onClick={() => router.push(`${data.id}`)}>
           <Edit
             className="mr-2 h-4 w-4"
           />

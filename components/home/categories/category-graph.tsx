@@ -7,6 +7,7 @@ import { categorySchema } from "@/schema/schema";
 import { useSession } from "@/hooks/useSession";
 import { useCurrency } from "@/hooks/currency/useCurrency";
 import axios from "axios";
+import Multiselect from "multiselect-react-dropdown";
 
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
@@ -67,7 +68,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import toast from "react-hot-toast";
 import CategoryTooltip from "./category-tooltip";
 import { Input } from "@/components/ui/input";
-
+import MultiselectDropdown from "@/components/ui/multiselect-dropdown";
 
 const expenseData = [
   {
@@ -195,9 +196,7 @@ export function CategoryGraph() {
     },
   });
 
-  const handleCheckboxListSubmit = (selectedIds: number[]) => {
-    form.setValue("category_ids", selectedIds);
-  };
+ 
 
   // bargraph == overview
   const onSubmit = async (values: z.infer<typeof categorySchema>) => {
@@ -326,30 +325,18 @@ export function CategoryGraph() {
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
-                name="category_ids"
-                render={({ field }) => (
-                  <FormItem className="flex flex-col w-[240px]">
-                    <FormLabel>Categories</FormLabel>
-                    <FormControl>
-                      {categoryData.map((category) => (
-                        <div key={category.id} className="mb-2">
-                          <label className="flex items-center text-muted-foreground text-base">
-                            <input
-                              type="checkbox"
-                              className="mr-2 text-black"
-                              // value={category.id}
-                            />
-                            {category.name}
-                          </label>
-                        </div>
-                      ))}
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
+              <MultiselectDropdown
+                options={categoryData}
+                selectedValues={form.watch("category_ids") || []}
+                onSelect={(selectedList) =>
+                  form.setValue("category_ids", selectedList)
+                }
+                onRemove={(selectedList) =>
+                  form.setValue("category_ids", selectedList)
+                }
+                placeholder="Select Categories"
               />
+
               <Button
                 disabled={isPending}
                 type="submit"

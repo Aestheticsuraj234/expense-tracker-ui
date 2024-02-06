@@ -5,13 +5,15 @@ import { LogOut } from "lucide-react";
 import toast from "react-hot-toast";
 import { useCurrencyStore } from "@/hooks/currency/use-currency";
 import { useCurrency } from "@/hooks/currency/useCurrency";
-
+import { useRouter } from "next/navigation";
 const CurencyBadge = () => {
-  const { currency } = useCurrency();
+  const { currency , id } = useCurrency();
+  const router = useRouter();
 
   if (currency !== null && currency !== undefined && currency !== "") {
     return (
       <Button
+        onClick={()=>router.push(`/edit-currency/${id}`)}
         variant={"outline"}
         size={"default"}
         className="flex justify-center items-center gap-2"

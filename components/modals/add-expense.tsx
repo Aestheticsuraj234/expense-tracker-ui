@@ -53,14 +53,14 @@ interface CategoryProps {
 
 export const AddExpense = () => {
   const { authorizationHeader, userId } = useSession();
-  const { category } = useCategory();
+  const { categorydata } = useCategory();
   const { type, isOpen, onClose } = useStoreModal();
   const [loading, setLoading] = useState(false);
 
   const [date, setDate] = useState<Date | undefined>(new Date());
 
   const isModalOpen = isOpen && type === "EXPENSE_ADD";
-  console.log(category);
+  console.log(categorydata, "categorydata");
 
   const form = useForm<Z.infer<typeof AddExpenseForm>>({
     resolver: zodResolver(AddExpenseForm),
@@ -79,7 +79,7 @@ export const AddExpense = () => {
       const { amount, description, categoryName, date } = values;
 
       // Find the category by name
-      const selectedCategory = category?.find(
+      const selectedCategory = categorydata?.find(
         (category) => category.name === categoryName
       );
 
@@ -207,7 +207,7 @@ export const AddExpense = () => {
                             </FormControl>
 
                             <SelectContent side="right" className="w-full">
-                              {category?.map((category) => (
+                              {categorydata?.map((category) => (
                                 <SelectItem
                                   key={category.id}
                                   value={category.name}
