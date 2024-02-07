@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 
 import { useCurrency } from "@/hooks/currency/useCurrency";
 import CheckboxList from "@/components/test";
+import { ExpenseGraph  } from "../_components/home/expense-graph";
 
 const Home = () => {
   const { onOpen } = useStoreModal();
@@ -45,6 +46,7 @@ const Home = () => {
         <TabsContent value="overview">
           <div className="mt-16">
             <OverviewGraph />
+            {/* <ExpenseGraph /> */}
           </div>
         </TabsContent>
         <TabsContent value="categories">

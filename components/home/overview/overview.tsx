@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState ,useRef,useEffect} from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -49,12 +49,15 @@ import {
   Tooltip,
   XAxis,
   YAxis,
+  AreaChart,
+  Area,
 } from "recharts";
 
 import toast from "react-hot-toast";
 import CustomTooltip from "./custom-tooltip";
 import EmptyOverView from "./empty_overview";
 import { useCurrency } from "@/hooks/currency/useCurrency";
+import { useOverViewStore } from "@/hooks/use-overview";
 
 type expenseData = {
   amount: number;
@@ -64,9 +67,11 @@ type expenseData = {
 
 export function OverviewGraph() {
   const { authorizationHeader, userId } = useSession();
+  const dataRef = useRef<expenseData[]>([]);
   const { currency } = useCurrency();
   const [isPending, setIsPending] = useState(false);
-  const [data, setData] = useState<expenseData[]>([]);
+ const {data,setData} = useOverViewStore();
+
   const form = useForm<z.infer<typeof overviewSchema>>({
     resolver: zodResolver(overviewSchema),
     defaultValues: {
@@ -75,9 +80,9 @@ export function OverviewGraph() {
     },
   });
 
-  // bargraph == overview
+ 
+
   const onSubmit = async (values: z.infer<typeof overviewSchema>) => {
-    console.log(values);
     try {
       setIsPending(true);
       const { StartDate, EndDate } = values;
@@ -92,18 +97,21 @@ export function OverviewGraph() {
         }
       );
 
-      console.log(response.data);
-      setData(response.data);
+      const fetchedData = response.data;
+      setData(fetchedData); // Update state with fetched data
+      dataRef.current = fetchedData; // Update dataRef
       toast.success("Fetched Successfully");
-      setIsPending(false);
-      form.reset();
     } catch (error) {
       console.log(error);
-      setIsPending(false);
       toast.error("Something went wrong!");
-      form.reset();
+    } finally {
+      setIsPending(false);
     }
   };
+
+  const numDataPoints = data?.length || 0; // Use optional chaining and fallback to 0 if data is null
+const containerWidth = Math.max(numDataPoints * 60, 1100); // Adjust as needed
+
 
   return (
     <div className="flex flex-col justify-center items-center space-y-1 mx-4 ">
@@ -213,7 +221,7 @@ export function OverviewGraph() {
           </Form>
         </DropdownMenuContent>
       </DropdownMenu>
-      {data.length === 0 ? (
+      {!data || data.length === 0 ? (
         <EmptyOverView />
       ) : (
         <>
@@ -223,7 +231,8 @@ export function OverviewGraph() {
               <TabsTrigger value="line-graph">Line Graph</TabsTrigger>
             </TabsList>
             <TabsContent value="bar-graph">
-              <ResponsiveContainer width="100%" height={400}>
+              <div className="overflow-auto">
+              <ResponsiveContainer width={containerWidth} height={400}>
                 <BarChart
                   width={500}
                   height={300}
@@ -234,6 +243,7 @@ export function OverviewGraph() {
                     left: 20,
                     bottom: 5,
                   }}
+                  
                 >
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis
@@ -256,23 +266,26 @@ export function OverviewGraph() {
                     fill="currentColor"
                     radius={[4, 4, 0, 0]}
                     className="fill-primary"
+                    barSize={60}
+                    
                   />
                 </BarChart>
               </ResponsiveContainer>
+              </div>
             </TabsContent>
             <TabsContent value="line-graph">
-              <ResponsiveContainer width="100%" height={400}>
-                <LineChart
-                  width={500}
-                  height={600}
-                  data={data}
-                  margin={{
-                    top: 5,
-                    right: 30,
-                    left: 20,
-                    bottom: 5,
-                  }}
-                >
+              <ResponsiveContainer width={containerWidth} height={400}>
+              <AreaChart
+          width={500}
+          height={400}
+          data={data}
+          margin={{
+            top: 10,
+            right: 30,
+            left: 0,
+            bottom: 0,
+          }}
+        >
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis
                     dataKey="category"
@@ -289,14 +302,17 @@ export function OverviewGraph() {
                   {/* @ts-ignore */}
                   <Tooltip content={CustomTooltip} />
                   <Legend />
-                  <Line
+                  <Area
                     type="monotone"
                     dataKey="amount"
                     stroke="#888888"
-                    strokeWidth={4}
+                    fill="#000"
+                    opacity={1}
+                    strokeWidth={2}
                     activeDot={{ r: 8 }}
+                    
                   />
-                </LineChart>
+                </AreaChart>
               </ResponsiveContainer>
             </TabsContent>
           </Tabs>

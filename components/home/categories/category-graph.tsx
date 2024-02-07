@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState , useRef } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, useFieldArray } from "react-hook-form";
 import { z } from "zod";
@@ -71,15 +71,17 @@ import { Input } from "@/components/ui/input";
 import MultiselectDropdown from "@/components/ui/multiselect-dropdown";
 import EmptyOverView from "../overview/empty_overview";
 import { useCategory } from "@/hooks/category/useCategory";
+import { useCategoryGraphs } from "@/hooks/use-categoryBar";
 
 
 
 export function CategoryGraph() {
   const { authorizationHeader, userId } = useSession();
   const [isPending, setIsPending] = useState(false);
+  const {data , setData} = useCategoryGraphs();
   const {categorydata} = useCategory()
   const { currency } = useCurrency();
-  const [data, setData] = useState([]);
+  const dataRef = useRef<any[]>([]);
   const [isCreating, setIsCreating] = useState(false);
   const form = useForm<z.infer<typeof categorySchema>>({
     resolver: zodResolver(categorySchema),
@@ -97,19 +99,7 @@ export function CategoryGraph() {
     name: "category_ids",
   });
 
-  const handleCheckboxChange = (categoryId: number) => {
-    
-    const existingIndex = fields.findIndex(
-    // @ts-ignore
-      (field) => field.value === categoryId
-    );
 
-    if (existingIndex !== -1) {
-      remove(existingIndex);
-    } else {
-      append({ value: categoryId });
-    }
-  };
 
   // bargraph == overview
   const onSubmit = async (values: z.infer<typeof categorySchema>) => {
@@ -139,6 +129,7 @@ export function CategoryGraph() {
       if (response.status === 200) {
         setIsPending(false);
         setData(response.data);
+        
         console.log(response.data);
         toast.success("Data fetched successfully");
         form.reset();
@@ -153,6 +144,9 @@ export function CategoryGraph() {
       setIsPending(false);
     }
   };
+
+  const numDataPoints = data?.length || 0; // Use optional chaining and fallback to 0 if data is null
+  const containerWidth = Math.max(numDataPoints * 60, 1100); // Adjust as needed
 
   return (
     <div className="flex flex-col justify-center items-center space-y-2 mx-2 ">
@@ -281,7 +275,7 @@ export function CategoryGraph() {
         </DropdownMenuContent>
       </DropdownMenu>
 
-      {data.length === 0 ? (
+      {!data || data?.length === 0 ? (
         <EmptyOverView />
       ) : (
         <>
@@ -291,7 +285,8 @@ export function CategoryGraph() {
           <TabsTrigger value="line-graph">Line Graph</TabsTrigger>
         </TabsList>
         <TabsContent value="bar-graph">
-          <ResponsiveContainer width="100%" height={400}>
+        <div className="overflow-auto">
+          <ResponsiveContainer width={containerWidth} height={400}>
             <BarChart
               width={500}
               height={300}
@@ -317,9 +312,11 @@ export function CategoryGraph() {
               />
             </BarChart>
           </ResponsiveContainer>
+          </div>
         </TabsContent>
         <TabsContent value="line-graph">
-          <ResponsiveContainer width="100%" height={400}>
+        <div className="overflow-auto">
+          <ResponsiveContainer width={containerWidth} height={400}>
             <LineChart
               width={500}
               height={600}
@@ -341,16 +338,15 @@ export function CategoryGraph() {
                 type="monotone"
                 dataKey="amount"
                 stroke="#888888"
-                strokeWidth={4}
+                strokeWidth={2}
                 activeDot={{ r: 8 }}
               />
               <Line type="monotone" dataKey="category" stroke="#888" />
             </LineChart>
           </ResponsiveContainer>
+          </div>
         </TabsContent>
       </Tabs>
-
-    <Separator className="h-1 mt-6 mb-6" />
       </>
       )}
     </div>
