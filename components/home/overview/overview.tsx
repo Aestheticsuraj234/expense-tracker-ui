@@ -269,8 +269,21 @@ const containerWidth = Math.max(numDataPoints * 60, 1100); // Adjust as needed
                     barSize={60}
                     
                   />
+                 
                 </BarChart>
               </ResponsiveContainer>
+              <p className="
+                  text-center
+                  text-lg
+                  font-semibold
+                  dark:text-gray-300
+                  mt-4
+                  mb-4
+                
+              ">
+                    Total Amount: 
+                  <span className="bg-emerald-500 ml-3 px-4 py-2 text-white rounded-md">{currency}{data?.reduce((acc, cur) => acc + cur.amount, 0)}</span>
+                  </p>
               </div>
             </TabsContent>
             <TabsContent value="line-graph">
@@ -314,6 +327,18 @@ const containerWidth = Math.max(numDataPoints * 60, 1100); // Adjust as needed
                   />
                 </AreaChart>
               </ResponsiveContainer>
+              <p className="
+                  text-center
+                  text-lg
+                  font-semibold
+                  dark:text-gray-300
+                  mt-4
+                  mb-4
+                
+              ">
+                    Total Amount: 
+                  <span className="bg-emerald-500 ml-3 px-4 py-2 text-white rounded-md">{currency}{data?.reduce((acc, cur) => acc + cur.amount, 0)}</span>
+                  </p>
             </TabsContent>
           </Tabs>
 

@@ -309,9 +309,22 @@ export function CategoryGraph() {
                 fill="currentColor"
                 radius={[4, 4, 0, 0]}
                 className="fill-primary"
+                barSize={60}
               />
             </BarChart>
           </ResponsiveContainer>
+          <p className="
+                  text-center
+                  text-lg
+                  font-semibold
+                  dark:text-gray-300
+                  mt-4
+                  mb-4
+                
+              ">
+                    Total Amount: 
+                  <span className="bg-emerald-500 ml-3 px-4 py-2 text-white rounded-md">{currency}{data?.reduce((acc, cur) => acc + cur.amount, 0)}</span>
+                  </p>
           </div>
         </TabsContent>
         <TabsContent value="line-graph">
@@ -344,6 +357,18 @@ export function CategoryGraph() {
               <Line type="monotone" dataKey="category" stroke="#888" />
             </LineChart>
           </ResponsiveContainer>
+          <p className="
+                  text-center
+                  text-lg
+                  font-semibold
+                  dark:text-gray-300
+                  mt-4
+                  mb-4
+                
+              ">
+                    Total Amount: 
+                  <span className="bg-emerald-500 ml-3 px-4 py-2 text-white rounded-md">{currency}{data?.reduce((acc, cur) => acc + cur.amount, 0)}</span>
+                  </p>
           </div>
         </TabsContent>
       </Tabs>

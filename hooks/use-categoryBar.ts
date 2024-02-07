@@ -5,6 +5,8 @@ import {create} from 'zustand';
 interface CategoryGraphs {
   data: any;
     setData: (data: any) => void;
+    totalAmount: number;
+    setTotalAmount: (totalAmount: number) => void;
   
 }
 
@@ -12,6 +14,8 @@ interface CategoryGraphs {
 const CategoryGraphs = create<CategoryGraphs>((set) => ({
   data: null,
   setData: (data) => set({data}),
+  totalAmount: 0,
+  setTotalAmount: (totalAmount) => set({totalAmount})
 }));
 
 export const useCategoryGraphs = CategoryGraphs;
