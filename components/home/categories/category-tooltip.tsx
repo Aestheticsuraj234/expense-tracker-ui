@@ -11,24 +11,24 @@ const CategoryTooltip = ({ active, payload }) => {
       payload[0].payload;
 
     return (
-      <Card className="shadow-lg">
+      <Card className="shadow-lg dark:bg-zinc-800">
         <CardContent>
           <div className="flex items-start justify-center mx-4 my-4">
             <div className="flex flex-col items-center justify-center space-y-4">
               <div className="flex items-center gap-4 justify-start w-full">
-                <Badge variant={"outline"}>category - </Badge>
-                <h1 className="text-base text-zinc-700 font-bold">{category}</h1>
+                <Badge variant={"outline"} className="dark:bg-zinc-500">category - </Badge>
+                <h1 className="text-base text-zinc-700 dark:text-white font-bold">{category}</h1>
               </div>
               <div className="flex items-start gap-4 justify-start w-full">
-                <Badge variant={"outline"}>amount - </Badge>
-                <h1 className="text-base text-zinc-700 font-bold">
+                <Badge variant={"outline"} className="dark:bg-zinc-500">amount - </Badge>
+                <h1 className="text-base text-zinc-700 dark:text-white font-bold">
                   {currency} {amount}
-                  how can  add this things even when no one is watching me
+                
                 </h1>
                 </div>
                 <div className="flex items-start gap-4 justify-start w-full">
-                <Badge variant={"outline"}>Date - </Badge>
-                <h1 className="text-base text-zinc-700 font-bold">
+                <Badge variant={"outline"} className="dark:bg-zinc-500">Date - </Badge>
+                <h1 className="text-base text-zinc-700 dark:text-white font-bold">
                    {date}
                 </h1>
                 </div>

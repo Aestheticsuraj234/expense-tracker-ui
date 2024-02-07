@@ -154,7 +154,7 @@ export const AddExpense = () => {
                             disabled={loading}
                             placeholder="Enter amount"
                             {...field}
-                            className="w-full"
+                            className="w-full dark:bg-zinc-700"
                           />
                         </FormControl>
 
@@ -177,7 +177,7 @@ export const AddExpense = () => {
                             disabled={loading}
                             placeholder="Enter Description"
                             {...field}
-                            className="w-full"
+                            className="w-full dark:bg-zinc-700"
                           />
                         </FormControl>
 
@@ -201,12 +201,12 @@ export const AddExpense = () => {
                             defaultValue={field.value}
                           >
                             <FormControl>
-                              <SelectTrigger>
+                              <SelectTrigger className="dark:bg-zinc-700">
                                 <SelectValue placeholder="Select Category" />
                               </SelectTrigger>
                             </FormControl>
 
-                            <SelectContent side="right" className="w-full">
+                            <SelectContent side="right" className="w-full dark:bg-zinc-800">
                               {categorydata?.map((category) => (
                                 <SelectItem
                                   key={category.id}
@@ -221,7 +221,7 @@ export const AddExpense = () => {
                                         </TooltipTrigger>
                                         <TooltipContent
                                           side="top"
-                                          className="absolute"
+                                          className="absolute dark:bg-zinc-600 dark:text-white"
                                         >
                                           <span className="text-muted-foreground">
                                             {category.description}
@@ -253,7 +253,7 @@ export const AddExpense = () => {
                               <Button
                                 variant={"outline"}
                                 className={cn(
-                                  "w-[142px] pl-3 text-left font-normal",
+                                  "w-[142px] pl-3 text-left font-normal dark:bg-zinc-700",
                                   !field.value && "text-muted-foreground"
                                 )}
                               >
@@ -272,6 +272,7 @@ export const AddExpense = () => {
                               selected={field.value}
                               onSelect={field.onChange}
                               initialFocus
+                              className="dark:bg-zinc-700"
                             />
                           </PopoverContent>
                         </Popover>
@@ -287,6 +288,7 @@ export const AddExpense = () => {
                   disabled={loading}
                   variant={"outline"}
                   onClick={onClose}
+                  className="dark:bg-zinc-700 dark:text-white"
                 >
                   Cancel
                 </Button>

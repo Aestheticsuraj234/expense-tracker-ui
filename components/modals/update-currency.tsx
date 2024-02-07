@@ -126,24 +126,25 @@ export const UpdateCurrencyModal = () => {
                         <Select
                           onValueChange={field.onChange}
                           defaultValue={field.value}
+                          
                         >
                           <FormControl>
-                            <SelectTrigger>
-                              <SelectValue placeholder="Select Category" />
+                            <SelectTrigger className="dark:bg-zinc-700">
+                              <SelectValue placeholder="Select Category" className="w-auto" />
                             </SelectTrigger>
                           </FormControl>
 
-                          <SelectContent side="right" className="w-full">
+                          <SelectContent side="right" className="w-full dark:bg-zinc-800">
                             {Object.keys(currencies)?.map((currencyCode) => (
                               <SelectItem
                                 key={currencyCode}
                                 value={currencyCode}
-                                className="w-full"
+                                className="w-full px-2 py-2"
                               >
                                 <div>
                                   <SelectGroup className="flex justify-between items-center flex-row gap-4">
                                     <span>{currencies[currencyCode].name}</span>
-                                    <Button variant={"outline"} size="icon">{currencies[currencyCode].symbol}</Button>
+                                    <Button variant={"outline"} size="icon" className="dark:bg-zinc-600">{currencies[currencyCode].symbol}</Button>
                                   </SelectGroup>
                                 </div>
                               </SelectItem>
@@ -161,10 +162,11 @@ export const UpdateCurrencyModal = () => {
                   disabled={loading}
                   variant={"outline"}
                   onClick={onClose}
+                  className="dark:bg-zinc-600"
                 >
                   Cancel
                 </Button>
-                <Button disabled={loading} type="submit" variant={"default"}>
+                <Button disabled={loading} type="submit" variant={"default"} className="dark:bg-white" >
                   Continue
                 </Button>
               </div>

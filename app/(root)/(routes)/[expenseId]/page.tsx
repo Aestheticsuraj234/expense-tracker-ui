@@ -131,7 +131,7 @@ const UpdateExpense = ({
 
   return (
     <>
-    <h1 className='text-center mt-8 text-2xl font-bold text-zinc-600 '>Update Your Expense Here!</h1>
+    <h1 className='text-center mt-8 text-2xl font-bold text-zinc-600 dark:text-white'>Update Your Expense Here!</h1>
     <div className="flex justify-between items-center w-full mt-10 mx-4 gap-7">
       <Image src="update-expense.svg" alt="expense" width={560} height={560} />
      
@@ -151,7 +151,8 @@ const UpdateExpense = ({
                             disabled={loading}
                             placeholder="Enter amount"
                             {...field}
-                            className="w-full"
+                            className="w-full dark:bg-zinc-700"
+
                           />
                         </FormControl>
 
@@ -174,7 +175,7 @@ const UpdateExpense = ({
                             disabled={loading}
                             placeholder="Enter Description"
                             {...field}
-                            className="w-full"
+                            className="w-full dark:bg-zinc-700"
                           />
                         </FormControl>
 
@@ -198,12 +199,12 @@ const UpdateExpense = ({
                             defaultValue={field.value}
                           >
                             <FormControl>
-                              <SelectTrigger>
+                              <SelectTrigger className="dark:bg-zinc-700">
                                 <SelectValue placeholder="Select Category" />
                               </SelectTrigger>
                             </FormControl>
 
-                            <SelectContent side="right" className="w-full">
+                            <SelectContent side="right" className="w-full dark:bg-zinc-700">
                               {categorydata?.map((category) => (
                                 <SelectItem
                                   key={category.id}
@@ -250,7 +251,7 @@ const UpdateExpense = ({
                               <Button
                                 variant={"outline"}
                                 className={cn(
-                                  "w-[177px] pl-3 text-left font-normal",
+                                  "w-[177px] pl-3 text-left font-normal dark:bg-zinc-700",
                                   !field.value && "text-muted-foreground"
                                 )}
                               >
@@ -269,6 +270,7 @@ const UpdateExpense = ({
                               selected={field.value}
                               onSelect={field.onChange}
                               initialFocus
+                              className="dark:bg-zinc-700"
                             />
                           </PopoverContent>
                         </Popover>

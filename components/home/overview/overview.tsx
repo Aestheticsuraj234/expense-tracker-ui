@@ -117,7 +117,7 @@ export function OverviewGraph() {
             <MoreHorizontal size={18} />
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-auto px-4 py-4 mx-10">
+        <DropdownMenuContent className="w-auto px-4 py-4 mx-10 dark:bg-zinc-800">
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
@@ -135,7 +135,7 @@ export function OverviewGraph() {
                           <Button
                             variant={"outline"}
                             className={cn(
-                              "w-[240px] pl-3 text-left font-normal",
+                              "w-[240px] pl-3 text-left font-normal dark:bg-zinc-700",
                               !field.value && "text-muted-foreground"
                             )}
                           >
@@ -174,7 +174,7 @@ export function OverviewGraph() {
                           <Button
                             variant={"outline"}
                             className={cn(
-                              "w-[240px] pl-3 text-left font-normal",
+                              "w-[240px] pl-3 text-left font-normal dark:bg-zinc-700",
                               !field.value && "text-muted-foreground"
                             )}
                           >
@@ -218,7 +218,7 @@ export function OverviewGraph() {
       ) : (
         <>
           <Tabs defaultValue="bar-graph" className="w-[100%] mx-4 ">
-            <TabsList>
+            <TabsList className="dark:bg-zinc-800 mb-5">
               <TabsTrigger value="bar-graph">Bar Graph</TabsTrigger>
               <TabsTrigger value="line-graph">Line Graph</TabsTrigger>
             </TabsList>
@@ -292,7 +292,8 @@ export function OverviewGraph() {
                   <Line
                     type="monotone"
                     dataKey="amount"
-                    stroke="#000"
+                    stroke="#888888"
+                    strokeWidth={4}
                     activeDot={{ r: 8 }}
                   />
                 </LineChart>

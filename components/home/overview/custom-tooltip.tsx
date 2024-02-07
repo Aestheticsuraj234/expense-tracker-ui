@@ -8,11 +8,11 @@ const CustomTooltip = ({ active, payload }) => {
       const { category, amount, description } = payload[0].payload;
   
       return (
-        <Card>
-          <CardContent>
+        <Card className="rounded-md">
+          <CardContent className="dark:bg-zinc-800">
             <div className="flex justify-between items-center space-x-5 px-2 py-4">
               <div className="flex flex-col justify-start items-start ">
-                <h3 className="text-xl font-bold text-zinc-600">{category}</h3>
+                <h3 className="text-xl font-bold text-zinc-600 dark:text-white">{category}</h3>
               </div>
               <h1 className="text-3xl ml-3 font-semibold text-emerald-600">
                 {currency}{amount}

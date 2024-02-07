@@ -70,121 +70,14 @@ import CategoryTooltip from "./category-tooltip";
 import { Input } from "@/components/ui/input";
 import MultiselectDropdown from "@/components/ui/multiselect-dropdown";
 import EmptyOverView from "../overview/empty_overview";
+import { useCategory } from "@/hooks/category/useCategory";
 
-const expenseData = [
-  {
-    id: "059349fd-4e03-4183-957a-d928048370bc",
-    amount: 31.36,
-    description: "Small Concrete Watch",
-    date: "23-10-2002",
-    category: "Healthcare",
-    category_id: 1,
-    user_id: "45ea72f9-162c-460d-b154-2f9fc37c8dab",
-    category_description: "Medical expenses, insurance premiums, etc.",
-  },
-  {
-    id: "9102a2c7-235a-4dd8-b678-47ae8b5102d2",
-    amount: 33.82,
-    description: "Aerodynamic Wooden Clock",
-    date: "27-05-2003",
-    category: "Healthcare",
-    category_id: 1,
-    user_id: "45ea72f9-162c-460d-b154-2f9fc37c8dab",
-    category_description: "Medical expenses, insurance premiums, etc.",
-  },
-  {
-    id: "cbc1b97b-7e24-4e7f-8046-4ae3397ea044",
-    amount: 36.39,
-    description: "Fantastic Concrete Bag",
-    date: "14-08-2003",
-    category: "Healthcare",
-    category_id: 1,
-    user_id: "45ea72f9-162c-460d-b154-2f9fc37c8dab",
-    category_description: "Medical expenses, insurance premiums, etc.",
-  },
-  {
-    id: "a221ad73-eb0e-456b-be79-9697838f84ed",
-    amount: 27.59,
-    description: "Ergonomic Plastic Coat",
-    date: "09-04-2004",
-    category: "Healthcare",
-    category_id: 1,
-    user_id: "45ea72f9-162c-460d-b154-2f9fc37c8dab",
-    category_description: "Medical expenses, insurance premiums, etc.",
-  },
-  {
-    id: "3eff5a38-7965-4249-8daf-ec5707c83ee1",
-    amount: 92.73,
-    description: "Rustic Marble Shirt",
-    date: "13-06-2004",
-    category: "Healthcare",
-    category_id: 1,
-    user_id: "45ea72f9-162c-460d-b154-2f9fc37c8dab",
-    category_description: "Medical expenses, insurance premiums, etc.",
-  },
-];
 
-const categoryData = [
-  {
-    id: 1,
-    name: "Healthcare",
-    description: "Medical expenses, insurance premiums, etc.",
-  },
-  {
-    id: 2,
-    name: "Education",
-    description: "Tuition, books, supplies, etc.",
-  },
-  {
-    id: 3,
-    name: "Debt Payments",
-    description: "Credit cards, loans, etc.",
-  },
-  {
-    id: 4,
-    name: "Savings",
-    description: "Emergency fund, retirement savings, etc.",
-  },
-  {
-    id: 5,
-    name: "Clothing and Personal Items",
-    description: "Apparel, toiletries, etc.",
-  },
-  {
-    id: 6,
-    name: "Home Maintenance",
-    description: "Repairs, cleaning supplies, etc.",
-  },
-  {
-    id: 7,
-    name: "Communication",
-    description: "Phone bills, internet, etc.",
-  },
-  {
-    id: 8,
-    name: "Transportation",
-    description: "Fuel, maintenance, public transit, etc.",
-  },
-  {
-    id: 9,
-    name: "Recreation",
-    description: "Hobbies, subscription, etc.",
-  },
-  {
-    id: 10,
-    name: "Gifts/Donations",
-    description: "Presents, charitable contributions, etc.",
-  },
-  {
-    id: 11,
-    name: "Other",
-    description: "",
-  },
-];
 
 export function CategoryGraph() {
   const { authorizationHeader, userId } = useSession();
   const [isPending, setIsPending] = useState(false);
+  const {categorydata} = useCategory()
   const { currency } = useCurrency();
   const [data, setData] = useState([]);
   const [isCreating, setIsCreating] = useState(false);
@@ -205,8 +98,9 @@ export function CategoryGraph() {
   });
 
   const handleCheckboxChange = (categoryId: number) => {
-    // @ts-ignore
+    
     const existingIndex = fields.findIndex(
+    // @ts-ignore
       (field) => field.value === categoryId
     );
 
@@ -272,7 +166,7 @@ export function CategoryGraph() {
             <MoreHorizontal size={18} />
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-auto px-4 py-4 mx-10">
+        <DropdownMenuContent className="w-auto px-4 py-4 mx-10 dark:bg-zinc-800">
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
@@ -290,7 +184,7 @@ export function CategoryGraph() {
                           <Button
                             variant={"outline"}
                             className={cn(
-                              "w-[240px] pl-3 text-left font-normal",
+                              "w-[240px] pl-3 text-left font-normal dark:bg-zinc-700",
                               !field.value && "text-muted-foreground"
                             )}
                           >
@@ -309,6 +203,7 @@ export function CategoryGraph() {
                           selected={field.value}
                           onSelect={field.onChange}
                           initialFocus
+                          className="dark:bg-zinc-800"
                         />
                       </PopoverContent>
                     </Popover>
@@ -329,7 +224,7 @@ export function CategoryGraph() {
                           <Button
                             variant={"outline"}
                             className={cn(
-                              "w-[240px] pl-3 text-left font-normal",
+                              "w-[240px] pl-3 text-left font-normal dark:bg-zinc-700",
                               !field.value && "text-muted-foreground"
                             )}
                           >
@@ -348,6 +243,7 @@ export function CategoryGraph() {
                           selected={field.value}
                           onSelect={field.onChange}
                           initialFocus
+                          className="dark:bg-zinc-800"
                         />
                       </PopoverContent>
                     </Popover>
@@ -363,7 +259,8 @@ export function CategoryGraph() {
                   <FormItem className="flex flex-col">
                     <FormLabel>Categories</FormLabel>
                     <MultiselectDropdown
-                      options={categoryData}
+                    // @ts-ignore
+                      options={categorydata}
                       name="category_ids"
                       placeholder="Select Your Categories"
                     />
@@ -389,7 +286,7 @@ export function CategoryGraph() {
       ) : (
         <>
       <Tabs defaultValue="bar-graph" className="w-[100%] mx-4 ">
-        <TabsList>
+        <TabsList className="dark:bg-zinc-800">
           <TabsTrigger value="bar-graph">Bar Graph</TabsTrigger>
           <TabsTrigger value="line-graph">Line Graph</TabsTrigger>
         </TabsList>
@@ -443,10 +340,11 @@ export function CategoryGraph() {
               <Line
                 type="monotone"
                 dataKey="amount"
-                stroke="#000"
+                stroke="#888888"
+                strokeWidth={4}
                 activeDot={{ r: 8 }}
               />
-              <Line type="monotone" dataKey="category" stroke="#000" />
+              <Line type="monotone" dataKey="category" stroke="#888" />
             </LineChart>
           </ResponsiveContainer>
         </TabsContent>

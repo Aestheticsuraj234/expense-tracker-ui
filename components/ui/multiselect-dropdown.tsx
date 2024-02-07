@@ -39,6 +39,7 @@ const MultiselectDropdown: React.FC<MultiselectDropdownProps> = ({
   ) => {
     e.stopPropagation();
     const existingIndex = fields.findIndex(
+      // @ts-ignore
       (field) => field.value === categoryId
     );
 
@@ -58,18 +59,19 @@ const MultiselectDropdown: React.FC<MultiselectDropdownProps> = ({
 
         <Button
           variant="outline"
-          className="w-[240px] pl-3 text-left font-normal flex justify-between items-center"
+          className="w-[240px] pl-3 text-left font-normal flex justify-between items-center dark:bg-zinc-700"
         >
           {placeholder || "Select"}
           <ChevronDownIcon className="w-5 h-5" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent sideOffset={4} side="right" className="mb-2">
+      <DropdownMenuContent sideOffset={4} side="right" className="mb-2 dark:bg-zinc-700">
         {options.map((option) => (
           <DropdownMenuCheckboxItem key={option.id} className="space-x-5">
             <input
               type="checkbox"
               id={option.id.toString()}
+              // @ts-ignore
               checked={fields.some((field) => field.value === option.id)}
               onChange={(e) => handleCheckboxChange(e, option.id)}
               className="mr-4"

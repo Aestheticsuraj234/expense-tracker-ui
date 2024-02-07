@@ -55,7 +55,7 @@ const DashboardLayout = ({ children }:{
         </div>
       ) : (
         <div className="h-screen w-screen flex justify-center items-center">
-          <Loader2 className='animate-spin' size={64} color='#000' />
+          <Loader2 className='animate-spin text-black dark:text-white' size={64} />
           <h1 className="text-3xl font-bold">Loading...</h1>
         </div>
       )

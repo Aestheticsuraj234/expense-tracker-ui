@@ -27,13 +27,13 @@ const AuthNavbar = () => {
     return null;
   }
   return (
-    <div className="md:fixed top-0 md:z-50 w-full shadow-[inset_10px_-50px_94px_0_rgb(199,199,199,0.1)] backdrop-blur">
-      <div className="md:flex hidden h-16 items-center px-4">
+    <div className="fixed top-0 md:z-50 w-full shadow-[inset_10px_-50px_94px_0_rgb(199,199,199,0.1)] backdrop-blur">
+      <div className="flex  h-16 items-center px-4">
         <Link
           href={"#"}
           className="flex flex-row items-center space-x-2 cursor-pointer"
         >
-          <h1 className="text-xl flex-1 font-bold text-zinc-600 dark:text-zinc-100 cursor-pointer">
+          <h1 className="md:text-xl text-base flex-1 font-bold text-zinc-600 dark:text-zinc-100 cursor-pointer">
             {greeting}
           </h1>
         </Link>

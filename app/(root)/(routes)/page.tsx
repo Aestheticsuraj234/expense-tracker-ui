@@ -53,8 +53,8 @@ const Home = () => {
             {/* <CheckboxList /> */}
           </div>
         </TabsContent>
-        <TabsContent value="history">
-          <Card className="shadow-md w-[72rem]">
+        <TabsContent value="history" >
+          <Card className="shadow-md w-[72rem] dark:bg-zinc-900">
             <CardHeader>
               <CardTitle>Your All Expenses</CardTitle>
             </CardHeader>

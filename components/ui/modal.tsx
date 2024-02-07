@@ -33,7 +33,7 @@ export const Modal: React.FC<ModalProps> = ({
   {
     return (
       <Dialog open={isOpen} onOpenChange={onChange}>
-        <DialogContent>
+        <DialogContent className="dark:bg-zinc-800" >
           <DialogHeader>
             <DialogTitle>{title}</DialogTitle>
             <DialogDescription>{description}</DialogDescription>

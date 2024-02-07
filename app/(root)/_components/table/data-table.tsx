@@ -64,11 +64,11 @@ export function DataTable<TData, TValue>({
           onChange={(event) =>
             table.getColumn("categoryName")?.setFilterValue(event.target.value)
           }
-          className="max-w-sm"
+          className="max-w-sm dark:bg-zinc-700"
         />
       </div>
     <div className="rounded-md border">
-      <Table>
+      <Table className="dark:bg-zinc-800">
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
@@ -116,6 +116,7 @@ export function DataTable<TData, TValue>({
           size="sm"
           onClick={() => table.previousPage()}
           disabled={!table.getCanPreviousPage()}
+          className="dark:bg-zinc-700"
         >
           Previous
         </Button>
@@ -124,6 +125,7 @@ export function DataTable<TData, TValue>({
           size="sm"
           onClick={() => table.nextPage()}
           disabled={!table.getCanNextPage()}
+          className="dark:bg-white dark:text-zinc-800"
         >
           Next
         </Button>

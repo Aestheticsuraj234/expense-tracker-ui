@@ -22,7 +22,7 @@ const UpdateCurrencySetup = ({params}:{params:{id:string}}) => {
     <div className="flex items-center justify-center flex-col space-y-4">
         <h1 className="text-3xl font-bold text-center">Update Currency Symbol</h1>
         <p className="text-center text-gray-500">
-          Please Update your currency Symbol {params.id}
+          Please Update your currency Symbol
         </p>
         <Button onClick={()=>onOpen("CURRENCY_UPDATE")} variant={"default"} size={"lg"}>
         Update Your Currency Symbol

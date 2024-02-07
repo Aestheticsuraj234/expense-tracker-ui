@@ -36,7 +36,7 @@ const ExpenseTable = () => {
       {isLoading ? (
         <div className="justify-center items-center flex ">
 
-          <Loader2 className="w-10 h-10 animate-spin text-gray-700" />
+          <Loader2 className="w-10 h-10 animate-spin text-gray-700 dark:text-white" />
           <h2>Loading...</h2>
         </div>
       ) : (
