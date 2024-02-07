@@ -7,6 +7,7 @@ import { AddExpense } from "@/components/modals/add-expense";
 import { AddCurrencyModal } from "../modals/add-currency";
 import {UpdateExpense} from "../modals/update-expense";
 import { UpdateCurrencyModal } from "../modals/update-currency";
+import { DeleteExpenseModal } from "../modals/delete";
 
 
 export const ModalProvider = ()=>{
@@ -23,6 +24,7 @@ export const ModalProvider = ()=>{
 return (
     <>
     <UpdateExpense/>
+    <DeleteExpenseModal/>
     <AddExpense />
     <UpdateCurrencyModal/>
     <AddCurrencyModal />

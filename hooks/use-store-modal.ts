@@ -6,23 +6,27 @@ export type modalType =
   | "EXPENSE_ADD"
   | "CURRENCY_ADD"
   | "EXPENSE_UPDATE"
-  | "CURRENCY_UPDATE";
+  | "CURRENCY_UPDATE"
+  | "EXPENSE_DELETE";
+interface ModalDatas {
+  id?: string;
+  data?: ExpenseData;
+}
 
 interface useStoreModalInterface {
-  modalData?:any; // Make data property optional
+  modalData: ModalDatas; // Make data property optional
   type: modalType | null;
   isOpen: boolean;
-  onOpen: (type: modalType,modalData?: any ) => void;
+  onOpen: (type: modalType, modalData?: ModalDatas) => void;
   onClose: () => void;
 }
 
 export const useStoreModal = create<useStoreModalInterface>((set) => ({
   // @ts-ignore
-  modalData: null,
+  modalData: {},
   type: null,
   isOpen: false,
-// @ts-ignore
-
-  onOpen: (type) => set({ isOpen: true, type, modalData: null}),
+  // @ts-ignore
+  onOpen: (type,modalData={}) => set({ isOpen: true, type, modalData }),
   onClose: () => set({ type: null, isOpen: false }),
 }));

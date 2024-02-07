@@ -6,10 +6,11 @@ import { ExpenseData, columns } from "@/app/(root)/_components/table/column";
 import { getAllExpenseOfCurrentUser } from "@/actions";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Loader2 } from "lucide-react";
+import { useHistory } from "@/hooks/use-history";
 
 const ExpenseTable = () => {
   const { userId, authorizationHeader } = useSession();
-  const [data, setData] = useState<ExpenseData[] | null>([]);
+  const {data,setData} = useHistory();
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -50,12 +51,3 @@ const ExpenseTable = () => {
 
 export default ExpenseTable;
 
-const TableSkeleton = () => {
-  return (
-    <div className="w-full rounded-md border relative  overflow-auto">
-      <Skeleton className="[&_tr]:border-b bg-zinc-600 dark:bg-gray-200 mb-2" />
-      <Skeleton className="[&_tr:last-child]:border-0 bg-zinc-600 dark:bg-gray-200 mb-2" />
-      <Skeleton className="border-t bg-muted w-[50%] font-medium [&>tr]:last:border-b-0 mb-2" />
-    </div>
-  );
-};

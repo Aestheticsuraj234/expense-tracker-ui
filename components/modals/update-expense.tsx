@@ -44,6 +44,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { useCategory } from "@/hooks/category/useCategory";
+import { useRouter } from "next/navigation";
 
 interface CategoryProps {
   id: number;
@@ -56,14 +57,26 @@ export const UpdateExpense = () => {
   const { categorydata } = useCategory();
   const { type, isOpen, modalData, onClose } = useStoreModal();
   const [loading, setLoading] = useState(false);
+  const router =  useRouter();
 
   const isModalOpen = isOpen && type === "EXPENSE_UPDATE";
+  const { id, data } = modalData || {}; // Destructure id and data with default value as an empty object
+
+  useEffect(() => {
+    if (data) {
+      // Check if data exists
+      form.setValue("amount", data.amount.toString() || "0"); // Set default value if data.amount is undefined
+      form.setValue("description", data.description || ""); // Set default value if data.description is undefined
+      form.setValue("category", data.category || ""); // Set default value if data.category is undefined
+      form.setValue("date", new Date(data.date) || new Date()); // Set default value if data.date is undefined
+    }
+  }, [data]); // Add data as dependency for useEffect
   
 
   const form = useForm<Z.infer<typeof UpdateExpenseForm>>({
     resolver: zodResolver(UpdateExpenseForm),
     defaultValues: {
-      amount: "",
+      amount: "0",
       description: "",
       category: "",
       date: new Date(),
@@ -71,65 +84,68 @@ export const UpdateExpense = () => {
   });
 
   const onSubmit = async (values: Z.infer<typeof UpdateExpenseForm>) => {
-    console.log(values,modalData.id);
+   
     
-    // try {
-    //   setLoading(true);
+    try {
+      setLoading(true);
 
-    //   const { amount, description, category, date } = values;
+      const { amount, description, category, date } = values;
 
-    //   const selectedCategory = category?.find(
-    //     (categoryItem) => categoryItem.name === category
-    //   );
+      const selectedCategory = categorydata?.find(
+        (categoryItem) => categoryItem.name === category
+      );
       
 
-    //   if (!selectedCategory) {
-    //     throw new Error("Selected category not found.");
-    //   }
+      if (!selectedCategory) {
+        throw new Error("Selected category not found.");
+      }
 
-    //   // Extract the categoryId and format the date
-    //   const categoryId = selectedCategory.id;
-    //   const formattedDate = format(date, "dd-MM-yyyy");
+      // Extract the categoryId and format the date
+      const categoryId = selectedCategory.id;
+      const formattedDate = format(date, "dd-MM-yyyy");
 
-    //   // Construct the data payload
-    //   const data = {
-    //     id:modalData.id,
-    //     amount: Number(amount),
-    //     description,
-    //     category_id: categoryId,
-    //     date: formattedDate,
-    //     user_id: userId,
-    //   };
+      // Construct the data payload
+      const data = {
+        id: id,
+        amount: amount,
+        description,
+        category_id: categoryId,
+        date: formattedDate,
+        user_id: userId,
+      };
 
-    //   // Send the POST request
-    //   const response = await axios.put(
-    //     "http://140.238.227.78:8080/expenses",
-    //     data,
-    //     {
-    //       headers: {
-    //         Authorization: `Basic ${authorizationHeader}`,
-    //         contentType: "application/json",
-    //       },
-    //     }
-    //   );
+      // Send the POST request
+      const response = await axios.put(
+        "http://140.238.227.78:8080/expenses",
+        data,
+        {
+          headers: {
+            Authorization: `Basic ${authorizationHeader}`,
+            contentType: "application/json",
+          },
+        }
+      );
+      console.log(response.data);
 
-    //   if (response.status === 200) {
-    //     toast.success("Expense updated successfully", {
-    //       icon: "👏",
-    //     });
-    //     form.reset();
-    //   } else {
-    //     throw new Error("Failed to update expense. Please try again.");
-    //   }
-    // } catch (error) {
-    //   console.error(error);
-    //   toast.error("Something went wrong ❌");
-    // } finally {
-    //   setLoading(false);
-    //   onClose();
-    // }
+      if (response.status === 200) {
+        toast.success("Expense updated successfully", {
+          icon: "👏",
+        });
+        router.push("/")
+        form.reset();
+        onClose();
+      } 
+
+    } catch (error) {
+      console.error(error);
+      toast.error("Something went wrong ❌");
+    } finally {
+      setLoading(false);
+      form.reset();
+      onClose();
+      
+    }
   };
-
   return (
     <Modal
       title="Update Expense"
@@ -208,7 +224,7 @@ export const UpdateExpense = () => {
                             </FormControl>
 
                             <SelectContent side="right" className="w-full">
-                              {category?.map((category) => (
+                              {categorydata?.map((category) => (
                                 <SelectItem
                                   key={category.id}
                                   value={category.name}
