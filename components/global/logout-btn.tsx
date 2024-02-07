@@ -14,8 +14,8 @@ const LogOutButton = () => {
   }
 
   return (
-    <Button onClick={onLogout} variant={"outline"} size={"default"} className='flex justify-center items-center gap-2' >
-   <LogOut className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+    <Button onClick={onLogout} variant={"outline"} size={"default"} className='flex justify-center items-center dark:bg-zinc-700 dark:hover:bg-zinc-600 gap-2' >
+   <LogOut className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:text-white" />
     <span className="text-xs">Logout</span>
 
 </Button>

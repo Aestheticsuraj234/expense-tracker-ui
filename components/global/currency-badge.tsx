@@ -16,7 +16,7 @@ const CurencyBadge = () => {
         onClick={()=>router.push(`/edit-currency/${id}`)}
         variant={"outline"}
         size={"default"}
-        className="flex justify-center items-center gap-2"
+        className="flex justify-center items-center gap-2 dark:bg-zinc-700 dark:hover:bg-zinc-600"
       >
         <span className="text-base">{currency}</span>
       </Button>

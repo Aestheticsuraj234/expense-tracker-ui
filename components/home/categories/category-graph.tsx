@@ -229,7 +229,7 @@ export function CategoryGraph() {
       const FormatedForm = format(from, "yyyy-MM-dd");
       const FormatedTo = format(to, "yyyy-MM-dd");
       const response = await axios.get(
-        `http://140.238.227.78:8080/expenses/by_category`,
+        `http://140.238.227.78:8080/expenses`,
         {
           params: {
             from: FormatedForm,

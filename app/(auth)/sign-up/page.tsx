@@ -53,22 +53,7 @@ const SignUp = () => {
         return;
       }
 
-      // const res = await fetch("http://140.238.227.78:8080/register",{
-      //   Method: "POST",
-      //   body: JSON.stringify({
-      //     email,
-      //     first_name,
-      //     last_name,
-      //     password,
-      //   }),
-      //   headers:{
-      //     "X-XSRF-TOKEN": "4fa2f8a8-9a9d-4d4f-b5dc-284052b63c18",
-      //     "Content-Type": "application/json",
-      //     'Content-Type': 'application/json',
-      //     'Access-Control-Allow-Origin': 'http://localhost:3000',
-      //     'Access-Control-Allow-Headers': '*'
-      //   }
-      // })
+     
       const response = await axios.post(
         "http://140.238.227.78:8080/register",
         {
@@ -132,6 +117,7 @@ const SignUp = () => {
                           disabled={isPending}
                           placeholder="jhon.doe@emaple.com"
                           type="email"
+                          className="dark:bg-zinc-700 dark:text-white"
                           {...field}
                         />
                       </FormControl>
@@ -151,6 +137,7 @@ const SignUp = () => {
                           disabled={isPending}
                           placeholder="jhon"
                           type="text"
+                          className="dark:bg-zinc-700 dark:text-white"
                           {...field}
                         />
                       </FormControl>
@@ -170,6 +157,7 @@ const SignUp = () => {
                           disabled={isPending}
                           placeholder="doe"
                           type="text"
+                          className="dark:bg-zinc-700 dark:text-white"
                           {...field}
                         />
                       </FormControl>
@@ -189,6 +177,7 @@ const SignUp = () => {
                           disabled={isPending}
                           placeholder="12345678"
                           type="password"
+                          className="dark:bg-zinc-700 dark:text-white"
                           {...field}
                         />
                       </FormControl>
@@ -208,6 +197,7 @@ const SignUp = () => {
                           disabled={isPending}
                           placeholder="12345678"
                           type="password"
+                          className="dark:bg-zinc-700 dark:text-white"
                           {...field}
                         />
                       </FormControl>

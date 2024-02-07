@@ -27,8 +27,8 @@ const Home = () => {
     <main className="px-4 py-4 w-full flex">
       <Tabs defaultValue="overview" className="w-full">
         <div className="inline-flex justify-between items-center w-full  space-x-4">
-          <TabsList>
-            <TabsTrigger value="overview">Overview</TabsTrigger>
+          <TabsList className="dark:bg-zinc-800">
+            <TabsTrigger value="overview" >Overview</TabsTrigger>
             <TabsTrigger value="categories">Categories</TabsTrigger>
             <TabsTrigger value="history">History</TabsTrigger>
           </TabsList>

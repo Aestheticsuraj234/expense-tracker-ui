@@ -113,6 +113,7 @@ const SignIn = () => {
                           disabled={isPending}
                           placeholder="jhon.doe@emaple.com"
                           type="email"
+                          className="dark:bg-zinc-700 dark:text-white"
                           {...field}
                         />
                       </FormControl>
@@ -132,6 +133,7 @@ const SignIn = () => {
                           disabled={isPending}
                           placeholder="1234567"
                           type="password"
+                          className="dark:bg-zinc-700 dark:text-white"
                           {...field}
                         />
                       </FormControl>

@@ -58,8 +58,6 @@ const ForgotPassword = () => {
       if (response.status === 200) {
         toast.success("Email sent. Please check your inbox.");
         form.reset();
-      } else {
-        toast.error("Something went wrong. Please try again later.");
       }
     } catch (error) {
       console.error("Error during form submission:", error);
@@ -102,6 +100,7 @@ const ForgotPassword = () => {
                           disabled={isPending}
                           placeholder="jhon.doe@emaple.com"
                           type="email"
+                          className="dark:bg-zinc-700 dark:text-white"
                           {...field}
                         />
                       </FormControl>
@@ -121,6 +120,7 @@ const ForgotPassword = () => {
                           disabled={isPending}
                           placeholder="1234567"
                           type="password"
+                          className="dark:bg-zinc-700 dark:text-white"
                           {...field}
                         />
                       </FormControl>
@@ -139,6 +139,7 @@ const ForgotPassword = () => {
                           disabled={isPending}
                           placeholder="1234567"
                           type="password"
+                          className="dark:bg-zinc-700 dark:text-white"
                           {...field}
                         />
                       </FormControl>

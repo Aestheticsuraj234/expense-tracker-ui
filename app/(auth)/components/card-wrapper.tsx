@@ -30,7 +30,7 @@ export const CardWrapper = ({
   showForgotPassword,
 }: CardWrapperProps) => {
   return (
-    <Card className="md:w-[25rem] w-[21rem] shadow-md mx-5">
+    <Card className="md:w-[25rem] w-[21rem] shadow-md mx-5 bg-white dark:bg-zinc-800 ">
       <CardHeader>
         <Header label={headerLabel} />
       </CardHeader>
