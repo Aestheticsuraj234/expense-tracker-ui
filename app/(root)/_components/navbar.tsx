@@ -32,14 +32,14 @@ const Navbar = () => {
   }
 
   return (
-    <div className="flex top-0 z-50 w-full shadow-lg bg-white dark:bg-gray-800">
+    <div className="flex top-0 z-50 w-full shadow-lg bg-white dark:bg-zinc-800">
       <div className="container mx-auto flex justify-between items-center px-4 h-16">
         <Link href="/" className="flex items-center space-x-2 cursor-pointer">
           <div className="flex justify-center items-center space-x-4">
-            <span className="text-xl font-bold text-gray-800 dark:text-white">
+            <span className="md:text-xl text-sm font-bold text-gray-800 dark:text-white">
               Hello👋 {fullName}!
             </span>
-            <span className="text-lg font-bold text-gray-800 dark:text-white">
+            <span className="md:text-lg hidden font-bold text-gray-800 dark:text-white">
               {greeting}
             </span>
           </div>
