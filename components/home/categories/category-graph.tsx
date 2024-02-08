@@ -160,7 +160,7 @@ export function CategoryGraph() {
             <MoreHorizontal size={18} />
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-auto px-4 py-4 mx-10 dark:bg-zinc-800">
+        <DropdownMenuContent className="w-auto px-4 py-4 mx-10 dark:bg-zinc-800" side="bottom" >
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
@@ -191,15 +191,19 @@ export function CategoryGraph() {
                           </Button>
                         </FormControl>
                       </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0" align="start">
-                        <Calendar
-                          mode="single"
-                          selected={field.value}
-                          onSelect={field.onChange}
-                          initialFocus
-                          className="dark:bg-zinc-800"
-                        />
+                     
+                      <PopoverContent className="w-auto " align="start" >
+                      <Calendar
+                              mode="single"
+                              captionLayout="dropdown-buttons"
+                              selected={field.value}
+                              onSelect={field.onChange}
+                              fromYear={1960}
+                              toYear={2030}
+                              
+                            />
                       </PopoverContent>
+                      
                     </Popover>
 
                     <FormMessage />
@@ -231,14 +235,15 @@ export function CategoryGraph() {
                           </Button>
                         </FormControl>
                       </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0" align="start">
-                        <Calendar
-                          mode="single"
-                          selected={field.value}
-                          onSelect={field.onChange}
-                          initialFocus
-                          className="dark:bg-zinc-800"
-                        />
+                      <PopoverContent className="w-auto p-0" align="center">
+                      <Calendar
+                              mode="single"
+                              captionLayout="dropdown-buttons"
+                              selected={field.value}
+                              onSelect={field.onChange}
+                              fromYear={1960}
+                              toYear={2030}
+                            />
                       </PopoverContent>
                     </Popover>
 

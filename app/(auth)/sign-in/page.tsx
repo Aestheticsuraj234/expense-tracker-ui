@@ -64,7 +64,7 @@ const SignIn = () => {
         sessionStorage.setItem("authorization_header", base64Data);
         sessionStorage.setItem(
           "full_name",
-          response.data.first_name + " " + response.data.last_name
+          response.data.first_name
         );
         router.push("/");
       } else {

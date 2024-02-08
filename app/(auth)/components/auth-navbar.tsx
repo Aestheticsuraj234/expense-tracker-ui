@@ -13,13 +13,13 @@ const AuthNavbar = () => {
     setIsMounted(true);
     let hours = new Date().getHours();
     if (hours <= 12) {
-      setGreeting("Good Morning 🌅");
+      setGreeting("Good Morning");
     } else if (hours < 17) {
-      setGreeting("Good Afternoon 🚀");
+      setGreeting("Good Afternoon");
     } else if (hours < 20) {
-      setGreeting("Good Evening 🌃");
+      setGreeting("Good Evening");
     } else {
-      setGreeting("Good Night 🌙");
+      setGreeting("Good Night");
     }
   }, []);
 

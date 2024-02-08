@@ -1,5 +1,8 @@
 @tailwind base;
 
+.rdp-vhidden {
+  @apply hidden;
+}
 /* Firefox */
 * {
   scrollbar-width: thin;
@@ -93,6 +96,8 @@
     @apply border-border;
   }
 
+ 
+
   body {
     @apply bg-background text-foreground;
   }
@@ -107,3 +112,4 @@
     scrollbar-color: var(--primary) var(--secondary); /* Change color on hover */
   }
 }
+

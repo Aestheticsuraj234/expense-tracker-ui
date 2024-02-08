@@ -20,13 +20,13 @@ const Navbar = () => {
     setIsMounted(true);
     let hours = new Date().getHours();
     if (hours <= 12) {
-      setGreeting("Good Morning 🌅");
+      setGreeting("Good Morning");
     } else if (hours < 17) {
-      setGreeting("Good Afternoon 🚀");
+      setGreeting("Good Afternoon");
     } else if (hours < 20) {
-      setGreeting("Good Evening 🌃");
+      setGreeting("Good Evening");
     } else {
-      setGreeting("Are you Still Up 🌙");
+      setGreeting("Are you Still Up");
     }
   }, []);
 
@@ -34,16 +34,16 @@ const Navbar = () => {
     return null;
   }
   return (
-    <div className="md:fixed top-0 md:z-50 w-full shadow-[inset_10px_-50px_94px_0_rgb(199,199,199,0.1)] backdrop-blur">
-      <div className="md:flex hidden h-16 items-center px-4">
+    <div className="fixed top-0 z-50 w-full shadow-[inset_10px_-50px_94px_0_rgb(199,199,199,0.1)] backdrop-blur">
+      <div className="flex  h-16 items-center px-4">
         <Link href="/" className="flex flex-row items-center space-x-2 cursor-pointer"
         >
           <div className="cursor-pointer flex justify-center items-center space-x-4">
 
-          <span className="text-xl  font-bold text-zinc-600 dark:text-zinc-100 cursor-pointer">
-           Hello👋 {fullName}!
+          <span className="md:text-xl text-base  font-bold text-zinc-600 dark:text-zinc-100 cursor-pointer">
+           Hello {fullName}!
           </span>
-          <span className="text-lg  font-bold text-zinc-600 dark:text-zinc-100 cursor-pointer">
+          <span className="md:text-lg md:inline-flex hidden  font-bold text-zinc-600 dark:text-zinc-100 cursor-pointer">
            {greeting}
           </span>
              

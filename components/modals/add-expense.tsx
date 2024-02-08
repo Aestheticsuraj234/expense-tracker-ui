@@ -188,9 +188,7 @@ export const AddExpense = () => {
                         <FormControl>
                           <Dialog>
                             <DialogTrigger asChild>
-                              <Button variant="outline">
-                                Add Description
-                              </Button>
+                              <Button variant="outline">Add Description</Button>
                             </DialogTrigger>
                             <DialogContent className="sm:max-w-md">
                               <DialogHeader>
@@ -307,10 +305,11 @@ export const AddExpense = () => {
                           <PopoverContent className="w-auto p-0" align="start">
                             <Calendar
                               mode="single"
+                              captionLayout="dropdown-buttons"
                               selected={field.value}
                               onSelect={field.onChange}
-                              initialFocus
-                              className="dark:bg-zinc-700"
+                              fromYear={1960}
+                              toYear={2030}
                             />
                           </PopoverContent>
                         </Popover>

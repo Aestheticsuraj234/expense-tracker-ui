@@ -311,11 +311,13 @@ export const UpdateExpense = () => {
                             </FormControl>
                           </PopoverTrigger>
                           <PopoverContent className="w-auto p-0" align="start">
-                            <Calendar
+                          <Calendar
                               mode="single"
+                              captionLayout="dropdown-buttons"
                               selected={field.value}
                               onSelect={field.onChange}
-                              initialFocus
+                              fromYear={1960}
+                              toYear={2030}
                             />
                           </PopoverContent>
                         </Popover>
