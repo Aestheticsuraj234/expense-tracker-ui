@@ -44,6 +44,19 @@ import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { useCategory } from "@/hooks/category/useCategory";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+
+import { Label } from "@/components/ui/label";
+import { Textarea } from "../ui/textarea";
 
 interface CategoryProps {
   id: number;
@@ -173,12 +186,34 @@ export const AddExpense = () => {
                           Description
                         </FormLabel>
                         <FormControl>
-                          <Input
-                            disabled={loading}
-                            placeholder="Enter Description"
-                            {...field}
-                            className="w-full dark:bg-zinc-700"
-                          />
+                          <Dialog>
+                            <DialogTrigger asChild>
+                              <Button variant="outline">
+                                Add Description
+                              </Button>
+                            </DialogTrigger>
+                            <DialogContent className="sm:max-w-md">
+                              <DialogHeader>
+                                <DialogTitle>Description</DialogTitle>
+                              </DialogHeader>
+                              <div className="flex items-center space-x-2">
+                                <div className="grid flex-1 gap-2">
+                                  <Textarea
+                                    placeholder="Type your description here."
+                                    {...field}
+                                    className="w-full dark:bg-zinc-700"
+                                  />
+                                </div>
+                              </div>
+                              <DialogFooter className="sm:justify-start">
+                                <DialogClose asChild>
+                                  <Button type="button" variant="secondary">
+                                    Done
+                                  </Button>
+                                </DialogClose>
+                              </DialogFooter>
+                            </DialogContent>
+                          </Dialog>
                         </FormControl>
 
                         <FormMessage />
@@ -206,7 +241,10 @@ export const AddExpense = () => {
                               </SelectTrigger>
                             </FormControl>
 
-                            <SelectContent side="right" className="w-full dark:bg-zinc-800">
+                            <SelectContent
+                              side="right"
+                              className="w-full dark:bg-zinc-800"
+                            >
                               {categorydata?.map((category) => (
                                 <SelectItem
                                   key={category.id}

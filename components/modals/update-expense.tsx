@@ -45,6 +45,8 @@ import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { useCategory } from "@/hooks/category/useCategory";
 import { useRouter } from "next/navigation";
+import { Textarea } from "../ui/textarea";
+import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
 
 interface CategoryProps {
   id: number;
@@ -61,6 +63,9 @@ export const UpdateExpense = () => {
 
   const isModalOpen = isOpen && type === "EXPENSE_UPDATE";
   const { id, data } = modalData || {}; // Destructure id and data with default value as an empty object
+
+  // TODO: ADD TEXTAREA FOR DESCRIPTION IN MODAL POPUP IN UPDATE & CREATE EXPENSE
+  // TODO: ADD INPUT BOX
 
   useEffect(() => {
     if (data) {
@@ -180,7 +185,7 @@ export const UpdateExpense = () => {
                     </FormItem>
                   )}
                 />
-                <FormField
+             <FormField
                   control={form.control}
                   name="description"
                   render={({ field }) => (
@@ -190,12 +195,34 @@ export const UpdateExpense = () => {
                           Description
                         </FormLabel>
                         <FormControl>
-                          <Input
-                            disabled={loading}
-                            placeholder="Enter Description"
-                            {...field}
-                            className="w-full"
-                          />
+                          <Dialog>
+                            <DialogTrigger asChild>
+                              <Button variant="outline">
+                                Add Description
+                              </Button>
+                            </DialogTrigger>
+                            <DialogContent className="sm:max-w-md">
+                              <DialogHeader>
+                                <DialogTitle>Description</DialogTitle>
+                              </DialogHeader>
+                              <div className="flex items-center space-x-2">
+                                <div className="grid flex-1 gap-2">
+                                  <Textarea
+                                    placeholder="Type your description here."
+                                    {...field}
+                                    className="w-full dark:bg-zinc-700"
+                                  />
+                                </div>
+                              </div>
+                              <DialogFooter className="sm:justify-start">
+                                <DialogClose asChild>
+                                  <Button type="button" variant="secondary">
+                                    Done
+                                  </Button>
+                                </DialogClose>
+                              </DialogFooter>
+                            </DialogContent>
+                          </Dialog>
                         </FormControl>
 
                         <FormMessage />
