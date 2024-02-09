@@ -190,7 +190,7 @@ export const AddExpense = () => {
                             <DialogTrigger asChild>
                               <Button variant="outline">Add Description</Button>
                             </DialogTrigger>
-                            <DialogContent className="sm:max-w-md">
+                            <DialogContent className="sm:max-w-md dark:bg-zinc-800">
                               <DialogHeader>
                                 <DialogTitle>Description</DialogTitle>
                               </DialogHeader>
@@ -241,7 +241,7 @@ export const AddExpense = () => {
 
                             <SelectContent
                               side="right"
-                              className="w-full dark:bg-zinc-800"
+                              className="dark:bg-zinc-800"
                             >
                               {categorydata?.map((category) => (
                                 <SelectItem

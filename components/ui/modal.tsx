@@ -32,8 +32,8 @@ export const Modal: React.FC<ModalProps> = ({
   if(type === "EXPENSE_ADD" || type==="CURRENCY_ADD"||type==="EXPENSE_UPDATE"||type==="CURRENCY_UPDATE"  )
   {
     return (
-      <Dialog open={isOpen} onOpenChange={onChange}>
-        <DialogContent className="dark:bg-zinc-800" >
+      <Dialog  open={isOpen} onOpenChange={onChange} >
+        <DialogContent className="dark:bg-zinc-800  max-w-lg mx-auto" >
           <DialogHeader>
             <DialogTitle>{title}</DialogTitle>
             <DialogDescription>{description}</DialogDescription>

@@ -1,5 +1,5 @@
 "use client";
-import React, { useState ,useRef,useEffect} from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -70,7 +70,7 @@ export function OverviewGraph() {
   const dataRef = useRef<expenseData[]>([]);
   const { currency } = useCurrency();
   const [isPending, setIsPending] = useState(false);
- const {data,setData} = useOverViewStore();
+  const { data, setData } = useOverViewStore();
 
   const form = useForm<z.infer<typeof overviewSchema>>({
     resolver: zodResolver(overviewSchema),
@@ -79,8 +79,6 @@ export function OverviewGraph() {
       StartDate: new Date(),
     },
   });
-
- 
 
   const onSubmit = async (values: z.infer<typeof overviewSchema>) => {
     try {
@@ -110,195 +108,196 @@ export function OverviewGraph() {
   };
 
   const numDataPoints = data?.length || 0; // Use optional chaining and fallback to 0 if data is null
-const containerWidth = Math.max(numDataPoints * 60, 1100); // Adjust as needed
-
+  const containerWidth = Math.max(numDataPoints * 60, 1100); // Adjust as needed
 
   return (
-    <div className="flex flex-col justify-center items-center space-y-1 mx-4 ">
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button
-            variant={"ghost"}
-            size="icon"
-            className="self-end border rounded-full mr-8"
-          >
-            <MoreHorizontal size={18} />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-auto px-4 py-4 mx-10 dark:bg-zinc-800">
-          <Form {...form}>
-            <form
-              onSubmit={form.handleSubmit(onSubmit)}
-              className="flex flex-col justify-center gap-4 items-center flex-1"
-            >
-              <FormField
-                control={form.control}
-                name="StartDate"
-                render={({ field }) => (
-                  <FormItem className="flex flex-col">
-                    <FormLabel>From</FormLabel>
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <FormControl>
-                          <Button
-                            variant={"outline"}
-                            className={cn(
-                              "w-[240px] pl-3 text-left font-normal dark:bg-zinc-700",
-                              !field.value && "text-muted-foreground"
-                            )}
-                          >
-                            {field.value ? (
-                              format(field.value, "yyyy-MM-dd")
-                            ) : (
-                              <span>Pick a date</span>
-                            )}
-                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                          </Button>
-                        </FormControl>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0" align="start">
-                        <Calendar
-                          mode="single"
-                          selected={field.value}
-                          onSelect={field.onChange}
-                          initialFocus
-                        />
-                      </PopoverContent>
-                    </Popover>
-
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="EndDate"
-                render={({ field }) => (
-                  <FormItem className="flex flex-col">
-                    <FormLabel>To</FormLabel>
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <FormControl>
-                          <Button
-                            variant={"outline"}
-                            className={cn(
-                              "w-[240px] pl-3 text-left font-normal dark:bg-zinc-700",
-                              !field.value && "text-muted-foreground"
-                            )}
-                          >
-                            {field.value ? (
-                              format(field.value, "yyyy-MM-dd")
-                            ) : (
-                              <span>Pick a date</span>
-                            )}
-                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                          </Button>
-                        </FormControl>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0" align="start">
-                        <Calendar
-                          mode="single"
-                          selected={field.value}
-                          onSelect={field.onChange}
-                          initialFocus
-                        />
-                      </PopoverContent>
-                    </Popover>
-
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <Button
-                disabled={isPending}
-                type="submit"
-                variant="default"
-                className="w-full"
+    <div className="flex flex-col  md:items-center justify-between">
+      <div className="ml-auto mb-5 md:mb-0">
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant={"ghost"} size="icon" className="self-end border rounded-full mr-8">
+              <MoreHorizontal size={18} />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-auto px-4 py-4 mx-10 dark:bg-zinc-800">
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="flex flex-col justify-center gap-4 items-center flex-1"
               >
-                Apply
-              </Button>
-            </form>
-          </Form>
-        </DropdownMenuContent>
-      </DropdownMenu>
+                <FormField
+                  control={form.control}
+                  name="StartDate"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col">
+                      <FormLabel>From</FormLabel>
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <FormControl>
+                            <Button
+                              variant={"outline"}
+                              className={cn(
+                                "w-[240px] pl-3 text-left font-normal dark:bg-zinc-700",
+                                !field.value && "text-muted-foreground"
+                              )}
+                            >
+                              {field.value ? (
+                                format(field.value, "yyyy-MM-dd")
+                              ) : (
+                                <span>Pick a date</span>
+                              )}
+                              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                            </Button>
+                          </FormControl>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-auto p-0" align="start">
+                        <Calendar
+                              mode="single"
+                              captionLayout="dropdown-buttons"
+                              selected={field.value}
+                              onSelect={field.onChange}
+                              fromYear={1960}
+                              toYear={2030}
+                              
+                            />
+                        </PopoverContent>
+                      </Popover>
+
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="EndDate"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col">
+                      <FormLabel>To</FormLabel>
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <FormControl>
+                            <Button
+                              variant={"outline"}
+                              className={cn(
+                                "w-[240px] pl-3 text-left font-normal dark:bg-zinc-700",
+                                !field.value && "text-muted-foreground"
+                              )}
+                            >
+                              {field.value ? (
+                                format(field.value, "yyyy-MM-dd")
+                              ) : (
+                                <span>Pick a date</span>
+                              )}
+                              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                            </Button>
+                          </FormControl>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-auto p-0" align="start">
+                        <Calendar
+                              mode="single"
+                              captionLayout="dropdown-buttons"
+                              selected={field.value}
+                              onSelect={field.onChange}
+                              fromYear={1960}
+                              toYear={2030}
+                              
+                            />
+                        </PopoverContent>
+                      </Popover>
+
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <Button
+                  disabled={isPending}
+                  type="submit"
+                  variant="default"
+                  className="w-full"
+                >
+                  Apply
+                </Button>
+              </form>
+            </Form>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
       {!data || data.length === 0 ? (
         <EmptyOverView />
       ) : (
         <>
-          <Tabs defaultValue="bar-graph" className="w-[100%] mx-4 ">
+          <Tabs
+            defaultValue="bar-graph"
+            className="flex-1 md:mx-4 mx-1 w-full"
+          >
             <TabsList className="dark:bg-zinc-800 mb-5">
               <TabsTrigger value="bar-graph">Bar Graph</TabsTrigger>
               <TabsTrigger value="line-graph">Line Graph</TabsTrigger>
             </TabsList>
             <TabsContent value="bar-graph">
               <div className="overflow-auto">
-              <ResponsiveContainer width={containerWidth} height={400}>
-                <BarChart
-                  width={500}
-                  height={300}
-                  data={data}
-                  margin={{
-                    top: 5,
-                    right: 30,
-                    left: 20,
-                    bottom: 5,
-                  }}
-                  
-                >
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis
-                    dataKey="category"
-                    stroke="#888888"
-                    fontSize={12}
-                    tickLine={false}
-                  />
-                  <YAxis
-                    stroke="#888888"
-                    fontSize={12}
-                    tickLine={false}
-                    tickFormatter={(value) => `${currency}${value}`}
-                  />
-                  {/* @ts-ignore */}
-                  <Tooltip content={CustomTooltip} />
-                  <Legend />
-                  <Bar
-                    dataKey="amount"
-                    fill="currentColor"
-                    radius={[4, 4, 0, 0]}
-                    className="fill-primary"
-                    barSize={60}
-                    
-                  />
-                 
-                </BarChart>
-              </ResponsiveContainer>
-              <p className="
-                  text-center
-                  text-lg
-                  font-semibold
-                  dark:text-gray-300
-                  mt-4
-                  mb-4
-                
-              ">
-                    Total Amount: 
-                  <span className="bg-emerald-500 ml-3 px-4 py-2 text-white rounded-md">{currency}{data?.reduce((acc, cur) => acc + cur.amount, 0)}</span>
-                  </p>
+                <ResponsiveContainer width={containerWidth} height={400}>
+                  <BarChart
+                    width={500}
+                    height={300}
+                    data={data}
+                    margin={{
+                      top: 5,
+                      right: 30,
+                      left: 20,
+                      bottom: 5,
+                    }}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis
+                      dataKey="category"
+                      stroke="#888888"
+                      fontSize={12}
+                      tickLine={false}
+                    />
+                    <YAxis
+                      stroke="#888888"
+                      fontSize={12}
+                      tickLine={false}
+                      tickFormatter={(value) => `${currency}${value}`}
+                    />
+                    {/* @ts-ignore */}
+                    <Tooltip content={CustomTooltip} />
+                    <Legend />
+                    <Bar
+                      dataKey="amount"
+                      fill="currentColor"
+                      radius={[4, 4, 0, 0]}
+                      className="fill-primary"
+                      barSize={60}
+                    />
+                  </BarChart>
+                </ResponsiveContainer>
               </div>
+                <p className="text-center text-lg font-semibold dark:text-gray-300 mt-4 mb-4">
+                  Total Amount:{" "}
+                  <span className="bg-emerald-500 ml-3 px-4 py-2 text-white rounded-md">
+                    {currency}
+                    {Math.round(
+                    data.reduce((acc: number, cur: any) => acc + cur.amount, 0)
+                  )}
+                  </span>
+                </p>
             </TabsContent>
             <TabsContent value="line-graph">
+              <div className="overflow-auto">
               <ResponsiveContainer width={containerWidth} height={400}>
-              <AreaChart
-          width={500}
-          height={400}
-          data={data}
-          margin={{
-            top: 10,
-            right: 30,
-            left: 0,
-            bottom: 0,
-          }}
-        >
+                <AreaChart
+                  width={500}
+                  height={400}
+                  data={data}
+                  margin={{
+                    top: 10,
+                    right: 30,
+                    left: 0,
+                    bottom: 0,
+                  }}
+                >
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis
                     dataKey="category"
@@ -323,22 +322,19 @@ const containerWidth = Math.max(numDataPoints * 60, 1100); // Adjust as needed
                     opacity={1}
                     strokeWidth={2}
                     activeDot={{ r: 8 }}
-                    
                   />
                 </AreaChart>
               </ResponsiveContainer>
-              <p className="
-                  text-center
-                  text-lg
-                  font-semibold
-                  dark:text-gray-300
-                  mt-4
-                  mb-4
-                
-              ">
-                    Total Amount: 
-                  <span className="bg-emerald-500 ml-3 px-4 py-2 text-white rounded-md">{currency}{data?.reduce((acc, cur) => acc + cur.amount, 0)}</span>
-                  </p>
+              </div>
+              <p className="text-center text-lg font-semibold dark:text-gray-300 mt-4 mb-4">
+                Total Amount:{" "}
+                <span className="bg-emerald-500 ml-3 px-4 py-2 text-white rounded-md">
+                  {currency}
+                  {Math.round(
+                    data.reduce((acc: number, cur: any) => acc + cur.amount, 0)
+                  )}
+                </span>
+              </p>
             </TabsContent>
           </Tabs>
 

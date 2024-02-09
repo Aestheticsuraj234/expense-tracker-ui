@@ -17,18 +17,18 @@ const CategoryTooltip = ({ active, payload }) => {
             <div className="flex flex-col items-center justify-center space-y-4">
               <div className="flex items-center gap-4 justify-start w-full">
                 <Badge variant={"outline"} className="dark:bg-zinc-500">category - </Badge>
-                <h1 className="text-base text-zinc-700 dark:text-white font-bold">{category}</h1>
+                <h1 className="md:text-base text-sm text-zinc-700 dark:text-white font-bold">{category}</h1>
               </div>
               <div className="flex items-start gap-4 justify-start w-full">
                 <Badge variant={"outline"} className="dark:bg-zinc-500">amount - </Badge>
-                <h1 className="text-base text-zinc-700 dark:text-white font-bold">
+                <h1 className="md:text-base text-sm text-zinc-700 dark:text-white font-bold">
                   {currency} {amount}
                 
                 </h1>
                 </div>
                 <div className="flex items-start gap-4 justify-start w-full">
                 <Badge variant={"outline"} className="dark:bg-zinc-500">Date - </Badge>
-                <h1 className="text-base text-zinc-700 dark:text-white font-bold">
+                <h1 className="md:text-base text-sm text-zinc-700 dark:text-white font-bold">
                    {date}
                 </h1>
                 </div>
