@@ -17,7 +17,7 @@ export const useCurrency = () => {
 
   const fetchCurrency = async () => {
     const currency = await axios.get<CurrencyProps>(
-      `http://140.238.227.78:8080/currencies/${userId}`,
+      `https://140.238.227.78:8080/currencies/${userId}`,
       {
         headers: {
           Authorization: `Basic ${authorizationHeader}`,

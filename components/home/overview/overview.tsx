@@ -87,7 +87,7 @@ export function OverviewGraph() {
       const from = format(StartDate, "yyyy-MM-dd");
       const to = format(EndDate, "yyyy-MM-dd");
       const response = await axios.get(
-        `http://140.238.227.78:8080/expenses/by_category?from=${from}&to=${to}&user_id=${userId}`,
+        `https://140.238.227.78:8080/expenses/by_category?from=${from}&to=${to}&user_id=${userId}`,
         {
           headers: {
             Authorization: `Basic ${authorizationHeader}`,

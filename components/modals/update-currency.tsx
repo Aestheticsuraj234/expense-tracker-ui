@@ -82,7 +82,7 @@ export const UpdateCurrencyModal = () => {
         user_id: userId,
       };
   
-   const res = await axios.put("http://140.238.227.78:8080/currencies/update",data, {
+   const res = await axios.put("https://140.238.227.78:8080/currencies/update",data, {
         headers: {
           Authorization: `Basic ${authorizationHeader}`,
         },

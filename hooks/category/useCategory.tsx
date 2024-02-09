@@ -19,7 +19,7 @@ export const useCategory = () => {
 
     const fetchCategory = async () => {
         const res = await axios.get<CategoryProps[]>(
-          `http://140.238.227.78:8080/categories`,
+          `https://140.238.227.78:8080/categories`,
           {
             headers: {
               Authorization: `Basic ${authorizationHeader}`,

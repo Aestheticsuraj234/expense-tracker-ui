@@ -59,7 +59,7 @@ export const DeleteExpenseModal = () => {
       try {
         setLoading(true);
         const res = await axios.delete(
-          `http://140.238.227.78:8080/expenses/${id}`,
+          `https://140.238.227.78:8080/expenses/${id}`,
           {
             headers: {
               Authorization: `Basic ${authorizationHeader}`,

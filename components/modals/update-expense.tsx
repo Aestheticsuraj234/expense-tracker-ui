@@ -121,7 +121,7 @@ export const UpdateExpense = () => {
 
       // Send the POST request
       const response = await axios.put(
-        "http://140.238.227.78:8080/expenses",
+        "https://140.238.227.78:8080/expenses",
         data,
         {
           headers: {

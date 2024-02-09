@@ -12,7 +12,7 @@ const ConfirmPassword = ({ params }: { params: { resetToken: string } }) => {
   useEffect(() => {
     const handleConfirmation = async () => {
       try {
-        const response = await axios.post(`http://140.238.227.78:8080/confirm_password/${resetToken}`);
+        const response = await axios.post(`https://140.238.227.78:8080/confirm_password/${resetToken}`);
         const confirmed = response.data;
 
         setIsConfirmed(confirmed);
@@ -20,9 +20,7 @@ const ConfirmPassword = ({ params }: { params: { resetToken: string } }) => {
         if (confirmed) {
           toast.success("Password Reset Successfully!");
           window.location.href = "/sign-in";
-        } else {
-          toast.error("Confirmation failed. Please try again.");
-        }
+        } 
       } catch (error) {
         console.error("Error handling confirmation:", error);
         setIsConfirmed(false);

@@ -47,7 +47,7 @@ const ForgotPassword = () => {
         return;
       }
       const response = await axios.post(
-        "http://140.238.227.78:8080/forget_password",
+        "https://140.238.227.78:8080/forget_password",
         {
           email: values.email,
           password: values.password,

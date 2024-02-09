@@ -45,12 +45,12 @@ const SignIn = () => {
       console.log("BASE_64:", base64Data);
 
       const response = await axios.get(
-        "http://140.238.227.78:8080/login/user_info",
+        "https://140.238.227.78:8080/login/user_info",
         {
           headers: {
             Authorization: `Basic ${base64Data}`,
             "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "http://localhost:3000",
+            "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Headers": "*",
           },
         }

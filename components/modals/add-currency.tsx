@@ -79,7 +79,7 @@ export const AddCurrencyModal = () => {
         user_id: userId,
       };
   
-   const res = await axios.post("http://140.238.227.78:8080/currencies/create",data, {
+   const res = await axios.post("https://140.238.227.78:8080/currencies/create",data, {
         headers: {
           Authorization: `Basic ${authorizationHeader}`,
         },

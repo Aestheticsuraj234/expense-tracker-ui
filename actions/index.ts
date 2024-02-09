@@ -11,7 +11,7 @@ export const getAllExpenseOfCurrentUser = async (
 ): Promise<ExpenseData[]> => {
   try {
     // Fetch expenses
-    const expensesResponse = await axios.get<ExpenseData[]>(`http://140.238.227.78:8080/expenses/${userId}`, {
+    const expensesResponse = await axios.get<ExpenseData[]>(`https://140.238.227.78:8080/expenses/${userId}`, {
       headers: {
         Authorization: `Basic ${authorizationHeader}`
       }

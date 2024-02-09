@@ -55,7 +55,7 @@ const SignUp = () => {
 
      
       const response = await axios.post(
-        "http://140.238.227.78:8080/register",
+        "https://140.238.227.78:8080/register",
         {
           email,
           first_name,
@@ -66,7 +66,7 @@ const SignUp = () => {
           headers: {
             "X-XSRF-TOKEN": "4fa2f8a8-9a9d-4d4f-b5dc-284052b63c18",
           "Content-Type": "application/json",
-          'Access-Control-Allow-Origin': 'http://localhost:3000',
+          'Access-Control-Allow-Origin': '*',
           'Access-Control-Allow-Headers': '*'
           },
         }
