@@ -51,36 +51,35 @@ const MultiselectDropdown: React.FC<MultiselectDropdownProps> = ({
   };
 
   return (
-    <DropdownMenu>
-     <DropdownMenuTrigger
-  className="flex justify-between items-center gap-4 w-full"
-  onClick={(e) => e.stopPropagation()}
->
-
-        <Button
-          variant="outline"
-          className="w-[240px] pl-3 text-left font-normal flex justify-between items-center dark:bg-zinc-700"
-        >
-          {placeholder || "Select"}
-          <ChevronDownIcon className="w-5 h-5" />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent sideOffset={4} side="right" className="mb-2 dark:bg-zinc-700">
-        {options.map((option) => (
-          <DropdownMenuCheckboxItem key={option.id} className="space-x-5">
-            <input
-              type="checkbox"
-              id={option.id.toString()}
-              // @ts-ignore
-              checked={fields.some((field) => field.value === option.id)}
-              onChange={(e) => handleCheckboxChange(e, option.id)}
-              className="mr-4"
-            />
-            <p className="ml-4">{option.name}</p>
-          </DropdownMenuCheckboxItem>
-        ))}
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <DropdownMenu >
+    <DropdownMenuTrigger
+      className="flex justify-between items-center gap-4 w-full"
+    >
+      <Button
+        variant="outline"
+        className="md:w-[240px] w-[160px] pl-3 text-left font-normal flex justify-between items-center dark:bg-zinc-700"
+      >
+        {placeholder || "Select"}
+        <ChevronDownIcon className="w-5 h-5" />
+      </Button>
+    </DropdownMenuTrigger>
+    <DropdownMenuContent sideOffset={4} side="top" className="mb-2 dark:bg-zinc-700 ml-10" >
+      {options.map((option) => (
+        <DropdownMenuCheckboxItem key={option.id} className="space-x-5" onClick={(e) => e.stopPropagation()}>
+          <input
+            type="checkbox"
+            id={option.id.toString()}
+            // @ts-ignore
+            checked={fields.some((field) => field.value === option.id)}
+            onChange={(e) => handleCheckboxChange(e, option.id)}
+            className="mr-4"
+          />
+          <p className="ml-4">{option.name}</p>
+        </DropdownMenuCheckboxItem>
+      ))}
+    </DropdownMenuContent>
+  </DropdownMenu>
+  
   );
 };
 

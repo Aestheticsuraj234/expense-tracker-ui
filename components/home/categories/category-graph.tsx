@@ -277,7 +277,7 @@ export function CategoryGraph() {
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
-                className="flex md:flex-row flex-col justify-center gap-4 items-center flex-1"
+                className="flex md:flex-row flex-col flex-wrap justify-center gap-4 items-center flex-1"
               >
                 <FormField
                   control={form.control}
@@ -285,13 +285,14 @@ export function CategoryGraph() {
                   render={({ field }) => (
                     <FormItem className="flex flex-col">
                       <FormLabel>From</FormLabel>
+                      {/* @ts-ignore */}
                       <Popover key={field.value}>
                         <PopoverTrigger asChild>
                           <FormControl>
                             <Button
                               variant={"outline"}
                               className={cn(
-                                "md:w-[240px] w-[140px] pl-3 text-left font-normal dark:bg-zinc-700",
+                                "md:w-[240px] w-[160px] pl-3 text-left font-normal dark:bg-zinc-700",
                                 !field.value && "text-muted-foreground"
                               )}
                             >
@@ -305,7 +306,7 @@ export function CategoryGraph() {
                           </FormControl>
                         </PopoverTrigger>
 
-                        <PopoverContent className="w-auto " align="start">
+                        <PopoverContent className="w-auto ml-10 mt-10" align="start">
                           <Calendar
                             mode="single"
                             captionLayout="dropdown-buttons"
@@ -327,13 +328,14 @@ export function CategoryGraph() {
                   render={({ field }) => (
                     <FormItem className="flex flex-col">
                       <FormLabel>To</FormLabel>
+                      {/* @ts-ignore */}
                       <Popover key={field.value}>
                         <PopoverTrigger asChild>
                           <FormControl>
                             <Button
                               variant={"outline"}
                               className={cn(
-                                "md:w-[240px] w-[140px] pl-3 text-left font-normal dark:bg-zinc-700",
+                                "md:w-[240px] w-[160px] pl-3 text-left font-normal dark:bg-zinc-700",
                                 !field.value && "text-muted-foreground"
                               )}
                             >
@@ -346,7 +348,7 @@ export function CategoryGraph() {
                             </Button>
                           </FormControl>
                         </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0" align="center">
+                        <PopoverContent className="w-auto p-0 md:mx-0 mx-10" align="center">
                           <Calendar
                             mode="single"
                             captionLayout="dropdown-buttons"
@@ -368,12 +370,15 @@ export function CategoryGraph() {
                   render={({ field }) => (
                     <FormItem className="flex flex-col">
                       <FormLabel>Categories</FormLabel>
+                      
                       <MultiselectDropdown
+                        key={field.value}
                         // @ts-ignore
                         options={categorydata}
                         name="category_ids"
-                        placeholder="Select Your Categories"
+                        placeholder="Select Categories"
                       />
+                      
                       <FormMessage />
                     </FormItem>
                   )}
@@ -382,7 +387,7 @@ export function CategoryGraph() {
                   disabled={isPending}
                   type="submit"
                   variant="default"
-                  className="w-full"
+                  className="mt-5"
                 >
                   Apply
                 </Button>
