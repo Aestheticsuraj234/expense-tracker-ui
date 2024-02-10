@@ -46,7 +46,15 @@ import { format } from "date-fns";
 import { useCategory } from "@/hooks/category/useCategory";
 import { useRouter } from "next/navigation";
 import { Textarea } from "../ui/textarea";
-import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "../ui/dialog";
 
 interface CategoryProps {
   id: number;
@@ -59,7 +67,7 @@ export const UpdateExpense = () => {
   const { categorydata } = useCategory();
   const { type, isOpen, modalData, onClose } = useStoreModal();
   const [loading, setLoading] = useState(false);
-  const router =  useRouter();
+  const router = useRouter();
 
   const isModalOpen = isOpen && type === "EXPENSE_UPDATE";
   const { id, data } = modalData || {}; // Destructure id and data with default value as an empty object
@@ -76,7 +84,6 @@ export const UpdateExpense = () => {
       form.setValue("date", new Date(data.date) || new Date()); // Set default value if data.date is undefined
     }
   }, [data]); // Add data as dependency for useEffect
-  
 
   const form = useForm<Z.infer<typeof UpdateExpenseForm>>({
     resolver: zodResolver(UpdateExpenseForm),
@@ -89,8 +96,6 @@ export const UpdateExpense = () => {
   });
 
   const onSubmit = async (values: Z.infer<typeof UpdateExpenseForm>) => {
-   
-    
     try {
       setLoading(true);
 
@@ -99,7 +104,6 @@ export const UpdateExpense = () => {
       const selectedCategory = categorydata?.find(
         (categoryItem) => categoryItem.name === category
       );
-      
 
       if (!selectedCategory) {
         throw new Error("Selected category not found.");
@@ -136,11 +140,10 @@ export const UpdateExpense = () => {
         toast.success("Expense updated successfully", {
           icon: "👏",
         });
-        router.push("/")
+        router.push("/");
         form.reset();
         onClose();
-      } 
-
+      }
     } catch (error) {
       console.error(error);
       toast.error("Something went wrong ❌");
@@ -148,7 +151,6 @@ export const UpdateExpense = () => {
       setLoading(false);
       form.reset();
       onClose();
-      
     }
   };
   return (
@@ -185,7 +187,7 @@ export const UpdateExpense = () => {
                     </FormItem>
                   )}
                 />
-             <FormField
+                <FormField
                   control={form.control}
                   name="description"
                   render={({ field }) => (
@@ -197,10 +199,18 @@ export const UpdateExpense = () => {
                         <FormControl>
                           <Dialog>
                             <DialogTrigger asChild>
-                              <Button variant="outline">
-                                Add Description
+                              <Button
+                                variant="outline"
+                                className="truncate px-3"
+                              >
+                                {field.value
+                                  ? field.value.length > 15
+                                    ? `${field.value.slice(0, 15)}...`
+                                    : field.value
+                                  : "Edit Description"}
                               </Button>
                             </DialogTrigger>
+
                             <DialogContent className="sm:max-w-md">
                               <DialogHeader>
                                 <DialogTitle>Description</DialogTitle>
@@ -291,7 +301,8 @@ export const UpdateExpense = () => {
                     <FormItem>
                       <div className="grid grid-cols-3 items-center justify-center gap-4">
                         <FormLabel className="text-right">Date</FormLabel>
-                        <Popover>
+                        {/* @ts-ignore */}
+                        <Popover key={field.value}>
                           <PopoverTrigger asChild>
                             <FormControl>
                               <Button
@@ -301,17 +312,19 @@ export const UpdateExpense = () => {
                                   !field.value && "text-muted-foreground"
                                 )}
                               >
-                                {field.value ? (
-                                  format(field.value, "yyyy-MM-dd")
+                                {field.value &&
+                                !isNaN(new Date(field.value).getTime()) ? (
+                                  format(new Date(field.value), "yyyy-MM-dd")
                                 ) : (
                                   <span>Pick a date</span>
                                 )}
+
                                 <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                               </Button>
                             </FormControl>
                           </PopoverTrigger>
                           <PopoverContent className="w-auto p-0" align="start">
-                          <Calendar
+                            <Calendar
                               mode="single"
                               captionLayout="dropdown-buttons"
                               selected={field.value}

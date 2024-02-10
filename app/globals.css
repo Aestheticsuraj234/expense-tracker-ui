@@ -1,5 +1,16 @@
 @tailwind base;
 
+html,
+body {
+  height: 100vh;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 .rdp-vhidden {
   @apply hidden;
 }

@@ -59,6 +59,16 @@ function Calendar({ className, classNames, showOutsideDays = true, ...props }: C
               onValueChange={(value) => {
                 handleChange(value)
               }}
+              onOpenChange={
+                (isOpen) => {
+                  if (isOpen) {
+                    const selected = options.find((child) => child.props.value === value)
+                    if (selected) {
+                      selected?.props?.children
+                    }
+                  }
+                }
+              }
             >
               <SelectTrigger className="pr-1.5 focus:ring-0">
                 <SelectValue>{selected?.props?.children}</SelectValue>

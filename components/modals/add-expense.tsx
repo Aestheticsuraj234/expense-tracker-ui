@@ -188,7 +188,13 @@ export const AddExpense = () => {
                         <FormControl>
                           <Dialog>
                             <DialogTrigger asChild>
-                              <Button variant="outline">Add Description</Button>
+                              <Button variant="outline">
+                                {field.value
+                                  ? field.value.length > 15
+                                    ? `${field.value.slice(0, 15)}...`
+                                    : field.value
+                                  : "Add Description"}
+                              </Button>
                             </DialogTrigger>
                             <DialogContent className="sm:max-w-md dark:bg-zinc-800">
                               <DialogHeader>

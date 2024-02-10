@@ -28,7 +28,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={cn(font.className, "dark:bg-[#191A19]")}>
+      <body className={cn(font.className, "dark:bg-[#191A19] max-w-full w-full")}>
       
           <ThemeProvider
             attribute="class"
@@ -36,9 +36,13 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <ModalProvider/>
+            <main className="w-[100%]">
+              <ModalProvider/>
             <ToastProvider />
+
             {children}
+            </main>
+
           </ThemeProvider>
       
       </body>

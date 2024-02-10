@@ -143,139 +143,7 @@ export function CategoryGraph() {
 
   return (
     <div className="flex flex-col  md:items-center justify-between ">
-      <div className="ml-auto mb-5 md:mb-0">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              variant={"ghost"}
-              size="icon"
-              className="self-end border rounded-full mr-8"
-            >
-              <MoreHorizontal size={18} />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent
-            className="w-auto px-4 py-4 mx-10 dark:bg-zinc-800"
-            side="bottom"
-          >
-            <Form {...form}>
-              <form
-                onSubmit={form.handleSubmit(onSubmit)}
-                className="flex flex-col justify-center gap-4 items-center flex-1"
-              >
-                <FormField
-                  control={form.control}
-                  name="from"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-col">
-                      <FormLabel>From</FormLabel>
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <FormControl>
-                            <Button
-                              variant={"outline"}
-                              className={cn(
-                                "w-[240px] pl-3 text-left font-normal dark:bg-zinc-700",
-                                !field.value && "text-muted-foreground"
-                              )}
-                            >
-                              {field.value ? (
-                                format(field.value, "yyyy-MM-dd")
-                              ) : (
-                                <span>Pick a date</span>
-                              )}
-                              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                            </Button>
-                          </FormControl>
-                        </PopoverTrigger>
-
-                        <PopoverContent className="w-auto " align="start">
-                          <Calendar
-                            mode="single"
-                            captionLayout="dropdown-buttons"
-                            selected={field.value}
-                            onSelect={field.onChange}
-                            fromYear={1960}
-                            toYear={2030}
-                          />
-                        </PopoverContent>
-                      </Popover>
-
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="to"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-col">
-                      <FormLabel>To</FormLabel>
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <FormControl>
-                            <Button
-                              variant={"outline"}
-                              className={cn(
-                                "w-[240px] pl-3 text-left font-normal dark:bg-zinc-700",
-                                !field.value && "text-muted-foreground"
-                              )}
-                            >
-                              {field.value ? (
-                                format(field.value, "yyyy-MM-dd")
-                              ) : (
-                                <span>Pick a date</span>
-                              )}
-                              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                            </Button>
-                          </FormControl>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0" align="center">
-                          <Calendar
-                            mode="single"
-                            captionLayout="dropdown-buttons"
-                            selected={field.value}
-                            onSelect={field.onChange}
-                            fromYear={1960}
-                            toYear={2030}
-                          />
-                        </PopoverContent>
-                      </Popover>
-
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="category_ids"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-col">
-                      <FormLabel>Categories</FormLabel>
-                      <MultiselectDropdown
-                        // @ts-ignore
-                        options={categorydata}
-                        name="category_ids"
-                        placeholder="Select Your Categories"
-                      />
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <Button
-                  disabled={isPending}
-                  type="submit"
-                  variant="default"
-                  className="w-full"
-                >
-                  Apply
-                </Button>
-              </form>
-            </Form>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
-
+    
       {!data || data?.length === 0 ? (
         <EmptyOverView />
       ) : (
@@ -391,6 +259,139 @@ export function CategoryGraph() {
           </Tabs>
         </>
       )}
+        <div className="fixed bottom-4 md:right-2 left-2 z-50  mr-auto  md:mb-0">
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant={"ghost"}
+              size="icon"
+              className="self-end border rounded-full mr-8"
+            >
+              <MoreHorizontal size={18} />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent
+            className="w-auto px-4 py-4 mx-10 dark:bg-zinc-800"
+            side="bottom"
+          >
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="flex md:flex-row flex-col justify-center gap-4 items-center flex-1"
+              >
+                <FormField
+                  control={form.control}
+                  name="from"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col">
+                      <FormLabel>From</FormLabel>
+                      <Popover key={field.value}>
+                        <PopoverTrigger asChild>
+                          <FormControl>
+                            <Button
+                              variant={"outline"}
+                              className={cn(
+                                "md:w-[240px] w-[140px] pl-3 text-left font-normal dark:bg-zinc-700",
+                                !field.value && "text-muted-foreground"
+                              )}
+                            >
+                              {field.value ? (
+                                format(field.value, "yyyy-MM-dd")
+                              ) : (
+                                <span>Pick a date</span>
+                              )}
+                              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                            </Button>
+                          </FormControl>
+                        </PopoverTrigger>
+
+                        <PopoverContent className="w-auto " align="start">
+                          <Calendar
+                            mode="single"
+                            captionLayout="dropdown-buttons"
+                            selected={field.value}
+                            onSelect={field.onChange}
+                            fromYear={1960}
+                            toYear={2030}
+                          />
+                        </PopoverContent>
+                      </Popover>
+
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="to"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col">
+                      <FormLabel>To</FormLabel>
+                      <Popover key={field.value}>
+                        <PopoverTrigger asChild>
+                          <FormControl>
+                            <Button
+                              variant={"outline"}
+                              className={cn(
+                                "md:w-[240px] w-[140px] pl-3 text-left font-normal dark:bg-zinc-700",
+                                !field.value && "text-muted-foreground"
+                              )}
+                            >
+                              {field.value ? (
+                                format(field.value, "yyyy-MM-dd")
+                              ) : (
+                                <span>Pick a date</span>
+                              )}
+                              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                            </Button>
+                          </FormControl>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-auto p-0" align="center">
+                          <Calendar
+                            mode="single"
+                            captionLayout="dropdown-buttons"
+                            selected={field.value}
+                            onSelect={field.onChange}
+                            fromYear={1960}
+                            toYear={2030}
+                          />
+                        </PopoverContent>
+                      </Popover>
+
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="category_ids"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col">
+                      <FormLabel>Categories</FormLabel>
+                      <MultiselectDropdown
+                        // @ts-ignore
+                        options={categorydata}
+                        name="category_ids"
+                        placeholder="Select Your Categories"
+                      />
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <Button
+                  disabled={isPending}
+                  type="submit"
+                  variant="default"
+                  className="w-full"
+                >
+                  Apply
+                </Button>
+              </form>
+            </Form>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
+
     </div>
   );
 }
