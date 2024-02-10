@@ -69,14 +69,17 @@ const Home = () => {
           </div>
         </TabsContent>
         <TabsContent value="history">
-          <Card className="shadow-md w-[72rem] dark:bg-zinc-900">
+          <Card className="shadow-md w-full dark:bg-zinc-900">
             <CardHeader>
               <CardTitle>Your All Expenses</CardTitle>
             </CardHeader>
-            <CardContent className="pl-2">
+          <div className="overflow-auto">
+            <CardContent className="pl-2 w-full">
               <ExpenseTable />
             </CardContent>
+            </div>
           </Card>
+
         </TabsContent>
       </Tabs>
     </main>

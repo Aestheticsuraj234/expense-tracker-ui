@@ -173,19 +173,18 @@ export function OverviewGraph() {
                 </ResponsiveContainer>
               </div>
               <p className="text-center text-lg font-semibold dark:text-gray-300 mt-4 mb-4">
-                Total Amount:{" "}
-                <span className="bg-emerald-500 ml-3 px-4 py-2 text-white rounded-md">
-                  {currency}
-                  {Math.round(
-                    data.reduce((acc: number, cur: any) => acc + cur.amount, 0)
-                  )}
-                </span>
-              </p>
+  Total Amount:{" "}
+  <span className="bg-emerald-500 ml-3 px-4 py-2 text-white rounded-md">
+    {currency}
+    {data.reduce((acc: number, cur: any) => acc + cur.amount, 0).toFixed(2)}
+  </span>
+</p>
+
             </TabsContent>
             <TabsContent value="line-graph">
               <div className="overflow-auto">
                 <ResponsiveContainer width={containerWidth} height={400}>
-                  <AreaChart
+                  <LineChart
                     width={500}
                     height={400}
                     data={data}
@@ -212,7 +211,7 @@ export function OverviewGraph() {
                     {/* @ts-ignore */}
                     <Tooltip content={CustomTooltip} />
                     <Legend />
-                    <Area
+                    <Line
                       type="monotone"
                       dataKey="amount"
                       stroke="#888888"
@@ -221,18 +220,16 @@ export function OverviewGraph() {
                       strokeWidth={2}
                       activeDot={{ r: 8 }}
                     />
-                  </AreaChart>
+                  </LineChart>
                 </ResponsiveContainer>
               </div>
               <p className="text-center text-lg font-semibold dark:text-gray-300 mt-4 mb-4">
-                Total Amount:{" "}
-                <span className="bg-emerald-500 ml-3 px-4 py-2 text-white rounded-md">
-                  {currency}
-                  {Math.round(
-                    data.reduce((acc: number, cur: any) => acc + cur.amount, 0)
-                  )}
-                </span>
-              </p>
+  Total Amount:{" "}
+  <span className="bg-emerald-500 ml-3 px-4 py-2 text-white rounded-md">
+    {currency}
+    {data.reduce((acc: number, cur: any) => acc + cur.amount, 0).toFixed(2)}
+  </span>
+</p>
             </TabsContent>
           </Tabs>
 
