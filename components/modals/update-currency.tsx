@@ -52,7 +52,7 @@ export const UpdateCurrencyModal = () => {
   const {userId,authorizationHeader} = useSession();
   const [loading, setLoading] = useState(false);
   const {id} = useCurrency();
-  const router = useRouter()
+
   const {
     currencies,
     fetchAllCurrencies,
@@ -118,28 +118,29 @@ export const UpdateCurrencyModal = () => {
                 name="symbol"
                 render={({ field }) => (
                   <FormItem>
-                    <div className="grid grid-cols-3 items-center justify-center gap-4">
-                      <FormLabel className="text-right">
-                        Currency Name
+                    <div className="flex flex-row items-center justify-between gap-4">
+                      <FormLabel className="text-right inline-flex md:text-lg text-xs">
+                        Currency
                       </FormLabel>
                       <FormControl>
                         <Select
                           onValueChange={field.onChange}
                           defaultValue={field.value}
                           
+                          
                         >
                           <FormControl>
                             <SelectTrigger className="dark:bg-zinc-700">
-                              <SelectValue placeholder="Select Category" className="w-auto" />
+                              <SelectValue placeholder="Select Category" className="w-auto " />
                             </SelectTrigger>
                           </FormControl>
 
-                          <SelectContent side="right" className="w-full dark:bg-zinc-800">
+                          <SelectContent side="right" position="item-aligned" className="dark:bg-zinc-800 md:mx-auto mx-32">
                             {Object.keys(currencies)?.map((currencyCode) => (
                               <SelectItem
                                 key={currencyCode}
                                 value={currencyCode}
-                                className="w-full px-2 py-2"
+                                className="w-auto px-2 py-2"
                               >
                                 <div>
                                   <SelectGroup className="flex justify-between items-center flex-row gap-4">

@@ -138,18 +138,10 @@ export function OverviewGraph() {
                   >
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis
-  dataKey="category"
-  stroke="#888888"
-  fontSize={12}
-  tickLine={false}
-  interval={0}
-  angle={0}
-  dy={10}
-  dx={0}
-  
-/>
-
-
+                      dataKey="category"
+                      stroke="#888888"
+                      fontSize={7}
+                    />
 
                     <YAxis
                       stroke="#888888"
@@ -158,28 +150,28 @@ export function OverviewGraph() {
                       tickFormatter={(value) => `${currency}${value}`}
                     />
                     {/* @ts-ignore */}
-                    <Tooltip content={CustomTooltip}  />
+                    <Tooltip content={CustomTooltip} />
 
                     <Bar
-                    overflow={"visible"}
+                      overflow={"visible"}
                       dataKey="amount"
                       fill="currentColor"
                       radius={[4, 4, 0, 0]}
                       className="fill-primary"
                       barSize={60}
-                    
                     />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
               <p className="text-center text-lg font-semibold dark:text-gray-300 mt-4 mb-4">
-  Total Amount:{" "}
-  <span className="bg-emerald-500 ml-3 px-4 py-2 text-white rounded-md">
-    {currency}
-    {data.reduce((acc: number, cur: any) => acc + cur.amount, 0).toFixed(2)}
-  </span>
-</p>
-
+                Total Amount:{" "}
+                <span className="bg-emerald-500 ml-3 px-4 py-2 text-white rounded-md">
+                  {currency}
+                  {data
+                    .reduce((acc: number, cur: any) => acc + cur.amount, 0)
+                    .toFixed(2)}
+                </span>
+              </p>
             </TabsContent>
             <TabsContent value="line-graph">
               <div className="overflow-auto">
@@ -199,7 +191,7 @@ export function OverviewGraph() {
                     <XAxis
                       dataKey="category"
                       stroke="#888888"
-                      fontSize={12}
+                      fontSize={7}
                       tickLine={false}
                     />
                     <YAxis
@@ -224,12 +216,14 @@ export function OverviewGraph() {
                 </ResponsiveContainer>
               </div>
               <p className="text-center text-lg font-semibold dark:text-gray-300 mt-4 mb-4">
-  Total Amount:{" "}
-  <span className="bg-emerald-500 ml-3 px-4 py-2 text-white rounded-md">
-    {currency}
-    {data.reduce((acc: number, cur: any) => acc + cur.amount, 0).toFixed(2)}
-  </span>
-</p>
+                Total Amount:{" "}
+                <span className="bg-emerald-500 ml-3 px-4 py-2 text-white rounded-md">
+                  {currency}
+                  {data
+                    .reduce((acc: number, cur: any) => acc + cur.amount, 0)
+                    .toFixed(2)}
+                </span>
+              </p>
             </TabsContent>
           </Tabs>
 
@@ -365,11 +359,3 @@ export function OverviewGraph() {
     </div>
   );
 }
-
-
-
-
-
-
-
-

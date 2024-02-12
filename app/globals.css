@@ -1,5 +1,6 @@
 @tailwind base;
 
+
 html,
 body {
   height: 100vh;
@@ -34,6 +35,22 @@ body {
   background-color: var(--secondary);
   border-radius: 12px;
 }
+
+@media (max-width: 640px) {
+  .data-[side=left] {
+    left: auto;
+    right: 0;
+  }
+  .data-[side=left]:before {
+    left: 100%;
+    right: auto;
+  }
+  .data-[side=right] {
+    right: auto;
+    left: 0;
+  }
+}
+
 
 @tailwind components;
 @tailwind utilities;

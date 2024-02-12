@@ -247,7 +247,7 @@ export const UpdateExpense = () => {
                     <FormItem>
                       <div className="grid grid-cols-3 items-center justify-center gap-4">
                         <FormLabel className="text-right">
-                          Category Name
+                          Category 
                         </FormLabel>
                         <FormControl>
                           <Select
@@ -260,7 +260,7 @@ export const UpdateExpense = () => {
                               </SelectTrigger>
                             </FormControl>
 
-                            <SelectContent side="right" className="w-full">
+                            <SelectContent side="right" className="w-full" position="item-aligned">
                               {categorydata?.map((category) => (
                                 <SelectItem
                                   key={category.id}

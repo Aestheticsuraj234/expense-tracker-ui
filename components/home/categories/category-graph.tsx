@@ -143,7 +143,6 @@ export function CategoryGraph() {
 
   return (
     <div className="flex flex-col  md:items-center justify-between ">
-    
       {!data || data?.length === 0 ? (
         <EmptyOverView />
       ) : (
@@ -168,7 +167,7 @@ export function CategoryGraph() {
                     }}
                   >
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="date" />
+                    <XAxis dataKey="date" fontSize={7} />
                     <YAxis tickFormatter={(value) => `${currency}${value}`} />
                     {/* @ts-ignore */}
                     <Tooltip content={CategoryTooltip} />
@@ -182,10 +181,9 @@ export function CategoryGraph() {
                     />
                   </BarChart>
                 </ResponsiveContainer>
-               
               </div>
               <p
-                  className="
+                className="
                   text-center
                   text-lg
                   font-semibold
@@ -194,15 +192,15 @@ export function CategoryGraph() {
                   mb-4
                 
               "
-                >
-                  Total Amount:
-                  <span className="bg-emerald-500 ml-3 px-4 py-2 text-white rounded-md">
-                    {currency}
-                    {Math.round(
+              >
+                Total Amount:
+                <span className="bg-emerald-500 ml-3 px-4 py-2 text-white rounded-md">
+                  {currency}
+                  {Math.round(
                     data.reduce((acc: number, cur: any) => acc + cur.amount, 0)
                   )}
-                  </span>
-                </p>
+                </span>
+              </p>
             </TabsContent>
             <TabsContent value="line-graph">
               <div className="overflow-auto">
@@ -219,7 +217,7 @@ export function CategoryGraph() {
                     }}
                   >
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="date" />
+                    <XAxis dataKey="date" fontSize={7} />
                     <YAxis />
                     {/* @ts-ignore */}
                     <Tooltip content={CategoryTooltip} />
@@ -234,10 +232,9 @@ export function CategoryGraph() {
                     <Line type="monotone" dataKey="category" stroke="#888" />
                   </LineChart>
                 </ResponsiveContainer>
-              
               </div>
-                <p
-                  className="
+              <p
+                className="
                   text-center
                   text-lg
                   font-semibold
@@ -246,20 +243,20 @@ export function CategoryGraph() {
                   mb-4
                 
               "
-                >
-                  Total Amount:
-                  <span className="bg-emerald-500 ml-3 px-4 py-2 text-white rounded-md">
-                    {currency}
-                    {Math.round(
+              >
+                Total Amount:
+                <span className="bg-emerald-500 ml-3 px-4 py-2 text-white rounded-md">
+                  {currency}
+                  {Math.round(
                     data.reduce((acc: number, cur: any) => acc + cur.amount, 0)
                   )}
-                  </span>
-                </p>
+                </span>
+              </p>
             </TabsContent>
           </Tabs>
         </>
       )}
-        <div className="fixed bottom-4 md:right-2 left-2 z-50  mr-auto  md:mb-0">
+      <div className="fixed bottom-4 md:right-2 left-2 z-50  mr-auto  md:mb-0">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
@@ -306,7 +303,10 @@ export function CategoryGraph() {
                           </FormControl>
                         </PopoverTrigger>
 
-                        <PopoverContent className="w-auto ml-10 mt-10" align="start">
+                        <PopoverContent
+                          className="w-auto ml-10 mt-10"
+                          align="start"
+                        >
                           <Calendar
                             mode="single"
                             captionLayout="dropdown-buttons"
@@ -348,7 +348,10 @@ export function CategoryGraph() {
                             </Button>
                           </FormControl>
                         </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0 md:mx-0 mx-10" align="center">
+                        <PopoverContent
+                          className="w-auto p-0 md:mx-0 mx-10"
+                          align="center"
+                        >
                           <Calendar
                             mode="single"
                             captionLayout="dropdown-buttons"
@@ -370,7 +373,7 @@ export function CategoryGraph() {
                   render={({ field }) => (
                     <FormItem className="flex flex-col">
                       <FormLabel>Categories</FormLabel>
-                      
+
                       <MultiselectDropdown
                         key={field.value}
                         // @ts-ignore
@@ -378,7 +381,7 @@ export function CategoryGraph() {
                         name="category_ids"
                         placeholder="Select Categories"
                       />
-                      
+
                       <FormMessage />
                     </FormItem>
                   )}
@@ -396,7 +399,6 @@ export function CategoryGraph() {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-
     </div>
   );
 }

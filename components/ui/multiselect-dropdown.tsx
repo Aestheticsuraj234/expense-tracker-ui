@@ -5,9 +5,9 @@ import {
   DropdownMenuCheckboxItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Checkbox } from "@/components/ui/checkbox";
+
 import { useFieldArray, useFormContext } from "react-hook-form";
-import { Button } from "./button";
+import { Button } from "./button";W
 import { ChevronDownIcon } from "lucide-react";
 
 type CategoryProps = {
@@ -63,7 +63,7 @@ const MultiselectDropdown: React.FC<MultiselectDropdownProps> = ({
         <ChevronDownIcon className="w-5 h-5" />
       </Button>
     </DropdownMenuTrigger>
-    <DropdownMenuContent sideOffset={4} side="top" className="mb-2 dark:bg-zinc-700 ml-10" >
+    <DropdownMenuContent  sideOffset={4} side="top" className="mb-2 mt-48 dark:bg-zinc-700 ml-10"  >
       {options.map((option) => (
         <DropdownMenuCheckboxItem key={option.id} className="space-x-5" onClick={(e) => e.stopPropagation()}>
           <input

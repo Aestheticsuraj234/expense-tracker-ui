@@ -128,7 +128,7 @@ export const AddCurrencyModal = () => {
                             </SelectTrigger>
                           </FormControl>
 
-                          <SelectContent side="right" className="w-full">
+                          <SelectContent side="right" position="item-aligned" className=" mx-2">
                             {Object.keys(currencies)?.map((currencyCode) => (
                               <SelectItem
                                 key={currencyCode}

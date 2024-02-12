@@ -188,12 +188,12 @@ export const AddExpense = () => {
                         <FormControl>
                           <Dialog>
                             <DialogTrigger asChild>
-                              <Button variant="outline">
+                              <Button variant="outline" className="text-sm">
                                 {field.value
                                   ? field.value.length > 15
                                     ? `${field.value.slice(0, 15)}...`
                                     : field.value
-                                  : "Add Description"}
+                                  : "Description"}
                               </Button>
                             </DialogTrigger>
                             <DialogContent className="sm:max-w-md dark:bg-zinc-800">
@@ -232,7 +232,7 @@ export const AddExpense = () => {
                     <FormItem>
                       <div className="grid grid-cols-3 items-center justify-center gap-4">
                         <FormLabel className="text-right">
-                          Category Name
+                          Category
                         </FormLabel>
                         <FormControl>
                           <Select
@@ -248,6 +248,7 @@ export const AddExpense = () => {
                             <SelectContent
                               side="right"
                               className="dark:bg-zinc-800"
+                              position="item-aligned"
                             >
                               {categorydata?.map((category) => (
                                 <SelectItem
@@ -308,7 +309,7 @@ export const AddExpense = () => {
                               </Button>
                             </FormControl>
                           </PopoverTrigger>
-                          <PopoverContent className="w-auto p-0" align="start">
+                          <PopoverContent className="w-auto p-0" align="start" >
                             <Calendar
                               mode="single"
                               captionLayout="dropdown-buttons"
