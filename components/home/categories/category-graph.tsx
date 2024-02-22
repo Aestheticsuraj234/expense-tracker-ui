@@ -72,9 +72,11 @@ import MultiselectDropdown from "@/components/ui/multiselect-dropdown";
 import EmptyOverView from "../overview/empty_overview";
 import { useCategory } from "@/hooks/category/useCategory";
 import { useCategoryGraphs } from "@/hooks/use-categoryBar";
+import { useSelectedValuesStore } from "@/hooks/use-multiSelect";
 
 export function CategoryGraph() {
   const { authorizationHeader, userId } = useSession();
+  const { selectedValues , toggleValue} = useSelectedValuesStore();
   const [isPending, setIsPending] = useState(false);
   const { data, setData } = useCategoryGraphs();
   const { categorydata } = useCategory();
@@ -103,8 +105,8 @@ export function CategoryGraph() {
       setIsPending(true);
       const { from, to, category_ids } = values;
       // format categoryIds into the comma separated string
-      const formattedId = category_ids
-        .map((category: any) => category.value)
+      const formattedId = selectedValues
+        .map((category: any) => category)
         .join(",");
       const FormatedForm = format(from, "yyyy-MM-dd");
       const FormatedTo = format(to, "yyyy-MM-dd");
@@ -125,6 +127,7 @@ export function CategoryGraph() {
 
         console.log(response.data);
         toast.success("Data fetched successfully");
+        selectedValues.length = 0;
         form.reset();
       }
 
@@ -368,12 +371,12 @@ export function CategoryGraph() {
                   )}
                 />
                 <FormField
+                  key={fields.length}
                   control={form.control}
                   name="category_ids"
                   render={({ field }) => (
                     <FormItem className="flex flex-col">
                       <FormLabel>Categories</FormLabel>
-
                       <MultiselectDropdown
                         key={field.value}
                         // @ts-ignore

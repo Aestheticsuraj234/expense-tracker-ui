@@ -1,14 +1,16 @@
 import * as React from "react";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuCheckboxItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
-import { useFieldArray, useFormContext } from "react-hook-form";
+import { Command, CommandGroup, CommandItem } from "@/components/ui/command";
+
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "./button";
-import { ChevronDownIcon } from "lucide-react";
+import { ChevronsDown } from "lucide-react";
+import { useSelectedValuesStore } from "@/hooks/use-multiSelect";
 
 type CategoryProps = {
   id: number;
@@ -27,59 +29,56 @@ const MultiselectDropdown: React.FC<MultiselectDropdownProps> = ({
   name,
   placeholder,
 }) => {
-  const { control } = useFormContext();
-  const { fields, append, remove } = useFieldArray({
-    control,
-    name,
-  });
-
-  const handleCheckboxChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    categoryId: number
-  ) => {
-    e.stopPropagation();
-    const existingIndex = fields.findIndex(
-      // @ts-ignore
-      (field) => field.value === categoryId
-    );
-
-    if (existingIndex !== -1) {
-      remove(existingIndex);
-    } else {
-      append({ value: categoryId });
-    }
-  };
+  const [open, setOpen] = React.useState(false);
+  const selectedValuesStore = useSelectedValuesStore(); // Use the store hook
+  // Destructure the selectedValues and toggleValue from the store
+  const { selectedValues, toggleValue } = selectedValuesStore;
+  console.log("Selected Values:", selectedValues); // Debugging
 
   return (
-    <DropdownMenu >
-    <DropdownMenuTrigger
-      className="flex justify-between items-center gap-4 w-full"
-    >
-      <Button
-        variant="outline"
-        className="md:w-[240px] w-[160px] pl-3 text-left font-normal flex justify-between items-center dark:bg-zinc-700"
-      >
-        {placeholder || "Select"}
-        <ChevronDownIcon className="w-5 h-5" />
-      </Button>
-    </DropdownMenuTrigger>
-    <DropdownMenuContent  sideOffset={4} side="top" className="mb-2 mt-48 dark:bg-zinc-700 ml-10"  >
-      {options.map((option) => (
-        <DropdownMenuCheckboxItem key={option.id} className="space-x-5" onClick={(e) => e.stopPropagation()}>
-          <input
-            type="checkbox"
-            id={option.id.toString()}
-            // @ts-ignore
-            checked={fields.some((field) => field.value === option.id)}
-            onChange={(e) => handleCheckboxChange(e, option.id)}
-            className="mr-4"
-          />
-          <p className="ml-4">{option.name}</p>
-        </DropdownMenuCheckboxItem>
-      ))}
-    </DropdownMenuContent>
-  </DropdownMenu>
-  
+    <>
+      <Popover open={open} onOpenChange={setOpen}>
+        <PopoverTrigger asChild>
+          <Button
+            variant="outline"
+            role="combobox"
+            className="w-[200px] justify-between"
+          >
+            {placeholder || "Select a category"}
+            <ChevronsDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent
+          sideOffset={4}
+          side="top"
+          className="mb-2 mt-48 dark:bg-zinc-700 ml-10"
+        >
+          <ScrollArea className="h-72 w-69 rounded-md ">
+            <Command>
+              <CommandGroup>
+                {options.map((option) => (
+                  <div
+                    key={option.id}
+                    className="flex justify-start items-center gap-x-4 px-2 py-2 text-muted-foreground"
+                  >
+                    <input
+                      type="checkbox"
+                      id={option.id.toString()}
+                      checked={selectedValues.includes(option.id)}
+                      onChange={() => {
+                        toggleValue(option.id); // Use toggleValue directly
+                      }}
+                      className="mr-4"
+                    />
+                    <CommandItem>{option.name}</CommandItem>
+                  </div>
+                ))}
+              </CommandGroup>
+            </Command>
+          </ScrollArea>
+        </PopoverContent>
+      </Popover>
+    </>
   );
 };
 
